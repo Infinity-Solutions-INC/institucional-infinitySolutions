@@ -4,9 +4,16 @@
     font-family: "Quicksand", sans-serif;
     padding: 0;
     margin: 0;
+    
 }
 
 body {
     background-color: #0C123E; 
     color: #ffffff;
+    line-height: 1.5;
+    font-size: 18px;
+}
+
+button {
+    cursor: pointer;
 }
