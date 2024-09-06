@@ -1,5 +1,9 @@
 header nav {
     width: 100%;
+    padding: 20px 0;
+    background-color: red;
+    position: fixed;
+    display: none;
 }
 
 header nav ul{
@@ -7,4 +11,200 @@ header nav ul{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+}
+
+header nav ul li {
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+header nav ul li:nth-of-type(1) {
+    font-size: 20px;
+    margin-right: 20%;
+    font-weight: 100;
+}
+
+header nav ul li span {
+    font-weight: 500;
+}
+
+header nav ul li:nth-of-type(5) {
+    padding-right: 20px;
+    padding-left: 20px;
+    border: 1px solid ;
+    border-radius: 84px 5px 139px 79px;
+}
+
+header section {
+    display: flex;
+    justify-content: space-between;
+}
+
+header section div {
+    margin: 12% 8%;
+}
+
+header section div h1 {
+    font-weight: 400;
+    text-shadow: 0 0 10px #fff, 0 0 2px #fff;
+    font-size: 6vw;
+    line-height: 1;
+}
+
+header section div span {
+    font-weight: 100;
+    display: block;
+}
+
+header section div h2 {
+    max-width: 500px;
+    margin-top: 20px;
+    color: #00B5E3;
+    text-shadow: 0 0 4px #00B5E3;
+}
+
+header section div article button {
+    padding: 12px 30px;
+    margin-top: 20px;
+}
+
+header section div article button:nth-of-type(1) {
+    border: 2px solid #00B5E3;
+    border-radius: 20px 2px 20px 20px;
+    background-color: #00B5E3;
+    font-weight: 700;
+}
+
+header section div article button:nth-of-type(2) {
+    border: 2px solid #00B5E3;
+    border-radius: 20px 20px 20px 2px;
+    background-color: transparent;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+header section img {
+    margin-left: -30%;
+}
+
+main article {
+    /* width: 100%; */
+    /* background-color: red; */
+    padding: 0 45px;
+}
+
+main span {
+    color: #00D4EC;
+}
+
+main h3 {
+    font-size: 50px;
+    font-weight: 300;
+    text-shadow: 0 0 12px #fff, 0 0 4px #fff;
+}
+
+main h3 span {
+    text-shadow: 0 0 12px #00D4EC, 0 0 4px #00D4EC;
+}
+
+.textArea {
+    display: flex;
+    justify-content: space-around;
+    gap: 5%;
+    align-items: center;
+    text-align: center;
+    margin-top: 15%;
+}
+
+.textArea:nth-of-type(1) {
+    flex-direction: row-reverse;
+    margin-top: 0;
+}
+
+.textArea section {
+    display: flex;
+    flex-direction: column;
+}
+
+.textArea section p {
+    margin-top: 20px;
+    max-width: 87%;
+}
+
+.textArea img {
+    margin-top: 5%;
+    width: 40%;
+}
+
+.textArea:nth-of-type(1) section {
+    align-items: flex-end;
+}
+
+
+.textArea:nth-of-type(1) h3 {
+    text-align: right;
+}
+
+.textArea:nth-of-type(2) {
+    flex-direction: row;
+}
+
+.textArea:nth-of-type(2) h3 {
+    text-align: left;
+}
+
+.textArea:nth-of-type(2) section {
+    align-items: flex-start;
+}
+
+.textArea:nth-of-type(2) img {
+    width: 80%;
+}
+
+#companyValues {
+    margin-top: 15%;
+}
+
+#companyValues section h3{
+    text-align: center;
+    margin-bottom: 4%;
+}
+
+#companyValues article {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#companyValues div {
+    padding: 30px 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+}
+
+#companyValues div h4 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+#companyValues div p {
+    font-size: 20px;
+    max-width: 80%;
+    font-weight: 100;
+}
+
+#companyValues div:nth-child(1) {
+    background-color: #2448A3;
+}
+
+#companyValues div:nth-child(2) {
+    background-color: #162B6B;
+}
+
+#companyValues div:nth-child(3) {
+    background-color: #141E65;
 }
