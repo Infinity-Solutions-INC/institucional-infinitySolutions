@@ -1,42 +1,107 @@
-header nav {
-    width: 100%;
-    padding: 20px 0;
-    background-color: red;
-    position: fixed;
-    display: none;
-}
-
 ul {
     list-style: none;
 }
 
-header nav ul{
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+header nav {
+    width: 100vw;
+    padding: 10px 0;
+    position: absolute;
+}
+
+header nav ul {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
 }
 
 header nav ul li {
     padding: 10px 0;
     cursor: pointer;
+    font-size: 16px;
+
 }
 
 header nav ul li:nth-of-type(1) {
-    font-size: 20px;
+    font-size: 22px;
     margin-right: 20%;
     font-weight: 100;
+}
+
+header nav ul li:nth-of-type(4) {
+    margin-right: 5%;
+}
+
+header ul a {
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.navbarLinks:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    /* top: 10px; */
+    bottom: 0;
+    left: 0;
+    background-color: #00D4EC;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+.navbarLinks:hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
 }
 
 header nav ul li span {
     font-weight: 500;
 }
 
-header nav ul li:nth-of-type(5) {
-    padding-right: 20px;
-    padding-left: 20px;
-    border: 1px solid ;
+nav li:nth-of-type(5) a {
+    text-shadow: none;
+    display: inline-block;
+    padding: 0.9rem 1.9rem;
+    background-color: transparent;
+    overflow: hidden;
+    z-index: 1;
+    border: 2px solid #00D4EC;
     border-radius: 84px 5px 139px 79px;
 }
+
+nav li:nth-of-type(5) a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00D4EC;
+    transform: translateX(-100%);
+    transition: all 0.3s;
+    z-index: -1;
+}
+
+nav li:nth-of-type(5) a:hover::before {
+    transform: translate(0);
+}
+
+/* header nav ul li:nth-of-type(5) {
+    padding-right: 20px;
+    padding-left: 20px;
+    border: 2px solid #00D4EC;
+    border-radius: 84px 5px 139px 79px;
+} */
 
 header section {
     display: flex;
@@ -168,7 +233,7 @@ main h3 span {
     margin-top: 15%;
 }
 
-#companyValues section h3{
+#companyValues section h3 {
     text-align: center;
     margin-bottom: 4%;
 }
@@ -218,10 +283,15 @@ main h3 span {
     margin-bottom: 40px;
 }
 
-#teamArea article{
+#teamArea article {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 10%;
+}
+
+#teamArea article:nth-of-type(2) {
+    margin-top: 3%;
 }
 
 #teamArea div {
@@ -232,7 +302,7 @@ main h3 span {
     height: 50vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -263,13 +333,25 @@ footer {
     padding: 60px 0 10px 0;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    margin-top: 5%;
+}
+
+footer a {
+    font-weight: 100;
+}
+
+footer h3 {
+    font-weight: 500;
+}
+
+footer span {
+    font-weight: 100;
 }
 
 footer section:nth-of-type(1) {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
 }
 
@@ -278,20 +360,50 @@ footer section:nth-of-type(1) img {
     margin-top: 20px;
 }
 
-#copyRight {
-    width: 100%;
-    background-color: #070A24;
-    text-align: center;
-}
-
-footer article {
+#footerNavArea {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-evenly;
+    border: 1px solid #00D4EC;
+    border-top: 0;
+    border-bottom: 0;
+    width: 60%;
+    margin-left: -5px;
+    margin-right: 40px;
 }
 
 footer nav {
     display: flex;
     flex-direction: column;
+    text-align: center;
+}
+
+footer section:nth-of-type(2) {
+    display: flex;
+    flex-direction: column;
+}
+
+footer section article {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    width: 200px;
+}
+
+footer section:nth-of-type(2) a {
+    margin-bottom: 20px;
+}
+
+.socialMediaCorporation {
+    width: 20px;
+    margin: auto;
+}
+
+#copyRight {
+    width: 100vw;
+    background-color: #070A24;
+    text-align: center;
+    padding-top: 10px;
 }
