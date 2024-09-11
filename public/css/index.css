@@ -38,6 +38,73 @@ a {
     margin-right: 5%;
 }
 
+/*Estilizacao menu mobile*/
+.open-hamburguer-menu {
+    position: absolute;
+    right: 40px;
+    top: 30px;
+    display: none;
+}
+
+.open-hamburguer-menu i {
+    font-size: 40px;
+}
+
+.hamburguer-menu {
+    height: 200vh;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+    width: 0%;
+    background-color: #2448a3ec;
+    overflow: hidden; /*para garantir que nenhum item do hamburguer-menu vaze*/
+    transition: 0.5s;
+}
+
+.hamburguer-menu.open-menu {
+    width: 70%;
+}
+
+.hamburguer-menu.hamburguer-menu-closed {
+    width: 0%;
+}
+.hamburguer-menu.open-menu ~ .menu-overlay  {
+    display: block;
+}
+
+.hamburguer-menu .close-hamburguer-menu i{
+    padding: 20px 5%;
+}
+
+.hamburguer-menu .close-hamburguer-menu i{
+    font-size: 24px;
+}
+
+.hamburguer-menu nav {
+    text-align: right;
+    font-size: 24px;
+}
+
+.hamburguer-menu ul li a {
+    padding: 20px 4%;
+    display: block;
+}  
+
+.hamburguer-menu ul li a:hover {
+    background-color: #162B6B;
+}  
+
+.menu-overlay {
+    background-color: #000000a4;
+    display: none;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 8888;
+}
 
 header ul a {
     position: relative;
@@ -127,7 +194,7 @@ header section {
     font-size: 22px;
 }
 
-#banner div article a button {
+#banner div article button {
     width: 180px;
     padding: 20px;
     margin-top: 20px;
