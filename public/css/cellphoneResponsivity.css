@@ -1,0 +1,81 @@
+@media screen and (max-width: 480px) {
+    main article{
+        padding: 0;
+    }
+    
+    #banner {
+        justify-content: flex-end;
+        display: block;
+        margin-bottom: 105%;
+    }
+
+    #banner div h1 {
+        font-size: 40px;
+    }
+
+    #banner div h2 {
+        font-size: 18px;
+    }
+
+    #banner div article button {
+        font-size: 16px;
+        width: 170px;
+        padding: 20px;
+    }
+
+    #mobileImg {
+        top: 280px;
+    }
+
+    .textArea:nth-of-type(1) section {
+        font-size: 16px;
+    }
+    
+    .textArea:nth-of-type(1) h3 {
+        font-size: 28px;
+    }
+    
+    .textArea:nth-of-type(2) h3 {
+        font-size: 28px;
+    }
+
+    .textArea:nth-of-type(2) section {
+        font-size: 16px;
+    }
+
+    .textArea .midImg {
+        width: 90%;
+    }
+
+    #companyValues div {
+        width: 80%;
+        height: 20%;
+    }
+
+    #companyValues section h3 {
+        font-size: 28px;
+    }
+
+    #companyValues div h4 {
+        font-size: 18px;
+    }
+
+    #companyValues div p {
+        font-size: 16px;
+    }
+
+    #teamArea h3 {
+        font-size: 28px;
+    }
+
+    #teamMembers div {
+        height: fit-content;
+    }
+
+    #footerNavArea {
+        display: flex;
+        flex-direction: column;
+        margin-right: 0;
+    }
+    
+}
