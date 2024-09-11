@@ -2,6 +2,19 @@
     main article{
         padding: 0;
     }
+
+    .hamburguer-menu nav {
+        font-size: 16px;
+    }
+
+    .open-hamburguer-menu {
+        right: 25px;
+        top: 25px;
+    }
+
+    .open-hamburguer-menu i {
+        font-size: 30px;
+    }
     
     #banner {
         justify-content: flex-end;
