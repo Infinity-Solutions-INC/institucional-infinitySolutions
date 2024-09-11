@@ -3,6 +3,10 @@
         display: none;
     }
 
+    .open-hamburguer-menu {
+        display: block;
+    }
+
     #banner {
         justify-content: flex-end;
         display: block;
