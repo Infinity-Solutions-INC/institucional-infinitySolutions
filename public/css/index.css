@@ -7,35 +7,37 @@ a {
     color: #fff;
 }
 
-header nav {
+/*Estilizacao menu desktop*/
+#desktop-menu {
     width: 100vw;
     padding: 10px 0;
     position: absolute;
 }
 
-header nav ul {
+#desktop-menu ul {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
 }
 
-header nav ul li {
+#desktop-menu ul li {
     padding: 10px 0;
     cursor: pointer;
     font-size: 16px;
 
 }
 
-header nav ul li:nth-of-type(1) {
+#desktop-menu ul li:nth-of-type(1) {
     font-size: 22px;
     margin-right: 20%;
     font-weight: 100;
 }
 
-header nav ul li:nth-of-type(4) {
+#desktop-menu ul li:nth-of-type(4) {
     margin-right: 5%;
 }
+
 
 header ul a {
     position: relative;
@@ -68,7 +70,7 @@ header nav ul li span {
     font-weight: 500;
 }
 
-nav li:nth-of-type(5) a {
+#desktop-menu li:nth-of-type(5) a {
     text-shadow: none;
     display: inline-block;
     padding: 0.9rem 1.9rem;
@@ -79,7 +81,7 @@ nav li:nth-of-type(5) a {
     border-radius: 84px 5px 139px 79px;
 }
 
-nav li:nth-of-type(5) a::before {
+#desktop-menu li:nth-of-type(5) a::before {
     content: "";
     position: absolute;
     left: 0;
@@ -92,58 +94,53 @@ nav li:nth-of-type(5) a::before {
     z-index: -1;
 }
 
-nav li:nth-of-type(5) a:hover::before {
+#desktop-menu li:nth-of-type(5) a:hover::before {
     transform: translate(0);
 }
-
-/* header nav ul li:nth-of-type(5) {
-    padding-right: 20px;
-    padding-left: 20px;
-    border: 2px solid #00D4EC;
-    border-radius: 84px 5px 139px 79px;
-} */
 
 header section {
     display: flex;
     justify-content: space-between;
 }
 
-header section div {
+#banner div {
     margin: 12% 8%;
 }
 
-header section div h1 {
+#banner div h1 {
     font-weight: 400;
     text-shadow: 0 0 10px #fff, 0 0 2px #fff;
-    font-size: 6vw;
+    font-size: 70px;
     line-height: 1;
 }
 
-header section div span {
+#banner div span {
     font-weight: 100;
     display: block;
 }
 
-header section div h2 {
-    max-width: 500px;
+#banner div h2 {
+    max-width: 420px;
     margin-top: 20px;
     color: #00B5E3;
     text-shadow: 0 0 4px #00B5E3;
+    font-size: 22px;
 }
 
-header section div article button {
-    padding: 12px 30px;
+#banner div article a button {
+    width: 180px;
+    padding: 20px;
     margin-top: 20px;
 }
 
-header section div article button:nth-of-type(1) {
+#banner div article a:nth-of-type(1) button {
     border: 2px solid #00B5E3;
     border-radius: 20px 2px 20px 20px;
     background-color: #00B5E3;
     font-weight: 700;
 }
 
-header section div article button:nth-of-type(2) {
+#banner div article a:nth-of-type(2) button {
     border: 2px solid #00B5E3;
     border-radius: 20px 20px 20px 2px;
     background-color: transparent;
@@ -151,13 +148,17 @@ header section div article button:nth-of-type(2) {
     color: #ffffff;
 }
 
-header section img {
+#desktopImg {
     margin-left: -30%;
+    width: 55%;
+    height: 55%;
+}
+
+#mobileImg {
+    display: none;
 }
 
 main article {
-    /* width: 100%; */
-    /* background-color: red; */
     padding: 0 45px;
 }
 
@@ -199,7 +200,11 @@ main h3 span {
     max-width: 87%;
 }
 
-.textArea img {
+.textArea .midImg {
+    display: none;
+}
+
+.textArea .bottomImg {
     margin-top: 5%;
     width: 40%;
 }
@@ -207,7 +212,6 @@ main h3 span {
 .textArea:nth-of-type(1) section {
     align-items: flex-end;
 }
-
 
 .textArea:nth-of-type(1) h3 {
     text-align: right;
@@ -231,6 +235,7 @@ main h3 span {
 
 #companyValues {
     margin-top: 15%;
+    gap: 20px;
 }
 
 #companyValues section h3 {
@@ -242,6 +247,7 @@ main h3 span {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    padding: 0;
 }
 
 #companyValues div {
@@ -270,18 +276,36 @@ main h3 span {
 }
 
 #companyValues div:nth-child(2) {
-    background-color: #162B6B;
+    background-color: #1C3A87;
 }
 
 #companyValues div:nth-child(3) {
+    background-color: #162B6B;
+}
+
+#companyValues div:nth-child(4) {
     background-color: #141E65;
 }
 
 #teamArea h3 {
-    text-align: center;
     margin-top: 15%;
     margin-bottom: 40px;
+    text-align: center;
 }
+
+#teamMembers {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+
+#teamMembers div {
+    margin-bottom: 5%;
+    height: fit-content;
+}
+
 
 #teamArea article {
     display: flex;
@@ -298,8 +322,8 @@ main h3 span {
     background-color: #1C3A87;
     border-radius: 60px 0;
     padding: 20px;
-    width: 15vw;
-    height: 50vh;
+    width: 260px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -314,6 +338,10 @@ main h3 span {
 .teamSkills {
     font-size: 15px;
     margin-top: 15px;
+}
+
+.teamSkills li {
+    margin-bottom: 5px;
 }
 
 .teamContacts {
@@ -335,6 +363,8 @@ footer {
     flex-direction: row;
     justify-content: space-evenly;
     margin-top: 5%;
+    text-align: center;
+    line-height: 2.2;
 }
 
 footer a {
@@ -364,9 +394,9 @@ footer section:nth-of-type(1) img {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    border: 1px solid #00D4EC;
-    border-top: 0;
-    border-bottom: 0;
+    border: 3px solid #00D4EC;
+    border-top: none;
+    border-bottom: none;
     width: 60%;
     margin-left: -5px;
     margin-right: 40px;
@@ -375,25 +405,19 @@ footer section:nth-of-type(1) img {
 footer nav {
     display: flex;
     flex-direction: column;
-    text-align: center;
 }
 
 footer section:nth-of-type(2) {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 footer section article {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     margin-top: 20px;
     width: 200px;
-}
-
-footer section:nth-of-type(2) a {
-    margin-bottom: 20px;
 }
 
 .socialMediaCorporation {
@@ -402,8 +426,9 @@ footer section:nth-of-type(2) a {
 }
 
 #copyRight {
-    width: 100vw;
+    width: 100%;
     background-color: #070A24;
     text-align: center;
     padding-top: 10px;
+    padding-bottom: 30px;
 }
