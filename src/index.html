@@ -6,44 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinity Solutions</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <link rel="stylesheet" href="../public/css/style.css">
     <link rel="stylesheet" href="../public/css/index.css">
+    <link rel="stylesheet" href="../public/css/tabletResponsivity.css">
+    <link rel="stylesheet" href="../public/css/cellphoneResponsivity.css">
+
 </head>
 
 <body>
 
     <header>
-        <nav>
+        <nav id="desktop-menu">
             <ul>
-                <li><a href="">INFINITY <span>SOLUTIONS</span></a></li>
-                <li><a href="" class="navbarLinks">INÍCIO</a></li>
-                <li><a href="" class="navbarLinks">SOBRE</a></li>
-                <li><a href="" class="navbarLinks">EQUIPE</a></li>
-                <li><a href="">COMECE JÁ</a></li>
+                <li><a href="#banner">INFINITY <span>SOLUTIONS</span></a></li>
+                <li><a href="#about" class="navbarLinks">SOBRE</a></li>
+                <li><a href="#companyValues" class="navbarLinks">VALORES</a></li>
+                <li><a href="#teamArea" class="navbarLinks">EQUIPE</a></li>
+                <li><a href="./cadastro_login.html">COMECE JÁ</a></li>
             </ul>
-        </nav>
+        </nav>        
 
-        <section>
+        <section id="banner">
             <div>
                 <h1><span>INFINITY</span> SOLUTIONS</h1>
                 <h2>Análise Inteligente Para um Ensino Superior Mais Potente!</h2>
                 <article>
-                    <button>SAIBA MAIS</button>
-                    <button>JÁ SOU CLIENTE</button>
+                    <a href=""><button>SAIBA MAIS</button></a>
+                    <a href=""><button>JÁ SOU CLIENTE</button></a>
                 </article>
             </div>
 
-            <img src="../public/assets/roboSideImg.png" alt="">
-        </section>
+            <img src="../public/assets/roboSideImg.png" alt="" id="desktopImg">
 
+            <img src="../public/assets/mobileImg.png" alt="" id="mobileImg">
+        </section>
 
     </header>
 
     <main>
-        <article>
+        <article id="about">
             <div id="analiseDesempenho" class="textArea">
                 <section>
                     <h3>ANALISE O <span>DESEMPENHO</span> DA SUA <span>INSTITUIÇÃO</span></h3>
+
+                    <img src="../public/assets/carroselFotosAlunos.png" alt="" class="midImg">
 
                     <p>Com a análise efetiva da <span>Infinity Solutions</span>, você será capaz de saber os dados a
                         respeito dos
@@ -60,12 +68,14 @@
                     </p>
                 </section>
 
-                <img src="../public/assets/carroselFotosAlunos.png" alt="">
+                <img src="../public/assets/carroselFotosAlunos.png" alt="" class="bottomImg">
             </div>
 
             <div class="textArea">
                 <section>
                     <h3>SOLUÇÕES COM O AUXÍLIO DE <span>INTELIGÊNCIA ARTIFICIAL</span></h3>
+
+                    <img src="../public/assets/imagemDivididaRobo.png" alt="" class="midImg">
 
                     <p>Com a análise efetiva da Infinity Solutions, você será capaz de saber os dados a respeito dos
                         cursos
@@ -78,7 +88,7 @@
                         tempor elit facilisis. Nunc sit amet blandit enim.</p>
                 </section>
 
-                <img src="../public/assets/imagemDivididaRobo.png" alt="">
+                <img src="../public/assets/imagemDivididaRobo.png" alt="" class="bottomImg">
             </div>
 
             <div id="companyValues">
@@ -89,23 +99,27 @@
 
                     <article>
                         <div>
-                            <h4>VALORES</h4>
+                            <h4>EFICIÊNCIA</h4>
                             <p>A Infinity Solutions tem como valor o pensamento diferente e a agilidade que passamos a
                                 todos os
                                 nossos clientes.</p>
                         </div>
 
                         <div>
-                            <h4>MISSÃO</h4>
-                            <p>Nossa missão é ser excepcional e excelentes no que fazemos, solidificando relacionamentos
-                                com o
-                                cliente.</p>
+                            <h4>TRANSFORMAR</h4>
+                            <p>Buscamos sempre entregar o melhor uso para nossos clientes, transformando problemas abstratos em soluções tecnológicas.</p>
                         </div>
 
                         <div>
                             <h4>INOVAÇÃO</h4>
                             <p>Nosso destaque referência da empresa é a inovação que levamos a todos os projetos com
                                 nossas tecnologias.</p>
+                        </div>
+
+                        <div>
+                            <h4>PROFISSIONALISMO</h4>
+                            <p>Nossa missão é ser excepcional e excelentes no que fazemos, solidificando relacionamentos
+                                com o cliente.</p>
                         </div>
                     </article>
 
@@ -114,16 +128,15 @@
 
             <section id="teamArea">
                 <h3><span>INFINITY</span> TEAM</h3>
+                <article id="teamMembers">
 
-                <article>
                     <div>
-                        <img src="../public/assets/teamPics/kaueFoto.png" alt="" class="teamPic">
+                        <img src="../public/assets/teamPics/luanaFoto.png" alt="" class="teamPic">
 
                         <h4>LUANA CRUZ</h4>
                         <ul class="teamSkills">
-                            <li>Dev</li>
-                            <li>Dev</li>
-                            <li>Dev</li>
+                            <li>Dev FullStack</li>
+                            <li>Data Engineer</li>
                         </ul>
 
                         <article class="teamContacts">
@@ -134,13 +147,12 @@
                     </div>
 
                     <div>
-                        <img src="../public/assets/teamPics/kaueFoto.png" alt="" class="teamPic">
+                        <img src="../public/assets/teamPics/pabloFoto.png" alt="" class="teamPic">
 
                         <h4>PABLO ROCHA</h4>
                         <ul class="teamSkills">
-                            <li>Dev</li>
-                            <li>Dev</li>
-                            <li>Dev</li>
+                            <li>Dev FullStack</li>
+                            <li>Cloud Engineer</li>
                         </ul>
 
                         <article class="teamContacts">
@@ -151,13 +163,12 @@
                     </div>
 
                     <div>
-                        <img src="../public/assets/teamPics/kaueFoto.png" alt="" class="teamPic">
+                        <img src="../public/assets/teamPics/murilloFoto.png" alt="" class="teamPic">
 
                         <h4>MURILLO MARQUES</h4>
                         <ul class="teamSkills">
-                            <li>Dev</li>
-                            <li>Dev</li>
-                            <li>Dev</li>
+                            <li>Dev FullStack</li>
+                            <li>Analista de Sistemas</li>
                         </ul>
 
                         <article class="teamContacts">
@@ -167,17 +178,14 @@
                         </article>
                     </div>
 
-                </article>
 
-                <article>
                     <div>
                         <img src="../public/assets/teamPics/kaueFoto.png" alt="" class="teamPic">
 
                         <h4>KAUE SILVA</h4>
                         <ul class="teamSkills">
-                            <li>Dev</li>
-                            <li>Dev</li>
-                            <li>Dev</li>
+                            <li>Dev FullStack</li>
+                            <li>Data Engineer</li>
                         </ul>
 
                         <article class="teamContacts">
@@ -188,12 +196,11 @@
                     </div>
 
                     <div>
-                        <img src="../public/assets/teamPics/kaueFoto.png" alt="" class="teamPic">
+                        <img src="../public/assets/teamPics/maykonFoto.png" alt="" class="teamPic">
                         <h4>MAYKON NOGUEIRA</h4>
-                        <ul>
-                            <li>Dev</li>
-                            <li>Dev</li>
-                            <li>Dev</li>
+                        <ul class="teamSkills">
+                            <li>Dev FullStack</li>
+                            <li>UI/UX</li>
                         </ul>
 
                         <article class="teamContacts">
@@ -244,10 +251,9 @@
             <h4>NOSSAS REDES</h4>
             <article>
                 <a href=""><img src="../public/assets/contactTeamIcons/linkedinIcon.svg" alt=""
-                        class="socialMediaCorporation"> Infinity Solutions INC. </a>
+                        class="socialMediaCorporation"> <span>Infinity Solutions INC.</span> </a>
                 <a href=""><img src="../public/assets/contactTeamIcons/githubIcon.svg" alt=""
-                        class="socialMediaCorporation"> Infinity-Solutions-INC</a>
-                <!-- <a href=""><img src="../public/assets/contactTeamIcons/outlookIcon.svg" alt="" class="socialMediaCorporation"> infinityhelp@hippo.com</a> -->
+                        class="socialMediaCorporation"> <span>Infinity-Solutions-INC</span></a>
             </article>
         </section>
 
