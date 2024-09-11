@@ -1,0 +1,153 @@
+@media screen and (max-width: 1024px) {
+    #desktop-menu {
+        display: none;
+    }
+
+    #banner {
+        justify-content: flex-end;
+        display: block;
+        margin-bottom: 70%;
+    }
+
+    #banner div {
+        margin: 10% 10%;
+    }
+
+    #banner div h1 {
+        font-size: 75px;
+    }
+
+    #banner div h2 {
+        font-size: 26px;
+    }
+
+    #banner div article button {
+        display: block;
+        font-size: 18px;
+        width: 230px;
+        padding: 25px;
+    }
+
+    main article {
+        padding: 0;
+    }
+
+
+    #desktopImg {
+        display: none;
+    }
+
+    #mobileImg {
+        display: flex;
+        padding: 0;
+        width: 70%;
+        z-index: 0;
+        position: absolute;
+        top: 140px;
+        right: 0;
+    }
+
+    .textArea:nth-of-type(1) section {
+        align-items: center;
+        font-size: 26px;
+    }
+
+
+    .textArea:nth-of-type(1) h3 {
+        text-align: center;
+        font-size: 50px;
+    }
+
+    .textArea:nth-of-type(2) section {
+        align-items: center;
+        font-size: 26px;
+    }
+
+    .textArea:nth-of-type(2) h3 {
+        text-align: center;
+        font-size: 50px;
+    }
+
+    .textArea .bottomImg {
+        display: none;
+    }
+
+    .textArea .midImg {
+        display: block;
+    }
+
+    #companyValues article {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+    }
+
+    #companyValues article div {
+        width: 80%;
+    }
+
+    #teamMembers div {
+        width:fit-content;
+        height: 50%;
+        padding: 10px;
+        font-size: 22px;
+    }
+
+    .teamPic {
+        width: 40%;
+    }
+
+    #teamMembers {
+        font-size: 26px;
+    }
+
+    .teamContacts img{
+        width: 40px;
+    }
+
+    .teamSkills {
+        font-size: 20px;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    footer h3 {
+        font-size: 26px;
+    }
+
+    footer h4 {
+        font-size: 22px;
+    }
+
+    footer a {
+        font-size: 20px;
+    }
+
+    footer section:nth-of-type(2) article {
+        justify-content: center;
+    }
+
+    footer section:nth-of-type(2) img {
+        width: 40px;
+        margin: 10px 0;
+    }
+
+    footer section:nth-of-type(2) span {
+        display: none;
+    }
+
+    #footerNavArea {
+        border-right: 0 solid;
+        border-left: 0 solid;
+        border-top: solid #00D4EC;
+        border-bottom: solid #00D4EC;
+        gap: 50px;
+        padding: 60px 0;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+}
