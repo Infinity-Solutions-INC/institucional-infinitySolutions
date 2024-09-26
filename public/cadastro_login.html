@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Solutions</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/cad_log.css">
+    <script src="./js/sessao.js"></script>
+    <link rel="icon" href="./assets/icon/favicon2.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="div-secao forms">
+
+            <div id="form_cadastro" class="div-formulario cadastro visible">
+
+                <span class="titulo">CADASTRE-SE
+                    <HR class="linha">
+                    </HR>
+                </span>
+
+
+                <label class="label-form">NOME:</label>
+                <input class="inpt-form" type="text" name="" id="nome_input">
+
+                <label class="label-form">CPF:</label>
+                <input class="inpt-form" type="text" name="" id="cpf_input">
+
+                <label class="label-form">EMAIL:</label>
+                <input class="inpt-form" type="text" name="" id="email_input">
+
+                <DIV>
+                    <label class="label-form">SENHA:</label>
+                    <label class="label-form">CONFIMAR:</label>
+                </DIV>
+
+                <div>
+                    <input class="inpt-form" type="text" name="" id="senha_input">
+                    <input class="inpt-form" type="text" name="" id="confirmar_senha_input">
+                </div>
+
+                <BUTTon class="btn-form" onclick="cadastrar()">CADASTRAR</BUTTon>
+
+                <div id="div_aguardar" class="loading-div-cad" style="display: none;">
+                    <img src="./assets/circle-loading.gif" id="loading-gif" />
+                </div>
+
+            </div>
+
+            <div id="form_login" class="div-formulario login hidden">
+
+                <span class="titulo">BEM VINDO <br>
+                    <span class="titulo"><B>DE VOLTA!</B></span>
+                </span>
+
+
+
+                <label class="label-form">EMAIL:</label>
+                <input class="inpt-form" type="text" name="" id="log_email_input">
+
+                <label class="label-form">SENHA:</label>
+                <input class="inpt-form" type="text" name="" id="log_senha_input">
+
+                <BUtton class="btn-form" onclick="entrar()">ENTRAR</BUtton>
+
+                <div id="div_aguardar" class="loading-div-log" style="display: none;">
+                    <img src="./assets/circle-loading.gif" id="loading-gif" />
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="div-secao paineis">
+
+            <div id="painel_login" class="painel login visible">
+
+                <span class="titulo-painel">JÁ POSSUI CONTA?</span>
+                <span class="desc-painel">FAÇA LOGIN E APROVEITE AS MARAVILHAS DE UM
+                    <B>SISTEMA INOVADOR!</B></span>
+
+                <div>
+
+                    <button id="btn_login" class="btn-painel">FAZER LOGIN</button>
+                    <img class="img-painel" src="./assets/medium-shot-women-with-thumbs-up-removebg-preview.png"
+                        alt="">
+
+                </div>
+
+            </div>
+
+            <div id="painel_cadastro" class="painel cadastro hidden">
+
+                <span class="titulo-painel"> Ainda não tem castrado?</span>
+                <span class="desc-painel">
+                    Basta ter o código de sua empresa para se cadastrar!</span>
+
+                <div>
+
+                    <button id="btn_cadastro" class="btn-painel">CADASTRAR</button>
+                    <img class="img-painel" src="./assets/students-with-laptop-medium-shot-removebg-preview.png"
+                        alt="">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+<script>
+    // Selecionar os elementos necessários usando os IDs dos botões
+    const btnLogin = document.getElementById('btn_login');
+    const btnCadastro = document.getElementById('btn_cadastro');
+    const formLogin = document.getElementById('form_login');
+    const formCadastro = document.getElementById('form_cadastro');
+    const painelLogin = document.getElementById('painel_login');
+    const painelCadastro = document.getElementById('painel_cadastro');
+
+    // Função para mostrar o formulário de login
+    btnLogin.addEventListener('click', () => {
+        formCadastro.classList.remove('visible');
+        formCadastro.classList.add('hidden');
+
+        formLogin.classList.remove('hidden');
+        formLogin.classList.add('visible');
+
+        painelCadastro.classList.remove('hidden');
+        painelCadastro.classList.add('visible');
+
+        painelLogin.classList.remove('visible');
+        painelLogin.classList.add('hidden');
+    });
+
+    // Função para mostrar o formulário de cadastro
+    btnCadastro.addEventListener('click', () => {
+        formCadastro.classList.remove('hidden');
+        formCadastro.classList.add('visible');
+
+        formLogin.classList.remove('visible');
+        formLogin.classList.add('hidden');
+
+        painelCadastro.classList.remove('visible');
+        painelCadastro.classList.add('hidden');
+
+        painelLogin.classList.remove('hidden');
+        painelLogin.classList.add('visible');
+    });
+
+
+    function cadastrar() {
+        let nomeVar = nome_input.value;
+        let cpfVar = cpf_input.value;
+        let emailVar = email_input.value;
+        let senhaVar = senha_input.value;
+        let confirmacaoSenhaVar = confirmar_senha_input.value;
+
+        if (
+            nomeVar == "" ||
+            cpfVar == "" ||
+            emailVar == "" ||
+            senhaVar == "" ||
+            confirmacaoSenhaVar == ""
+        ) {
+            alert("Erro! Campos em branco");
+
+            finalizarAguardar();
+            return false;
+        }
+
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                cpfServer: cpfVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Cadastro realizado com sucesso!")
+
+                    setTimeout(() => {
+                        formCadastro.classList.remove('visible');
+                        formCadastro.classList.add('hidden');
+
+                        formLogin.classList.remove('hidden');
+                        formLogin.classList.add('visible');
+
+                        painelCadastro.classList.remove('hidden');
+                        painelCadastro.classList.add('visible');
+
+                        painelLogin.classList.remove('visible');
+                        painelLogin.classList.add('hidden');
+                    }, "2000");
+
+                    limparFormulario();
+                    finalizarAguardar();
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                finalizarAguardar();
+            });
+
+        return false;
+    }
+
+    function entrar() {
+        aguardar();
+
+        let emailVar = log_email_input.value;
+        let senhaVar = log_senha_input.value;
+
+        if (emailVar == "" || senhaVar == "") {
+            alert("Erro! Campos em branco")
+            finalizarAguardar();
+            return false;
+        }
+        
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.cpf;
+
+                    setTimeout(function () {
+                        window.location = "./teste.html"
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+
+
+</script>
