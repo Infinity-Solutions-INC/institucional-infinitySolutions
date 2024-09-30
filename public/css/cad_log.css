@@ -13,23 +13,30 @@
     justify-content: center;
     /* background: linear-gradient(to right, #00e5ff6b 4%, #0C123E 5%, #0C123E 95%, #00e5ff6b 96%); */
 }
+
 .div-secao{
     display: flex;
-    width: 50%;
     height: 100%;
     background-color: transparent;
     align-items: center;
     justify-content: space-evenly;
     position: relative;
 }
+.div-secao.forms{
+    width: 40%;
+    box-shadow: 10px 4px 10px #000;
+}
+.div-secao.paineis{
+    width: 60%;
+}
 .div-formulario{
     display: flex;
-    width: 60%;
+    width: 100%;
     height: 80%;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    box-shadow: -4px 4px 10px #00E5FF;
+   
     position: absolute;
 }
 
@@ -95,45 +102,17 @@
     position: absolute;
 }
 
-
-.titulo-painel{
-    margin-top: 20%;
-    width: 100%;
-    font-size: 200%;
-    text-align: center;
-}
-.desc-painel{
-    width: 70%;
-    text-align: center;
-    font-size: 120%;
-}
-.painel.cadastro .desc-painel{
-    width: 100%;
-}
 .painel div{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-}
-.btn-painel{
-    width: 35%;
-    height: 15%;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 15px;
-    background-color: #00E5FF;
-    border: none;
-    color: #0C123E;
-    font-weight: bolder;
-    margin-left: 10%;
-}
-.btn-painel:hover{
-    transform: scale(1.1);
+    width: 100%;
+    height: 100%;
 }
 .img-painel{
     width: 100%;
+    height: 100%;
 }
 .div-formulario, .painel {
     transition: opacity 0.8s ease, transform 0.8s ease;
