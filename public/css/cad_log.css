@@ -154,3 +154,25 @@
     pointer-events: auto;
 
 }
+
+.loading-div-cad {
+    width: 80vh;
+    display: none;
+    background-color: red;
+}
+  
+.loading-div-cad img {
+    height: 50px;
+    width: 50px;
+}
+
+.loading-div-log {
+    width: 80vh;
+    display: none;
+    background-color: red;
+}
+  
+.loading-div-log img {
+    height: 50px;
+    width: 50px;
+}
