@@ -82,11 +82,7 @@
 
             <div id="form_cadastro" class="div-formulario cadastro visible">
 
-                <span class="titulo">CADASTRE-SE
-                    <HR class="linha">
-                    </HR>
-                </span>
-
+                <span class="titulo">CADASTRE-SE</span>
 
                 <label class="label-form">NOME:</label>
                 <input class="inpt-form" type="text" name="" id="nome_input">
@@ -97,15 +93,10 @@
                 <label class="label-form">EMAIL:</label>
                 <input class="inpt-form" type="text" name="" id="email_input">
 
-                <DIV>
+                
                     <label class="label-form">SENHA:</label>
-                    <label class="label-form">CONFIMAR:</label>
-                </DIV>
-
-                <div>
                     <input class="inpt-form" type="text" name="" id="senha_input">
-                    <input class="inpt-form" type="text" name="" id="confirmar_senha_input">
-                </div>
+                  
 
                 <BUTTon class="btn-form" onclick="cadastrar()">CADASTRAR</BUTTon>
 
@@ -113,13 +104,19 @@
                     <img src="./assets/circle-loading.gif" id="loading-gif" />
                 </div>
 
+                <span>Já possui uma conta?</span>
+                <span>Aproveite as maravilhas de um sistema inovador!</span>
+                <div>
+                    <button id="btn_login" class="btn-outro-form">FAZER LOGIN</button>
+                    <button class="btn-saiba-mais">SAIBA MAIS</button>
+                </div>
+
             </div>
 
             <div id="form_login" class="div-formulario login hidden">
 
-                <span class="titulo">BEM VINDO <br>
-                    <span class="titulo"><B>DE VOLTA!</B></span>
-                </span>
+                <span class="titulo">BEM VINDO</span>
+                <span class="titulo">DE VOLTA!</span>
 
 
 
@@ -133,6 +130,13 @@
 
                 <div id="div_aguardar" class="loading-div-log" style="display: none;">
                     <img src="./assets/circle-loading.gif" id="loading-gif" />
+                </div>
+
+                <span>Ainda não possui conta?</span>
+                <span>Basta ter o código de sua empresa!</span>
+                <div>
+                    <button id="btn_cadastro" class="btn-outro-form">CADASTRE-SE</button>
+                    <button class="btn-saiba-mais">SAIBA MAIS</button>
                 </div>
 
             </div>
