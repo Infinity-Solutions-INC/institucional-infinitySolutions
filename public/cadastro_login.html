@@ -15,154 +15,127 @@
 
 <body>
 
-    <!-- aqui é navbar -->
-     <header>
-        <nav id="desktop-menu">
-            <ul>
-                <li><a href="#banner">INFINITY <span>SOLUTIONS</span></a></li>
-                <li><a href="#about" class="navbarLinks">SOBRE</a></li>
-                <li><a href="#companyValues" class="navbarLinks">VALORES</a></li>
-                <li><a href="#teamArea" class="navbarLinks">EQUIPE</a></li>
-                <li><a href="./cadastro_login.html">COMECE JÁ</a></li>
-            </ul>
-        </nav>        
-    
-        <div class="open-hamburguer-menu" id="open-hamburguer-menu">
-            <i class="fa-solid fa-bars"></i>
-        </div>
-            
-        <div class="hamburguer-menu" id="hamburguer-menu">
-            <div class="close-hamburguer-menu">
-                <i class="fa-solid fa-x"></i>
-            </div>
-    
-            <nav>
-                <ul>
-                    <li><a href="#about">Sobre</a></li>
-                    <li><a href="#companyValues">Valores</a></li>
-                    <li><a href="#teamArea">Equipe</a></li>
-                    <li><a href="./cadastro_login.html">Comece Já</a></li>
-                </ul>
-            </nav>
-        </div>
-     </div>
-    <nav id="desktop-menu">
-        <ul>
-            <li><a href="#banner">INFINITY <span>SOLUTIONS</span></a></li>
-            <li><a href="#about" class="navbarLinks">SOBRE</a></li>
-            <li><a href="#companyValues" class="navbarLinks">VALORES</a></li>
-            <li><a href="#teamArea" class="navbarLinks">EQUIPE</a></li>
-            <li><a href="./cadastro_login.html">COMECE JÁ</a></li>
-        </ul>
-    </nav>        
-
-    <div class="open-hamburguer-menu" id="open-hamburguer-menu">
-        <i class="fa-solid fa-bars"></i>
-    </div>
-        
-    <div class="hamburguer-menu" id="hamburguer-menu">
-        <div class="close-hamburguer-menu">
-            <i class="fa-solid fa-x"></i>
-        </div>
-
-        <nav>
-            <ul>
-                <li><a href="#about">Sobre</a></li>
-                <li><a href="#companyValues">Valores</a></li>
-                <li><a href="#teamArea">Equipe</a></li>
-                <li><a href="./cadastro_login.html">Comece Já</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- aqui começa corpo do site  -->
     <div class="container">
-
-        <div class="div-secao forms">
-
-            <div id="form_cadastro" class="div-formulario cadastro visible">
-
-                <span class="titulo">CADASTRE-SE
-                    <HR class="linha">
-                    </HR>
-                </span>
-
-
-                <label class="label-form">NOME:</label>
-                <input class="inpt-form" type="text" name="" id="nome_input">
-
-                <label class="label-form">CPF:</label>
-                <input class="inpt-form" type="text" name="" id="cpf_input">
-
-                <label class="label-form">EMAIL:</label>
-                <input class="inpt-form" type="text" name="" id="email_input">
-
-                <DIV>
-                    <label class="label-form">SENHA:</label>
-                    <label class="label-form">CONFIMAR:</label>
-                </DIV>
-
-                <div>
-                    <input class="inpt-form" type="text" name="" id="senha_input">
-                    <input class="inpt-form" type="text" name="" id="confirmar_senha_input">
-                </div>
-
-                <BUTTon class="btn-form" onclick="cadastrar()">CADASTRAR</BUTTon>
-
-                <div id="div_aguardar" class="loading-div-cad" style="display: none;">
-                    <img src="./assets/circle-loading.gif" id="loading-gif" />
-                </div>
-
+         <!-- aqui é navbar -->
+        <div class="navbar">
+            <nav id="desktop-menu">
+                <ul>
+                    <li><a href="#banner">INFINITY <span>SOLUTIONS</span></a></li>
+                    <li><a href="#about" class="navbarLinks">SOBRE</a></li>
+                    <li><a href="#companyValues" class="navbarLinks">VALORES</a></li>
+                    <li><a href="#teamArea" class="navbarLinks">EQUIPE</a></li>
+                    <li><a href="./cadastro_login.html">COMECE JÁ</a></li>
+                </ul>
+            </nav>        
+    
+            <div class="open-hamburguer-menu" id="open-hamburguer-menu">
+                <i class="fa-solid fa-bars"></i>
             </div>
-
-            <div id="form_login" class="div-formulario login hidden">
-
-                <span class="titulo">BEM VINDO <br>
-                    <span class="titulo"><B>DE VOLTA!</B></span>
-                </span>
-
-
-
-                <label class="label-form">EMAIL:</label>
-                <input class="inpt-form" type="text" name="" id="log_email_input">
-
-                <label class="label-form">SENHA:</label>
-                <input class="inpt-form" type="text" name="" id="log_senha_input">
-
-                <BUtton class="btn-form" onclick="entrar()">ENTRAR</BUtton>
-
-                <div id="div_aguardar" class="loading-div-log" style="display: none;">
-                    <img src="./assets/circle-loading.gif" id="loading-gif" />
+                
+            <div class="hamburguer-menu" id="hamburguer-menu">
+                <div class="close-hamburguer-menu">
+                    <i class="fa-solid fa-x"></i>
                 </div>
-
+    
+                <nav>
+                    <ul>
+                        <li><a href="#about">Sobre</a></li>
+                        <li><a href="#companyValues">Valores</a></li>
+                        <li><a href="#teamArea">Equipe</a></li>
+                        <li><a href="./cadastro_login.html">Comece Já</a></li>
+                    </ul>
+                </nav>
             </div>
-
         </div>
 
-        <div class="div-secao paineis">
+         <!-- aqui começa corpo do site  -->
+        <div class="tela-cad-log">
+            <div class="div-secao forms">
 
-            <div id="painel_login" class="painel login visible">
-
-                <div>
-
-                    <img class="img-painel" src="./assets/cadastro.png"
-                        alt="">
-
+                <div id="form_cadastro" class="div-formulario cadastro visible">
+    
+                    <span class="titulo">CADASTRE-SE
+                        <HR class="linha">
+                        </HR>
+                    </span>
+    
+    
+                    <label class="label-form">NOME:</label>
+                    <input class="inpt-form" type="text" name="" id="nome_input">
+    
+                    <label class="label-form">CPF:</label>
+                    <input class="inpt-form" type="text" name="" id="cpf_input">
+    
+                    <label class="label-form">EMAIL:</label>
+                    <input class="inpt-form" type="text" name="" id="email_input">
+    
+                    <DIV>
+                        <label class="label-form">SENHA:</label>
+                        <label class="label-form">CONFIMAR:</label>
+                    </DIV>
+    
+                    <div>
+                        <input class="inpt-form" type="text" name="" id="senha_input">
+                        <input class="inpt-form" type="text" name="" id="confirmar_senha_input">
+                    </div>
+    
+                    <BUTTon class="btn-form" onclick="cadastrar()">CADASTRAR</BUTTon>
+    
+                    <div id="div_aguardar" class="loading-div-cad" style="display: none;">
+                        <img src="./assets/circle-loading.gif" id="loading-gif" />
+                    </div>
+    
                 </div>
-
-            </div>
-
-            <div id="painel_cadastro" class="painel cadastro hidden">
-
-                <div>
-
-                    <img class="img-painel" src="./assets/login.png"
-                        alt="">
-
+    
+                <div id="form_login" class="div-formulario login hidden">
+    
+                    <span class="titulo">BEM VINDO <br>
+                        <span class="titulo"><B>DE VOLTA!</B></span>
+                    </span>
+    
+    
+    
+                    <label class="label-form">EMAIL:</label>
+                    <input class="inpt-form" type="text" name="" id="log_email_input">
+    
+                    <label class="label-form">SENHA:</label>
+                    <input class="inpt-form" type="text" name="" id="log_senha_input">
+    
+                    <BUtton class="btn-form" onclick="entrar()">ENTRAR</BUtton>
+    
+                    <div id="div_aguardar" class="loading-div-log" style="display: none;">
+                        <img src="./assets/circle-loading.gif" id="loading-gif" />
+                    </div>
+    
                 </div>
-
+    
             </div>
-
+    
+            <div class="div-secao paineis">
+    
+                <div id="painel_login" class="painel login visible">
+    
+                    <div>
+    
+                        <img class="img-painel" src="./assets/cadastro.png"
+                            alt="">
+    
+                    </div>
+    
+                </div>
+    
+                <div id="painel_cadastro" class="painel cadastro hidden">
+    
+                    <div>
+    
+                        <img class="img-painel" src="./assets/login.png"
+                            alt="">
+    
+                    </div>
+    
+                </div>
+    
+            </div>
         </div>
 
     </div>
