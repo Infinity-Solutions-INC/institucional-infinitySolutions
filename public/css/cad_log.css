@@ -70,6 +70,7 @@ header{
     background-color: transparent;
     color: #fff;
     box-shadow: 1px 4px 5px #00E5FF;
+    border-radius: 5PX;
 }
 .btn-form{
     width: 40%;
@@ -86,12 +87,13 @@ header{
     width: 30%;
     height: 100%;
     border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
     background-color: transparent;
     border-color: #00E5FF;
     color: #fff;
+    margin-left: 2%;
 }
 .btn-outro-form{
     width: 30%;
@@ -100,9 +102,10 @@ header{
     border-bottom-left-radius: 15px;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 15px;
-    background-color: transparent;
+    background-color: #00E5Ff;
     border-color: #00E5FF;
-    color: #fff;
+    color: #0C123E;
+    font-weight: 900;
 }
 .btn-form:hover{
     transform: scale(1.1);
