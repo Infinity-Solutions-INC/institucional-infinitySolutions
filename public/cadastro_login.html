@@ -219,15 +219,13 @@
         let cpfVar = cpf_input.value;
         let emailVar = email_input.value;
         let senhaVar = senha_input.value;
-        let confirmacaoSenhaVar = confirmar_senha_input.value;
 
         if (
             nomeVar == "" ||
             cpfVar == "" ||
             emailVar == "" ||
-            senhaVar == "" ||
-            confirmacaoSenhaVar == ""
-        ) {
+            senhaVar == ""
+                    ) {
             alert("Erro! Campos em branco");
 
             finalizarAguardar();
