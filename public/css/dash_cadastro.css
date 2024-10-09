@@ -1,0 +1,47 @@
+body{
+    overflow-y: hidden;
+}
+.corpo-dash{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+    margin-top: 8%;
+}
+.divisao{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    display: flex;
+}
+.divisao.form{
+    width: 60%;
+}
+.divisao.lista{
+    width: 30%;
+}
+.bloco{
+    height: 80%;
+    width: 90%;
+    background-color: #1C3A87;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.titulo-corpo{
+    height: 10%;
+    font-size: 150%;
+    font-weight: 100;
+}
+.label-cad-user{
+    font-weight: 100;
+    width: 80%;
+
+}

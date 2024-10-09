@@ -5,29 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/dash.css">
+    <link rel="stylesheet" href="../css/dash_cadastro.css">
     <script src="../js/sessao.js"></script> 
-    <title>Dashboard Principal</title>
+    <title>Dashboard Cadastros</title>
 </head>
 <body>
-    <section className="dashboard">
-        <div class="menu">
-            <div class="logo">
-                <img src="../assets/logo.png" alt="logo infinity" >
-                <h2 style="font-weight: lighter;">INFINITY <b style="font-weight: normal;">SOLUTIONS</b></h2>
+    <div class="tudao">
+        <section className="dashboard">
+            <div class="menu">
+                <div class="logo">
+                    <img src="../assets/logo.png" alt="logo infinity" >
+                    <h2 style="font-weight: lighter;">INFINITY <b style="font-weight: normal;">SOLUTIONS</b></h2>
+                </div>
+                <div class="opcoes">
+                    <a href="./dashboard.html">PRINCIPAL</a>
+                    <a href="./filtrada.html">FILTRADA</a>
+                    <a href="#">RELATÓRIOS</a>
+                    <a href="#">CADASTRO</a>
+                    <span class="help">
+                        <a href="#">CONFIGURAÇÕES</a>
+                        <a href="#">SUPORTE</a>
+                    </span>
+                    <a onclick="sair()">ENCERRAR SESSÃO</a>
+                </div>
             </div>
-            <div class="opcoes">
-                <a href="./dashboard.html">PRINCIPAL</a>
-                <a href="./filtrada.html">FILTRADA</a>
-                <a href="#">RELATÓRIOS</a>
-                <a href="#">CADASTRO</a>
-                <span class="help">
-                    <a href="#">CONFIGURAÇÕES</a>
-                    <a href="#">SUPORTE</a>
+        </section>
+    
+        <div class="container">
+            <div class="navdash">
+                <span class="titulo">
+                    CADASTRAR <b>FUNCIONÁRIOS</b>
                 </span>
-                <a onclick="sair()">ENCERRAR SESSÃO</a>
+                <div class="navdash-menu">
+                    <img src="../assets/tomas.png" alt="" class="img-navbar-menu">
+                    <span>Tomás Galleno</span>
+                    <button class="btn-navbar-menu"><img src="../assets/downArrow.png" alt=""></button>
+                </div>
             </div>
+
+            <div class="corpo-dash">
+                <div class="divisao form">
+                    <span class="titulo-corpo">NOVO FUNCIONÁRIO:</span>
+                    <div class=" bloco form-cad-users">
+
+                        <span class="label-cad-user">NOME:</span>
+                        <input type="text" name="" id="" class="inpt-cad-user">
+
+                        <span class="label-cad-user">CPF:</span>
+                        <input type="text" name="" id="" class="inpt-cad-user">
+
+                        <span class="label-cad-user">CARGO:</span>
+                        <input type="text" name="" id="" class="inpt-cad-user">
+
+                        <span class="label-cad-user">CODIGO ACESSO:</span>
+
+                        <div>
+                            <button>CADASTRAR</button>
+                            <button>EXCLUIR</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divisao lista">
+                    <span class="titulo-corpo">CADASTROS REALIZADOS:</span>
+                    <div class="bloco lista-users">
+
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </div>
 </body>
 </html>
 

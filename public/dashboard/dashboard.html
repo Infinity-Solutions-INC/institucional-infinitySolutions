@@ -9,25 +9,40 @@
     <title>Dashboard Principal</title>
 </head>
 <body>
-    <section className="dashboard">
-        <div class="menu">
-            <div class="logo">
-                <img src="../assets/logo.png" alt="logo infinity" >
-                <h2 style="font-weight: lighter;">INFINITY <b style="font-weight: normal;">SOLUTIONS</b></h2>
+    <div class="tudao">
+        <section className="dashboard">
+            <div class="menu">
+                <div class="logo">
+                    <img src="../assets/logo.png" alt="logo infinity" >
+                    <h2 style="font-weight: lighter;">INFINITY <b style="font-weight: normal;">SOLUTIONS</b></h2>
+                </div>
+                <div class="opcoes">
+                    <a href="./dashboard.html">PRINCIPAL</a>
+                    <a href="./filtrada.html">FILTRADA</a>
+                    <a href="#">RELATÓRIOS</a>
+                    <a href="#">CADASTRO</a>
+                    <span class="help">
+                        <a href="#">CONFIGURAÇÕES</a>
+                        <a href="#">SUPORTE</a>
+                    </span>
+                    <a onclick="sair()">ENCERRAR SESSÃO</a>
+                </div>
             </div>
-            <div class="opcoes">
-                <a href="./dashboard.html">PRINCIPAL</a>
-                <a href="./filtrada.html">FILTRADA</a>
-                <a href="#">RELATÓRIOS</a>
-                <a href="#">CADASTRO</a>
-                <span class="help">
-                    <a href="#">CONFIGURAÇÕES</a>
-                    <a href="#">SUPORTE</a>
+        </section>
+    
+        <div class="container">
+            <div class="navdash">
+                <span class="titulo">
+                    nome <b>tela</b>
                 </span>
-                <a onclick="sair()">ENCERRAR SESSÃO</a>
+                <div class="navdash-menu">
+                    <img src="../assets/tomas.png" alt="" class="img-navbar-menu">
+                    <span>Tomás Galleno</span>
+                    <button class="btn-navbar-menu"><img src="../assets/downArrow.png" alt=""></button>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 </body>
 </html>
 

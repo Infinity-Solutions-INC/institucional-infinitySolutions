@@ -84,17 +84,17 @@
 
                 <span class="titulo">CADASTRE-SE</span>
 
-                <label class="label-form">NOME:</label>
+                <label class="label-form">CPF:</label>
                 <input class="inpt-form" type="text" name="" id="nome_input">
 
-                <label class="label-form">CPF:</label>
+                <label class="label-form">EMAIL:</label>
                 <input class="inpt-form" type="text" name="" id="cpf_input">
 
-                <label class="label-form">EMAIL:</label>
+                <label class="label-form">SENHA:</label>
                 <input class="inpt-form" type="text" name="" id="email_input">
 
                 
-                    <label class="label-form">SENHA:</label>
+                    <label class="label-form">CONFIRMAR SENHA:</label>
                     <input class="inpt-form" type="text" name="" id="senha_input">
                   
 
@@ -215,131 +215,134 @@
 
 
     function cadastrar() {
-        let nomeVar = nome_input.value;
-        let cpfVar = cpf_input.value;
-        let emailVar = email_input.value;
-        let senhaVar = senha_input.value;
+        window.location = "verify_cad.html";
 
-        if (
-            nomeVar == "" ||
-            cpfVar == "" ||
-            emailVar == "" ||
-            senhaVar == ""
-                    ) {
-            alert("Erro! Campos em branco");
+        // let nomeVar = nome_input.value;
+        // let cpfVar = cpf_input.value;
+        // let emailVar = email_input.value;
+        // let senhaVar = senha_input.value;
 
-            finalizarAguardar();
-            return false;
-        }
+        // if (
+        //     nomeVar == "" ||
+        //     cpfVar == "" ||
+        //     emailVar == "" ||
+        //     senhaVar == ""
+        //             ) {
+        //     alert("Erro! Campos em branco");
 
-        // Enviando o valor da nova input
-        fetch("/usuarios/cadastrar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                // crie um atributo que recebe o valor recuperado aqui
-                // Agora vá para o arquivo routes/usuario.js
-                nomeServer: nomeVar,
-                cpfServer: cpfVar,
-                emailServer: emailVar,
-                senhaServer: senhaVar
-            }),
-        })
-            .then(function (resposta) {
-                console.log("resposta: ", resposta);
+        //     finalizarAguardar();
+        //     return false;
+        // }
 
-                if (resposta.ok) {
-                    alert("Cadastro realizado com sucesso!")
+        // // Enviando o valor da nova input
+        // fetch("/usuarios/cadastrar", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({
+        //         // crie um atributo que recebe o valor recuperado aqui
+        //         // Agora vá para o arquivo routes/usuario.js
+        //         nomeServer: nomeVar,
+        //         cpfServer: cpfVar,
+        //         emailServer: emailVar,
+        //         senhaServer: senhaVar
+        //     }),
+        // })
+        //     .then(function (resposta) {
+        //         console.log("resposta: ", resposta);
 
-                    setTimeout(() => {
-                        formCadastro.classList.remove('visible');
-                        formCadastro.classList.add('hidden');
+        //         if (resposta.ok) {
+        //             alert("Cadastro realizado com sucesso!")
 
-                        formLogin.classList.remove('hidden');
-                        formLogin.classList.add('visible');
+        //             setTimeout(() => {
+        //                 formCadastro.classList.remove('visible');
+        //                 formCadastro.classList.add('hidden');
 
-                        painelCadastro.classList.remove('hidden');
-                        painelCadastro.classList.add('visible');
+        //                 formLogin.classList.remove('hidden');
+        //                 formLogin.classList.add('visible');
 
-                        painelLogin.classList.remove('visible');
-                        painelLogin.classList.add('hidden');
-                    }, "2000");
+        //                 painelCadastro.classList.remove('hidden');
+        //                 painelCadastro.classList.add('visible');
 
-                    limparFormulario();
-                    finalizarAguardar();
-                } else {
-                    throw "Houve um erro ao tentar realizar o cadastro!";
-                }
-            })
-            .catch(function (resposta) {
-                console.log(`#ERRO: ${resposta}`);
-                finalizarAguardar();
-            });
+        //                 painelLogin.classList.remove('visible');
+        //                 painelLogin.classList.add('hidden');
+        //             }, "2000");
 
-        return false;
+        //             limparFormulario();
+        //             finalizarAguardar();
+        //         } else {
+        //             throw "Houve um erro ao tentar realizar o cadastro!";
+        //         }
+        //     })
+        //     .catch(function (resposta) {
+        //         console.log(`#ERRO: ${resposta}`);
+        //         finalizarAguardar();
+        //     });
+
+        // return false;
     }
 
     function entrar() {
-        aguardar();
+        window.location = "dashboard/dash_cadastro.html";
+    //  aguardar();
 
-        let emailVar = log_email_input.value;
-        let senhaVar = log_senha_input.value;
+    //     le   t emailVar = log_email_input.value;
+    //     let senhaVar = log_senha_input.value;
 
-        if (emailVar == "" || senhaVar == "") {
-            alert("Erro! Campos em branco")
-            finalizarAguardar();
-            return false;
-        }
+    //     if (emailVar == "" || senhaVar == "") {
+    //         alert("Erro! Campos em branco")
+    //         finalizarAguardar();
+    //         return false;
+    //     }
         
 
-        console.log("FORM LOGIN: ", emailVar);
-        console.log("FORM SENHA: ", senhaVar);
+    //     console.log("FORM LOGIN: ", emailVar);
+    //     console.log("FORM SENHA: ", senhaVar);
 
-        fetch("/usuarios/autenticar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emailServer: emailVar,
-                senhaServer: senhaVar
-            })
-        }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
+    //     fetch("/usuarios/autenticar", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             emailServer: emailVar,
+    //             senhaServer: senhaVar
+    //         })
+    //     }).then(function (resposta) {
+    //         console.log("ESTOU NO THEN DO entrar()!")
 
-            if (resposta.ok) {
-                console.log(resposta);
+    //         if (resposta.ok) {
+    //             console.log(resposta);
 
-                resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
-                    sessionStorage.EMAIL_USUARIO = json.email;
-                    sessionStorage.NOME_USUARIO = json.nome;
-                    sessionStorage.ID_USUARIO = json.cpf;
+    //             resposta.json().then(json => {
+    //                 console.log(json);
+    //                 console.log(JSON.stringify(json));
+    //                 sessionStorage.EMAIL_USUARIO = json.email;
+    //                 sessionStorage.NOME_USUARIO = json.nome;
+    //                 sessionStorage.ID_USUARIO = json.cpf;
 
-                    setTimeout(function () {
-                        window.location = "./dashboard/dashboard.html"
-                    }, 1000); // apenas para exibir o loading
+    //                 setTimeout(function () {
+    //                     window.location = "./dashboard/dashboard.html"
+    //                 }, 1000); // apenas para exibir o loading
 
-                });
+    //             });
 
-            } else {
+    //         } else {
 
-                console.log("Houve um erro ao tentar realizar o login!");
+    //             console.log("Houve um erro ao tentar realizar o login!");
 
-                resposta.text().then(texto => {
-                    console.error(texto);
-                    finalizarAguardar(texto);
-                });
-            }
+    //             resposta.text().then(texto => {
+    //                 console.error(texto);
+    //                 finalizarAguardar(texto);
+    //             });
+    //         }
 
-        }).catch(function (erro) {
-            console.log(erro);
-        })
+    //     }).catch(function (erro) {
+    //         console.log(erro);
+    //     })
 
-        return false;
+    //     return false;
     }
 
 
