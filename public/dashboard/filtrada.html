@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dash.css">
+    <script src="../js/sessao.js"></script>
+    <title>Dashboard Filtrada</title>
+</head>
+<body>
+    <section className="filtrada">
+        <div class="menu">
+            <div class="logo">
+                <img src="../assets/logo.png" alt="logo infinity" >
+                <h2 style="font-weight: lighter;">INFINITY <b style="font-weight: normal;">SOLUTIONS</b></h2>
+            </div>
+            <div class="opcoes">
+                <a href="./dashboard.html">PRINCIPAL</a>
+                <a href="#">FILTRADA</a>
+                <a href="#">RELATÓRIOS</a>
+                <a href="#">CADASTRO</a>
+                <a href="#">CONFIGURAÇÕES</a>
+                <a href="#">SUPORTE</a>
+                <a onclick="sair()">ENCERRAR SESSÃO</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+
+<script>
+
+    function sair() {
+        limparSessao();
+    }
+
+</script>
