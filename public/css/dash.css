@@ -56,7 +56,90 @@ body {
     font-weight: bold;
 }
 
+.screen {
+    display: flex;
+    flex-direction: row;
+}
 
+.upper-bar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 550px;
+    margin-bottom: 30px;
+    padding-left: 30px;
+}
 
+.upper-profile-infos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
 
+.fa-circle-user {
+    font-size: 25px;
+}
 
+.page-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.title {
+    font-weight: 300;
+    font-size: 25px;
+    /* margin-right: 400px; */
+}
+
+.title span {
+    font-weight: 500;
+}
+
+.upper-bar .username {
+    font-size: 12px;
+}
+
+.page-content .container-content{
+    height: 70vh;
+}
+
+.container-title {
+    font-weight: lighter;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.left-container {
+    width: 60%;
+}
+
+.container-content {
+    background-color: #1C3A87;
+    font-size: 0.9rem;
+    padding: 10px 30px 30px 30px;
+    border-radius: 0 50px;
+}
+
+.left-container .container-content {
+    padding-right: 60px;
+}
+
+.right-container .container-content {
+    padding-top: 20px;
+}
+
+.left-container .scroll-container {
+    margin: 15px;
+}
+
+.scroll-container {
+    overflow: auto;
+    width: 105%;
+    height: 100%;
+}
