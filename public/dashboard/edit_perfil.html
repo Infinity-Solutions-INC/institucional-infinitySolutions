@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Editar Perfil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dash.css">
+    <link rel="stylesheet" href="../css/dash_edit-perfil.css">
+</head>
+
+<body>
+    <div class="screen">
+        <div class="menu">
+            <div class="logo">
+                <img src="../assets/logo.png" alt="logo infinity">
+                <h2 style="font-weight: lighter;">INFINITY <b style="font-weight: normal;">SOLUTIONS</b></h2>
+            </div>
+            <div class="opcoes">
+                <a href="./dashboard.html">PRINCIPAL</a>
+                <a href="./filtrada.html">FILTRADA</a>
+                <a href="./relatorio_ia.html">RELATÓRIOS</a>
+                <a href="./dash_cadastro.html">CADASTRO</a>
+                <span class="help">
+                    <a href="#">CONFIGURAÇÕES</a>
+                    <a href="#">SUPORTE</a>
+                </span>
+                <a onclick="sair()">ENCERRAR SESSÃO</a>
+            </div>
+        </div>
+
+        <main>
+            <section class="upper-bar">
+                <h1 class="title">EDITAR <span>PERFIL</span></h1>
+            </section>
+
+            <div class="page-content">
+                <section class="left-container">
+                    <article class="container-content bxshadow-container">
+                        <p>NOME:</p>
+                        <input type="text" name="username" placeholder="JOAO SILVA OLIVEIRA" id="inpt_username">
+
+                        <p>CPF:</p>
+                        <input type="text" name="cpf" placeholder="XXX.XXX.XXX-XX" id="inpt_cpf">
+
+                        <p>CARGO:</p>
+                        <input type="text" name="cargo" placeholder="COORDENADOR ACADÊMICO" id="inpt_cargo">
+
+                        <p>EMAIL:</p>
+                        <input type="email" name="email" placeholder="joao.silva@email.com" id="inpt_email">
+
+                        <p>TELEFONE:</p>
+                        <input type="tel" name="telefone" placeholder="(11) 94002-8922" id="inpt_fone">
+
+                        <div id="btn-area">
+                            <input type="button" value="SALVAR" class="save-btn button blue-border">
+                            <input type="button" value="DESFAZER" id="btn-undo" class="button grey-border">
+                        </div>
+
+                    </article>
+                </section>
+
+                <div class="right-container">
+                    <article class="container-content bxshadow-container">
+                        <h2 class="container-title">FOTO DE PERFIL</h2>
+
+                        <i class="fa-regular fa-circle-user"></i>
+
+                        <div>
+                            <input type="button" value="ATUALIZAR" class="update-btn button blue-border">
+                            <input type="button" value="EXCLUIR" id="btn-delete" class="button grey-border">
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</body>
+
+</html>

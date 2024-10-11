@@ -150,7 +150,6 @@ body {
 .title {
     font-weight: 300;
     font-size: 25px;
-    /* margin-right: 400px; */
 }
 
 .title span {
@@ -159,6 +158,11 @@ body {
 
 .upper-bar .username {
     font-size: 12px;
+}
+
+main {
+    margin-top: 20px;
+    width: 100%;
 }
 
 .page-content .container-content{
@@ -179,11 +183,7 @@ body {
     background-color: #1C3A87;
     font-size: 0.9rem;
     padding: 10px 30px 30px 30px;
-    border-radius: 0 50px;
-}
-
-.left-container .container-content {
-    padding-right: 60px;
+    border-radius: 0 30px;
 }
 
 .right-container .container-content {
@@ -198,4 +198,8 @@ body {
     overflow: auto;
     width: 105%;
     height: 100%;
+}
+
+.bxshadow-container {
+    box-shadow: 5px 5px 10px 4px #0c123e;
 }
