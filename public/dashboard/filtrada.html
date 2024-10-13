@@ -1,39 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/dash.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/dash.css" />
     <script src="../js/sessao.js"></script>
     <title>Dashboard Filtrada</title>
-</head>
-<body>
-    <section className="filtrada">
-        <div class="menu">
-            <div class="logo">
-                <img src="../assets/logo.png" alt="logo infinity" >
-                <h2 style="font-weight: lighter;">INFINITY <b style="font-weight: normal;">SOLUTIONS</b></h2>
-            </div>
-            <div class="opcoes">
-                <a href="./dashboard.html">PRINCIPAL</a>
-                <a href="#">FILTRADA</a>
-                <a href="#">RELATÓRIOS</a>
-                <a href="#">CADASTRO</a>
-                <a href="#">CONFIGURAÇÕES</a>
-                <a href="#">SUPORTE</a>
-                <a onclick="sair()">ENCERRAR SESSÃO</a>
-            </div>
+  </head>
+  <body>
+    <section class="filtrada">
+      <div class="menu">
+        <div class="logo">
+          <img src="../assets/logo.png" alt="logo infinity" />
+          <h2 style="font-weight: lighter">
+            INFINITY <b style="font-weight: normal">SOLUTIONS</b>
+          </h2>
         </div>
+        <div class="opcoes">
+          <a href="./dashboard.html">PRINCIPAL</a>
+          <a href="./filtrada.html">FILTRADA</a>
+          <a href="#">RELATÓRIOS</a>
+          <a href="#">CADASTRO</a>
+          <span class="help">
+            <a href="#">CONFIGURAÇÕES</a>
+            <a href="#">SUPORTE</a>
+          </span>
+          <a onclick="sair()">ENCERRAR SESSÃO</a>
+        </div>
+      </div>
+      <div class="content">
+        <div class="navdash">
+          <span class="titulo"> DASHBOARD <b>FILTRADA</b> </span>
+          <div class="navdash-menu">
+            <img src="../assets/tomas.png" alt="" class="img-navbar-menu" />
+            <span>Tomás Galleno</span>
+            <button class="btn-navbar-menu">
+              <img src="../assets/downArrow.png" alt="" />
+            </button>
+          </div>
+        </div>
+        <div class="container-ft">
+          <div class="superior-filtrada">
+            <div class="kpis-ft">
+              <h2>KPIs</h2>
+              <div class="box-kpi-ft" style="margin-top: -5px">
+                lorem
+              </div>
+            </div>
+            <div class="descricao">
+              <p>
+                Atualmente, você tem 1.600 alunos matriculados no curso de medicina, totalizando 13 turmas, sendo 4 matutinos, 1 vespertino e 8 noturnos, onde 8 são na modalidade online (EAD) e 5 na modalidade presencial. Analise os dados de evasão desse curso com os gráficos abaixo!
+              </p>
+            </div>
+          </div>
+          <div class="inferior-filtrada">
+            <div class="box-inf">
+                <h2>MODALIDADE</h2>
+                <div class="grafico-ft">
+
+                </div>
+            </div>
+            <div class="box-inf" id="mensalidade">
+                <h2>MENSALIDADE</h2>
+                <div class="grafico-ft">
+    
+                </div>
+                
+            </div>
+            <div class="box-inf">
+                <h2>TURNO</h2>
+                <div class="grafico-ft">
+    
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
-</body>
+  </body>
 </html>
 
-
 <script>
-
-    function sair() {
-        limparSessao();
-    }
-
+  function sair() {
+    limparSessao();
+  }
 </script>
