@@ -1,55 +1,290 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/dash.css">
-    <script src="../js/sessao.js"></script> 
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/dash.css" />
+    <script src="../js/sessao.js"></script>
     <title>Dashboard Principal</title>
-</head>
-<body>
-    <div class="tudao">
-        <section className="dashboard">
-            <div class="menu">
-                <div class="logo">
-                    <img src="../assets/logo.png" alt="logo infinity" >
-                    <h2 style="font-weight: lighter;">INFINITY <b style="font-weight: normal;">SOLUTIONS</b></h2>
-                </div>
-                <div class="opcoes">
-                    <a href="./dashboard.html">PRINCIPAL</a>
-                    <a href="./filtrada.html">FILTRADA</a>
-                    <a href="#">RELATÓRIOS</a>
-                    <a href="#">CADASTRO</a>
-                    <span class="help">
-                        <a href="#">CONFIGURAÇÕES</a>
-                        <a href="#">SUPORTE</a>
-                    </span>
-                    <a onclick="sair()">ENCERRAR SESSÃO</a>
-                </div>
-            </div>
-        </section>
-    
-        <div class="container">
-            <div class="navdash">
-                <span class="titulo">
-                    nome <b>tela</b>
-                </span>
-                <div class="navdash-menu">
-                    <img src="../assets/tomas.png" alt="" class="img-navbar-menu">
-                    <span>Tomás Galleno</span>
-                    <button class="btn-navbar-menu"><img src="../assets/downArrow.png" alt=""></button>
-                </div>
-            </div>
+  </head>
+  <body>
+    <section class="dashboard">
+      <div class="menu">
+        <div class="logo">
+          <img src="../assets/logo.png" alt="logo infinity" />
+          <h2 style="font-weight: lighter">
+            INFINITY <b style="font-weight: normal">SOLUTIONS</b>
+          </h2>
         </div>
-    </div>
-</body>
+        <div class="opcoes">
+          <a href="./dashboard.html">PRINCIPAL</a>
+          <a href="./filtrada.html">FILTRADA</a>
+          <a href="#">RELATÓRIOS</a>
+          <a href="#">CADASTRO</a>
+          <span class="help">
+            <a href="#">CONFIGURAÇÕES</a>
+            <a href="#">SUPORTE</a>
+          </span>
+          <a onclick="sair()">ENCERRAR SESSÃO</a>
+        </div>
+      </div>
+      <div class="content">
+        <div class="navdash">
+          <span class="titulo"> DASHBOARD <b>PRINCIPAL</b> </span>
+          <div class="navdash-menu">
+            <img src="../assets/tomas.png" alt="" class="img-navbar-menu" />
+            <span>Tomás Galleno</span>
+            <button class="btn-navbar-menu">
+              <img src="../assets/downArrow.png" alt="" />
+            </button>
+          </div>
+        </div>
+        <div class="container">
+          <div class="kpis">
+            <h2>KPIs</h2>
+            <div class="box-kpi" style="margin-top: -15px">
+              <span class="titulo-kpi"> CURSO COM MAIOR EVASÃO </span>
+              <span class="dado-kpi"> MEDICINA </span>
+              <span class="legenda-kpi"> 90% DOS ALUNOS TOTAIS </span>
+            </div>
+            <div class="box-kpi">
+              <span class="titulo-kpi"> TURNO DO CURSO </span>
+              <span class="dado-kpi"> NOTURNO </span>
+              <span class="legenda-kpi">
+                80% DAS MATRICULAS SÃO NESSE TURNO
+              </span>
+            </div>
+            <div class="box-kpi">
+              <span class="titulo-kpi"> MODALIDADE DO CURSO </span>
+              <span class="dado-kpi"> ONLINE </span>
+              <span class="legenda-kpi">
+                60% DAS MATRICULAS SÃO NESSE TURNO
+              </span>
+            </div>
+          </div>
+          <div class="ranking">
+            <h2>MAIOR EVASÃO</h2>
+            <div class="tabela-ev" style="margin-top: -5px">
+              <div class="dados-curso">
+                <span class="tb-curso">
+                  <b>CURSO</b>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                </span>
+                <span class="tb-alunos">
+                  <b>ALUNOS</b>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                      1200
+                      <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                      >
+                    </p>
+                    <p>
+                        1200
+                        <span class="indicador" style="color: green"
+                        >&#9660;
+                        <!--  PRA BAIXO -->
+                    </span>
+                </p>
+                <p>
+                  1200
+                  <span class="indicador" style="color: red"
+                    >&#9650;
+                    <!--  PRA CIMA -->
+                  </span>
+                </p>
+                  
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
 </html>
 
 <script>
-
-    function sair() {
-        limparSessao();
-    }
-
+  function sair() {
+    limparSessao();
+  }
 </script>
