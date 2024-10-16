@@ -1,324 +1,205 @@
 body {
-    background-color: #141E65;
-}
-
-.dashboard {
-    display: flex;
+  background-color: #141e65;
 }
 
 .menu {
-    background: #0c123e;
-    width: 34vh;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  background: #0c123e;
+  width: 34vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    height: 26%;
-    font-size: 14px;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 26%;
+  font-size: 14px;
+  gap: 15px;
 }
 
-
 .logo img {
-    width: 80px;
+  width: 80px;
 }
 
 .opcoes {
-    /* background-color: blueviolet; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 14px;
-    gap: 2px;
+  /* background-color: blueviolet; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  gap: 2px;
 }
 
 .opcoes a {
-    color: white;
-    text-decoration: none;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+  color: white;
+  text-decoration: none;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .help {
-    margin: 55px;
+  margin: 55px;
 }
 
 .opcoes a:hover {
-    transition: all 0.3s;
-    text-decoration: underline aqua 2px;
-    font-weight: bold;
+  transition: all 0.3s;
+  text-decoration: underline aqua 2px;
+  font-weight: bold;
 }
 
 .container {
-    width: 90vw;
-    height: 90vh;
-    display: flex;
-    flex-direction: row;
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: row;
 }
 
 .navdash {
-    width: 100%;
-    height: 10%;
-    align-items: center;
-    /* position: absolute; */
-    display: flex;
-    flex-direction: row;
+  width: 100%;
+  height: 10%;
+  align-items: center;
+  /* position: absolute; */
+  display: flex;
+  flex-direction: row;
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .titulo {
-    font-size: 150%;
-    font-weight: 100;
-    margin-left: 5%;
-    margin-right: 35%;
+  font-size: 150%;
+  font-weight: 100;
+  margin-left: 5%;
+  margin-right: 35%;
 }
 
 .img-navbar-menu {
-    width: 15%;
-    border-radius: 50%;
-    border: 3px solid aqua;
+  width: 15%;
+  border-radius: 50%;
+  border: 3px solid aqua;
 }
 
 .titulo b {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .navdash-menu {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 20%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 20%;
 }
 
 .btn-navbar-menu {
-    width: 16%;
-    height: 50%;
-    border: none;
-    color: #fff;
-    background-color: transparent;
+  width: 16%;
+  height: 50%;
+  border: none;
+  color: #fff;
+  background-color: transparent;
 }
 
 .btn-navbar-menu img {
-    width: 100%;
+  width: 100%;
 }
 
 .screen {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .upper-bar {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 550px;
-    margin-bottom: 30px;
-    padding-left: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 550px;
+  margin-bottom: 30px;
+  padding-left: 30px;
 }
 
 .upper-profile-infos {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
 .fa-circle-user {
-    font-size: 25px;
+  font-size: 25px;
 }
 
 .page-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .title {
-    font-weight: 300;
-    font-size: 25px;
+  font-weight: 300;
+  font-size: 25px;
 }
 
 .title span {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .upper-bar .username {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 main {
-    margin-top: 20px;
-    width: 100%;
+  margin-top: 20px;
+  width: 100%;
 }
 
-.page-content .container-content{
-    height: 70vh;
+.page-content .container-content {
+  height: 70vh;
 }
 
 .container-title {
-    font-weight: lighter;
-    font-size: 20px;
-    margin-bottom: 10px;
+  font-weight: lighter;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .left-container {
-    width: 60%;
+  width: 60%;
 }
 
 .container-content {
-    background-color: #1C3A87;
-    font-size: 0.9rem;
-    padding: 10px 30px 30px 30px;
-    border-radius: 0 30px;
+  background-color: #1c3a87;
+  font-size: 0.9rem;
+  padding: 10px 30px 30px 30px;
+  border-radius: 0 30px;
 }
 
 .right-container .container-content {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 .left-container .scroll-container {
-    margin: 15px;
+  margin: 15px;
 }
 
 .scroll-container {
-    overflow: auto;
-    width: 105%;
-    height: 100%;
+  overflow: auto;
+  width: 105%;
+  height: 100%;
 }
 
 .bxshadow-container {
-    box-shadow: 5px 5px 10px 4px #0c123e;
-}
-
-.kpis {
-    width: 18%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-left: 2.5%;
-}
-
-.kpis h2 {
-    font-weight: lighter;
-    width: 95%;
-    display: flex;
-    align-items: end;
-    height: 8%;
-    margin: 2.5%;
-}
-
-.kpis .box-kpi {
-    display: flex;
-    flex-direction: column;
-    margin: 2.5%;
-}
-
-
-.box-kpi {
-    width: 95%;
-    height: 27%;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    background-color: #1C3A87;
-    border-radius: 3px 30px 3px 30px;
-    box-shadow: 1px 3px 4px 2px #0C123E;
-}
-
-.titulo-kpi {
-    font-size: 15px;
-}
-
-.dado-kpi {
-    font-size: 40px;
-    text-shadow: 0 0 4px #fff;
-    font-weight: bold;
-}
-
-.legenda-kpi {
-    font-size: 15px;
-    text-shadow: 0 0 15px #fff;
-}
-
-.ranking {
-    width: 20%;
-    height: 98%;
-    display: flex;
-    flex-direction: column;
-    margin-left: 1%;
-}
-
-.ranking h2 {
-    font-weight: lighter;
-    width: 95%;
-    display: flex;
-    align-items: end;
-    height: 8%;
-    margin: 2.5%;
-}
-
-.ranking b {
-    font-size: 20px;
-    color: #00B5E3;
-    text-shadow: 0 0 12px #00B5E3;
-}
-
-.dados-curso {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 7%;
-}
-
-.dados-curso p {
-    font-size: 16px;
-    padding-top: 25px;
-}
-.divisa {
-    text-decoration: underline;
-    color: #00B5E3;
-    width: 100px;
-}
-
-.tabela-ev {
-    background-color: #1C3A87;
-    border-radius: 3px 30px 3px 30px;
-    box-shadow: 1px 3px 4px 2px #0C123E;
-    width: 95%;
-    height: 90%;
-    margin: 2.5%;
-    overflow-y: auto;
-    overflow-x: hidden; 
-}
-
-.tb-alunos {
-    text-align: end;
-}
-
-.tb-alunos p {
-    padding-top: 16px;
-}
-
-.indicador {
-    font-size: 22px;
+  box-shadow: 5px 5px 10px 4px #0c123e;
 }
