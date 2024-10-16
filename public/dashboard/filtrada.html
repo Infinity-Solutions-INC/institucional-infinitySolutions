@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/dash.css" />
+    <link rel="stylesheet" href="../css/dash_prin-filt.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/sessao.js"></script>
+
     <title>Dashboard Filtrada</title>
   </head>
   <body>
@@ -45,34 +48,67 @@
             <div class="kpis-ft">
               <h2>KPIs</h2>
               <div class="box-kpi-ft" style="margin-top: -5px">
-                lorem
+                <div class="kpi-sup">
+                  <span class="left">
+                    <p>Turno Do Curso</p>
+                    <h3>NOTURNO</h3>
+                  </span>
+                  <span class="right">
+                    <p>8 TURMAS</p>
+                    <h3>90%</h3>
+                  </span>
+                </div>
+                <div class="kpi-inf">
+                  <span class="left">
+                    <p>Modalidade Do Curso</p>
+                    <h3>ONLINE (EAD)</h3>
+                  </span>
+                  <span class="right">
+                    <p>5 TURMAS</p>
+                    <h3>80%</h3>
+                  </span>
+                </div>
               </div>
             </div>
             <div class="descricao">
               <p>
-                Atualmente, você tem 1.600 alunos matriculados no curso de medicina, totalizando 13 turmas, sendo 4 matutinos, 1 vespertino e 8 noturnos, onde 8 são na modalidade online (EAD) e 5 na modalidade presencial. Analise os dados de evasão desse curso com os gráficos abaixo!
+                Atualmente, você tem <b>1.600 alunos</b> matriculados no curso
+                de <b>medicina</b>, totalizando <b>13 turmas</b>, sendo
+                <b>4 matutinos</b>, <b>1 vespertino</b> e <b>8 noturnos</b>,
+                onde <b>8 são na modalidade online (EAD)</b> e
+                <b>5 na modalidade presencial</b>. Analise os dados de evasão
+                desse curso com os gráficos abaixo!
               </p>
             </div>
           </div>
           <div class="inferior-filtrada">
             <div class="box-inf">
-                <h2>MODALIDADE</h2>
-                <div class="grafico-ft">
-
-                </div>
+              <h2>MODALIDADE</h2>
+              <div class="grafico-ft">
+                <span class="chartInside">
+                  <canvas
+                    width="100"
+                    height="100"
+                    id="graficoModalidade"
+                  ></canvas>
+                </span>
+              </div>
             </div>
             <div class="box-inf" id="mensalidade">
-                <h2>MENSALIDADE</h2>
-                <div class="grafico-ft">
-    
-                </div>
-                
+              <h2>MENSALIDADE</h2>
+              <div class="grafico-ft">
+                <span class="chartInside">
+                  <canvas id="graficoMensalidade"></canvas>
+                </span>
+              </div>
             </div>
             <div class="box-inf">
-                <h2>TURNO</h2>
-                <div class="grafico-ft">
-    
-                </div>
+              <h2>TURNO</h2>
+              <div class="grafico-ft">
+                <span class="chartInside">
+                  <canvas id="graficoTurno"></canvas>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -85,4 +121,110 @@
   function sair() {
     limparSessao();
   }
+
+  // Gráfico de Barras (Modalidade)
+  const ctxModalidade = document
+    .getElementById("graficoModalidade")
+    .getContext("2d");
+  const graficoModalidade = new Chart(ctxModalidade, {
+    type: "bar",
+    data: {
+      labels: ["Online", "Presencial"],
+      datasets: [
+        {
+          label: "Alunos",
+          data: [60, 40],
+          backgroundColor: ["#270091", "#3F00EC"],
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          ticks: {
+            display: false,
+          },
+          grid: {
+            display: false,
+          },
+        },
+        x: {
+          ticks: {
+            color: "#ffffff",
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    },
+  });
+
+  // Gráfico Donut (Turno)
+  const ctxTurno = document.getElementById("graficoTurno").getContext("2d");
+  const graficoTurno = new Chart(ctxTurno, {
+    type: "doughnut",
+    data: {
+      labels: ["Matutino", "Vespertino", "Noturno"],
+      datasets: [
+        {
+          data: [20, 30, 50],
+          backgroundColor: ["#270091", "#3F00EC", "#020272"],
+          borderWidth: 0,
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        legend: {
+          labels: {
+            color: "#ffffff",
+          },
+        },
+      },
+    },
+  });
+
+  // Gráfico de Linha (Mensalidade)
+const ctxMensalidade = document
+  .getElementById("graficoMensalidade")
+  .getContext("2d");
+const graficoMensalidade = new Chart(ctxMensalidade, {
+  type: "line",
+  data: {
+    labels: ["Vespertino", "Matutino", "Noturno"], 
+    datasets: [
+      {
+        label: "Valor Mensalidade (R$)",
+        data: [1200, 1500, 1100],
+        borderColor: "#020272",
+        backgroundColor: "rgba(2, 2, 114, 0.5)", 
+        fill: false,
+      },
+    ],
+  },
+  options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          display: false,
+        },
+        x: {
+          ticks: {
+            color: "#ffffff",
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff",
+          },
+        },
+      },
+    },
+});
+
 </script>
