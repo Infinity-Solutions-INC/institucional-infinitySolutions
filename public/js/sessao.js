@@ -10,6 +10,10 @@ function validarSessao() {
     }
 }
 
+function exibirDadosLogin(){
+    nome_user_menu.innerHTML = sessionStorage.NOME_FUNCIONARIO;
+}
+
 function limparSessao() {
     sessionStorage.clear();
     window.location = "../index.html";
