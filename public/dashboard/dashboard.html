@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/dash.css">
-    <script src="../js/sessao.js"></script> 
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/dash.css" />
+    <link rel="stylesheet" href="../css/dash_prin-filt.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/sessao.js"></script>
     <title>Dashboard Principal</title>
+
 </head>
 <body>
     <div class="tudao">
@@ -30,26 +33,445 @@
             </div>
         </section>
     
-        <div class="container">
-            <div class="navdash">
-                <span class="titulo">
-                    nome <b>tela</b>
-                </span>
-                <div class="navdash-menu">
-                    <img src="../assets/tomas.png" alt="" class="img-navbar-menu">
-                    <span>Tomás Galleno</span>
-                    <button class="btn-navbar-menu"><img src="../assets/downArrow.png" alt=""></button>
-                </div>
-            </div>
+
+  </head>
+  <body>
+    <section class="dashboard">
+      <div class="menu">
+        <div class="logo">
+          <img src="../assets/logo.png" alt="logo infinity" />
+          <h2 style="font-weight: lighter">
+            INFINITY <b style="font-weight: normal">SOLUTIONS</b>
+          </h2>
         </div>
-    </div>
-</body>
+        <div class="opcoes">
+          <a href="./dashboard.html">PRINCIPAL</a>
+          <a href="./filtrada.html">FILTRADA</a>
+          <a href="#">RELATÓRIOS</a>
+          <a href="#">CADASTRO</a>
+          <span class="help">
+            <a href="#">CONFIGURAÇÕES</a>
+            <a href="#">SUPORTE</a>
+          </span>
+          <a onclick="sair()">ENCERRAR SESSÃO</a>
+        </div>
+      </div>
+      <div class="content">
+        <div class="navdash">
+          <span class="titulo"> DASHBOARD <b>PRINCIPAL</b> </span>
+          <div class="navdash-menu">
+            <img src="../assets/tomas.png" alt="" class="img-navbar-menu" />
+            <span>Tomás Galleno</span>
+            <button class="btn-navbar-menu">
+              <img src="../assets/downArrow.png" alt="" />
+            </button>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="kpis">
+            <h2>KPIs</h2>
+            <div class="box-kpi" style="margin-top: -15px">
+              <span class="titulo-kpi"> CURSO COM MAIOR EVASÃO </span>
+              <span class="dado-kpi"> MEDICINA </span>
+              <span class="legenda-kpi"> 90% DOS ALUNOS TOTAIS </span>
+            </div>
+            <div class="box-kpi">
+              <span class="titulo-kpi"> TURNO DO CURSO </span>
+              <span class="dado-kpi"> NOTURNO </span>
+              <span class="legenda-kpi">
+                80% DAS MATRICULAS SÃO NESSE TURNO
+              </span>
+            </div>
+            <div class="box-kpi">
+              <span class="titulo-kpi"> MODALIDADE DO CURSO </span>
+              <span class="dado-kpi"> ONLINE </span>
+              <span class="legenda-kpi">
+                60% DAS MATRICULAS SÃO NESSE TURNO
+              </span>
+            </div>
+          </div>
+          <div class="ranking">
+            <h2>MAIOR EVASÃO</h2>
+            <div class="tabela-ev" style="margin-top: -5px">
+              <div class="dados-curso">
+                <span class="tb-curso">
+                  <b>CURSO</b>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                  <p>MEDICINA</p>
+                </span>
+                <span class="tb-alunos">
+                  <b>ALUNOS</b>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: grey"
+                      >&#9664;
+                      <!--  PRA ESQUERDA --></span
+                    >
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: green"
+                      >&#9660;
+                      <!--  PRA BAIXO -->
+                    </span>
+                  </p>
+                  <p>
+                    1200
+                    <span class="indicador" style="color: red"
+                      >&#9650;
+                      <!--  PRA CIMA -->
+                    </span>
+                  </p>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="graficos">
+            <div class="superior">
+              <h2>MODALIDADE</h2>
+              <div class="grafico">
+                <span class="chartInside">
+                  <canvas
+                    width="100"
+                    height="100"
+                    id="graficoModalidade"
+                  ></canvas>
+                </span>
+              </div>
+            </div>
+            <div class="superior">
+              <h2>TURNO</h2>
+              <div class="grafico">
+                <span class="chartInside">
+                  <canvas id="graficoTurno"></canvas>
+                </span>
+              </div>
+            </div>
+            <div class="inferior">
+              <h2>MOTIVOS</h2>
+              <div class="grafico">
+                <span class="chartInside">
+                  <canvas id="graficoMotivos"></canvas>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
 </html>
 
 <script>
+  function sair() {
+    limparSessao();
+  }
 
-    function sair() {
-        limparSessao();
-    }
+  // Gráfico de Barras (Modalidade)
+  const ctxModalidade = document
+    .getElementById("graficoModalidade")
+    .getContext("2d");
+  const graficoModalidade = new Chart(ctxModalidade, {
+    type: "bar",
+    data: {
+      labels: ["Online", "Presencial"],
+      datasets: [
+        {
+          label: "Alunos",
+          data: [60, 40],
+          backgroundColor: ["#270091", "#3F00EC"],
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          ticks: {
+            display: false,
+          },
+          grid: {
+            display: false,
+          },
+        },
+        x: {
+          ticks: {
+            color: "#ffffff",
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    },
+  });
 
+  // Gráfico Donut (Turno)
+  const ctxTurno = document.getElementById("graficoTurno").getContext("2d");
+  const graficoTurno = new Chart(ctxTurno, {
+    type: "doughnut",
+    data: {
+      labels: ["Matutino", "Vespertino", "Noturno"],
+      datasets: [
+        {
+          data: [20, 30, 50],
+          backgroundColor: ["#270091", "#3F00EC", "#020272"],
+          borderWidth: 0,
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        legend: {
+          labels: {
+            color: "#ffffff",
+          },
+        },
+      },
+    },
+  });
+
+  // Gráfico de Linha (Motivos)
+  const ctxMotivos = document.getElementById("graficoMotivos").getContext("2d");
+  const graficoMotivos = new Chart(ctxMotivos, {
+    type: "line",
+    data: {
+      labels: ["Mês 1", "Mês 2", "Mês 3", "Mês 4", "Mês 5", "Mês 6"],
+      datasets: [
+        {
+          label: "Financeiro",
+          data: [12, 19, 3, 5, 2, 3],
+          borderColor: "#020272",
+          backgroundColor: "#020272",
+          fill: false,
+        },
+        {
+          label: "Desmotivação",
+          data: [2, 3, 20, 5, 1, 4],
+          borderColor: "#270091",
+          backgroundColor: "#270091",
+          fill: false,
+        },
+        {
+          label: "Dificuldade",
+          data: [3, 2, 5, 15, 6, 7],
+          borderColor: "#3F00EC",
+          backgroundColor: "#3F00EC",
+          fill: false,
+        },
+        {
+          label: "Falta de Suporte",
+          data: [5, 10, 4, 2, 8, 9],
+          borderColor: "#06063B",
+          backgroundColor: "#06063B",
+          fill: false,
+        },
+        {
+          label: "Problemas Pessoais",
+          data: [9, 8, 7, 6, 5, 4],
+          borderColor: "#000000",
+          backgroundColor: "#000000",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          display: false,
+        },
+        x: {
+          ticks: {
+            color: "#ffffff",
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff",
+          },
+        },
+      },
+    },
+  });
 </script>
