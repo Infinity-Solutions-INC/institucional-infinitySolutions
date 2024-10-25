@@ -54,8 +54,8 @@
                     <span class="titulo-b">INSTITUIÇÃO PARA VALIDAR SEU CADASTRO!</span>
                 </div>
         
-                <input type="text" placeholder="xxx xxx" class="inpt-verify">
-                <button class="btn-verify">VERIFICAR</button>
+                <input type="text" placeholder="xxx xxx" class="inpt-verify" id="cod_acess">
+                <button class="btn-verify" onclick="validarFuncionario()">VERIFICAR</button>
             </div>
         </div>
         
@@ -81,3 +81,55 @@
 
 </body>
 </html>
+<script>
+    function validarFuncionario(){
+        console.log(sessionStorage);
+
+        let cpfVar = sessionStorage.getItem('cpf');
+        let emailVar = sessionStorage.getItem('email');
+        let senhaVar = sessionStorage.getItem('senha');
+        let codigoAcessoVar = cod_acess.value;
+
+        if(cpfVar != '' &&
+            emailVar != '' &&
+            senhaVar != '' &&
+            codigoAcessoVar != ''
+        ){
+            fetch("/usuarios/validarUsuario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                cpfServer: cpfVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                codigoAcessoServer: codigoAcessoVar
+            }),
+            })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Cadastro realizado com sucesso!");
+
+                    sessionStorage.clear();
+
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                    alert("Houve um erro ao tentar realizar o cadastro!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+        }else{
+            alert("Dados inválidos");
+        }
+        
+        return false;
+    }
+</script>
