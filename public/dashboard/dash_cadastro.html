@@ -64,7 +64,7 @@
 
                         <div class="secao">
                             <button class="btn-cad-user" onclick="cadastrar()">CADASTRAR</button>
-                            <button class="btn-cad-user difer">EXCLUIR</button>
+                            <button class="btn-cad-user difer" onclick="excluir()">EXCLUIR</button>
                         </div>
                     </div>
                 </div>
@@ -86,14 +86,54 @@
 </html>
 
 <script>
-    function exibirDadosLogin(){
-        nome_user_menu.innerHTML = sessionStorage.NOME_FUNCIONARIO;
+
+    function excluir(){
+        let codigoVar = codigo_acesso.innerText;
+
+        if(codigoVar != undefined
+        ){
+            fetch("/usuarios/buscarUsuariosCodigo", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            codigoFuncionarioServer: codigoVar
+        })
+    })
+    .then(function (resposta) {
+        console.log("ESTOU NO THEN DO excluir()!");
+        if (resposta.ok) {
+            alert("Usuário Deletado com Sucesso!");
+            listarFuncionarios(sessionStorage.FKCODIGO_UNIDADE);
+            nome_funcionario.value = '';
+            cpf_funcionario.value = '';
+            cargo_funcionario.value = '';
+            codigo_acesso.innerHTML = '';
+        } else {
+            console.log("Houve um erro ao tentar excluir funcionario!");
+            alert("Houve um erro ao tentar excluir funcionario!");
+            throw new Error("Erro na resposta do servidor");
+        }
+    })
+    .catch(function (erro) {
+        console.log(erro);
+    });
+
+    
     }
+    return false;
+}
+    
     function editarFuncionario(nome, cargo, codigo, cpf){
-        alert("oi!");
+        nome_funcionario.value = nome;
+        cpf_funcionario.value = cpf;
+        cargo_funcionario.value = cargo;
+        codigo_acesso.innerHTML = codigo;
     }
 
     function listarFuncionarios(codigoUnidade){
+        document.getElementById("lista_users").innerHTML = '';
         fetch("/usuarios/buscarUsuariosUnidade", {
         method: "POST",
         headers: {
@@ -129,12 +169,12 @@
                             </div>
                             <span class="cargo-user">${item.cargo_funcionario}</span>
                             <hr>`;
-                    }else{
+                    }else if(item.status_funcionario == "ativo" || item.status_funcionario == "aguardando verificação"){
 
                         document.getElementById("lista_users").innerHTML += `
                             <div class="divisor">
                                 <span class="nome-user">${item.nome_funcionario}</span>
-                                <ion-icon name="create-outline" onclick="editarFuncionario(${item.nome_funcionario}, ${item.cargo_funcionario}, ${item.codigo_funcionario}, ${item.cpf_funcionario})"></ion-icon>
+                                <ion-icon name="create-outline" onclick="editarFuncionario('${item.nome_funcionario}', '${item.cargo_funcionario}', '${item.codigo_funcionario}', '${item.cpf_funcionario}')"></ion-icon>
                             </div>
                             <span class="cargo-user">${item.cargo_funcionario}</span>
                             <hr>`;

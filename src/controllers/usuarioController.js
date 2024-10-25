@@ -63,6 +63,36 @@ function autenticar(req, res) {
         });
     }
 
+    function buscarUsuariosCodigo(req, res){
+        var codigoFuncionario = req.body.codigoFuncionarioServer;
+  
+        usuarioModel.buscarUsuariosCodigo(codigoFuncionario).then((resultado) => {
+          if (resultado.length > 0) {
+            usuarioModel.excluirUsuario(codigoFuncionario)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+          } else {
+            res.status(204).json([]);
+          }
+        }).catch(function (erro) {
+          console.log(erro);
+          console.log("Houve um erro ao buscar os aquarios: ", erro.sqlMessage);
+          res.status(500).json(erro.sqlMessage);
+        });
+    }
+
 function validarUsuario(req, res) {
     var cpf = req.body.cpfServer;
     var email = req.body.emailServer;
@@ -163,5 +193,6 @@ module.exports = {
     autenticar,
     cadastrar,
     validarUsuario,
-    buscarUsuariosUnidade
+    buscarUsuariosUnidade,
+    buscarUsuariosCodigo
 }

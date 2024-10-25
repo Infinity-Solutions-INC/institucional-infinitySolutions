@@ -16,6 +16,10 @@ router.post("/buscarUsuariosUnidade", function (req, res) {
     usuarioController.buscarUsuariosUnidade(req, res);
 })
 
+router.post("/buscarUsuariosCodigo", function (req, res) {
+    usuarioController.buscarUsuariosCodigo(req, res);
+})
+
 router.post("/autenticar", function (req, res) {
     usuarioController.autenticar(req, res);
 });

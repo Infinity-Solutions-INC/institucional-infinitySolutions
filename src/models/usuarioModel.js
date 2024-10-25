@@ -60,10 +60,39 @@ function buscarUsuariosUnidade(codigoUnidade){
     return database.executar(instrucaoSql);
 }
 
+function buscarUsuariosCodigo(codigoFuncionario){
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", codigoFuncionario);
+    
+    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
+    //  e na ordem de inserção dos dados.
+    var instrucaoSql = `
+        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_unidade FROM funcionario WHERE codigo_funcionario = '${codigoFuncionario}';
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function excluirUsuario(codigoFuncionario){
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function excluir():", codigoFuncionario);
+    
+    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
+    //  e na ordem de inserção dos dados.
+    var instrucaoSql = `
+        UPDATE funcionario
+        SET  status_funcionario = 'bloqueado'
+        WHERE codigo_funcionario = '${codigoFuncionario}';`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     autenticar,
     cadastrar,
     buscarUsuario,
     atualizarCadastro,
-    buscarUsuariosUnidade
+    buscarUsuariosUnidade,
+    buscarUsuariosCodigo,
+    excluirUsuario
 };
