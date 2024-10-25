@@ -9,7 +9,7 @@
     <script src="../js/sessao.js"></script> 
     <title>Dashboard Cadastros</title>
 </head>
-<body>
+<body onload="listarFuncionarios(sessionStorage.FKCODIGO_UNIDADE), exibirDadosLogin()">
     <div class="tudao">
         <section className="dashboard">
             <div class="menu">
@@ -38,7 +38,7 @@
                 </span>
                 <div class="navdash-menu">
                     <img src="../assets/tomas.png" alt="" class="img-navbar-menu">
-                    <span>Tomás Galleno</span>
+                    <span id="nome_user_menu"></span>
                     <button class="btn-navbar-menu"><img src="../assets/downArrow.png" alt=""></button>
                 </div>
             </div>
@@ -49,21 +49,21 @@
                     <div class=" bloco form-cad-users">
 
                         <span class="label-cad-user">NOME:</span>
-                        <input type="text" name="" id="" class="inpt-cad-user">
+                        <input type="text" name="" id="nome_funcionario" class="inpt-cad-user">
 
                         <span class="label-cad-user">CPF:</span>
-                        <input type="text" name="" id="" class="inpt-cad-user">
+                        <input type="text" name="" id="cpf_funcionario" class="inpt-cad-user">
 
                         <span class="label-cad-user">CARGO:</span>
-                        <input type="text" name="" id="" class="inpt-cad-user">
+                        <input type="text" name="" id="cargo_funcionario" class="inpt-cad-user">
 
                         <div class="secao">
                             <span class="label-cad-user">CODIGO ACESSO:</span>
-                            <span class="label-cad-user" id="codigoAcesso"></span>
+                            <span class="label-cad-user" id="codigo_acesso"></span>
                         </div>
 
                         <div class="secao">
-                            <button class="btn-cad-user">CADASTRAR</button>
+                            <button class="btn-cad-user" onclick="cadastrar()">CADASTRAR</button>
                             <button class="btn-cad-user difer">EXCLUIR</button>
                         </div>
                     </div>
@@ -71,27 +71,9 @@
 
                 <div class="divisao lista">
                     <span class="titulo-corpo">CADASTROS REALIZADOS:</span>
-                    <div class="bloco lista-users">
-                        <div class="divisor">
-                            <span class="nome-user">Tomas galleno</span>
-                            <ion-icon name="create-outline" class="bloqueio"></ion-icon>
-                        </div>
-                        <span class="cargo-user">Diretor Academico</span>
-                        <hr>
+                    <div class="bloco lista-users" id="lista_users">
+                      
 
-                        <div class="divisor">
-                            <span class="nome-user">Tomas galleno</span>
-                            <ion-icon name="create-outline"></ion-icon>
-                        </div>
-                        <span class="cargo-user">Diretor Academico</span>
-                        <hr>
-
-                        <div class="divisor">
-                            <span class="nome-user">Tomas galleno</span>
-                            <ion-icon name="create-outline"></ion-icon>
-                        </div>
-                        <span class="cargo-user">Diretor Academico</span>
-                        <hr>
                     </div>
                 </div>
             </div>
@@ -104,9 +86,144 @@
 </html>
 
 <script>
+    function exibirDadosLogin(){
+        nome_user_menu.innerHTML = sessionStorage.NOME_FUNCIONARIO;
+    }
+    function editarFuncionario(nome, cargo, codigo, cpf){
+        alert("oi!");
+    }
+
+    function listarFuncionarios(codigoUnidade){
+        fetch("/usuarios/buscarUsuariosUnidade", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            codigoUnidadeServer: codigoUnidade
+        })
+    })
+    .then(function (resposta) {
+        console.log("ESTOU NO THEN DO entrar()!");
+
+        if (resposta.ok) {
+            return resposta.json(); 
+        } else {
+            console.log("Houve um erro ao tentar listar os funcionarios!");
+            alert("Houve um erro ao tentar listar os funcionarios!");
+            throw new Error("Erro na resposta do servidor");
+        }
+    })
+    .then(function (dados) {
+        console.log(dados);
+
+        dados.forEach(item => {
+
+            if(sessionStorage.STATUS_FUNCIONARIO == "master"){
+                if(item.status_funcionario == "master" ){
+
+                    document.getElementById("lista_users").innerHTML += `
+                            <div class="divisor">
+                                <span class="nome-user">${item.nome_funcionario}</span>
+                                <ion-icon name="create-outline" class="bloqueio"></ion-icon>
+                            </div>
+                            <span class="cargo-user">${item.cargo_funcionario}</span>
+                            <hr>`;
+                    }else{
+
+                        document.getElementById("lista_users").innerHTML += `
+                            <div class="divisor">
+                                <span class="nome-user">${item.nome_funcionario}</span>
+                                <ion-icon name="create-outline" onclick="editarFuncionario(${item.nome_funcionario}, ${item.cargo_funcionario}, ${item.codigo_funcionario}, ${item.cpf_funcionario})"></ion-icon>
+                            </div>
+                            <span class="cargo-user">${item.cargo_funcionario}</span>
+                            <hr>`;
+
+                    }
+            }else{
+                document.getElementById("lista_users").innerHTML += `
+                            <div class="divisor">
+                                <span class="nome-user">${item.nome_funcionario}</span>
+                                <ion-icon name="create-outline" class="bloqueio"></ion-icon>
+                            </div>
+                            <span class="cargo-user">${item.cargo_funcionario}</span>
+                            <hr>`;
+            }
+
+
+        });
+    })
+    .catch(function (erro) {
+        console.log(erro);
+    });
+
+    return false;
+
+    }
 
     function sair() {
         limparSessao();
+    }
+
+    
+
+    function gerarCodigo() {
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let codigo = '';
+        for (let i = 0; i < 6; i++) {
+            const randomIndex = Math.floor(Math.random() * caracteres.length);
+            codigo += caracteres[randomIndex];
+        }
+        return codigo;
+    }
+
+    function cadastrar() {
+
+        let nomeVar = nome_funcionario.value;
+        let cpfVar = cpf_funcionario.value;
+        let cargoVar = cargo_funcionario.value;
+        let codigoAcessoVar = gerarCodigo();
+
+        if(nomeVar != '' &&
+            cargoVar != '' &&
+            cpfVar != '' 
+        ){
+            fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                cpfServer: cpfVar,
+                cargoServer: cargoVar,
+                codigoAcessoServer: codigoAcessoVar
+            }),
+            })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Cadastro realizado com sucesso!");
+
+                    codigo_acesso.innerHTML = codigoAcessoVar;
+
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                    alert("Houve um erro ao tentar realizar o cadastro!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+        }else{
+            alert("Dados inválidos");
+        }
+        
+        return false;
     }
 
 </script>
