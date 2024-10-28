@@ -1,5 +1,5 @@
 body{
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 .corpo-dash{
     width: 100%;
@@ -8,7 +8,10 @@ body{
     align-items: center;
     justify-content: space-evenly;
     flex-direction: row;
-    margin-top: 8%;
+    margin-top: 2%;
+}
+.container{
+    flex-direction: column;
 }
 .divisao{
     height: 100%;
@@ -23,7 +26,7 @@ body{
     width: 30%;
 }
 .bloco{
-    height: 80%;
+    height: 100%;
     width: 90%;
     background-color: #1C3A87;
     border-top-left-radius: 3px;
@@ -86,6 +89,8 @@ body{
     color: #fff;
     box-shadow: 1px 4px 5px #00E5FF;
     border-radius: 5PX;
+    text-align: center;
+    font-size: 120%;
 }
 .nome-user{
     font-weight: 100;

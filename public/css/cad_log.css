@@ -71,6 +71,8 @@ header{
     color: #fff;
     box-shadow: 1px 4px 5px #00E5FF;
     border-radius: 5PX;
+    text-align: center;
+    font-size: 120%;
 }
 .btn-form{
     width: 40%;

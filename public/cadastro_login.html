@@ -91,11 +91,11 @@
                 <input class="inpt-form" type="text" name="" id="email_input">
 
                 <label class="label-form">SENHA:</label>
-                <input class="inpt-form" type="text" name="" id="senha_input">
+                <input class="inpt-form" type="password" name="" id="senha_input">
 
                 
                     <label class="label-form">CONFIRMAR SENHA:</label>
-                    <input class="inpt-form" type="text" name="" id="confirmarSenha_input">
+                    <input class="inpt-form" type="password" name="" id="confirmarSenha_input">
                   
 
                 <BUTTon class="btn-form" onclick="salvarParaValidação()">CADASTRAR</BUTTon>
@@ -124,7 +124,7 @@
                 <input class="inpt-form" type="text" name="" id="log_email_input">
 
                 <label class="label-form">SENHA:</label>
-                <input class="inpt-form" type="text" name="" id="log_senha_input">
+                <input class="inpt-form" type="password" name="" id="log_senha_input">
 
                 <BUtton class="btn-form" onclick="entrar()">ENTRAR</BUtton>
 
@@ -224,8 +224,8 @@
 
     function entrar() {
 
-        let emailVar = log_email_input.value;
-        let senhaVar = log_senha_input.value;
+        let emailVar = (log_email_input.value).trim();
+        let senhaVar = (log_senha_input.value).trim();
    
 
         console.log("FORM LOGIN: ", emailVar);

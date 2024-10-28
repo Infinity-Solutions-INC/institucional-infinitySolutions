@@ -85,10 +85,10 @@
     function validarFuncionario(){
         console.log(sessionStorage);
 
-        let cpfVar = sessionStorage.getItem('cpf');
-        let emailVar = sessionStorage.getItem('email');
-        let senhaVar = sessionStorage.getItem('senha');
-        let codigoAcessoVar = cod_acess.value;
+        let cpfVar = (sessionStorage.getItem('cpf')).trim();
+        let emailVar = (sessionStorage.getItem('email')).trim();
+        let senhaVar = (sessionStorage.getItem('senha')).trim();
+        let codigoAcessoVar = (cod_acess.value).trim();
 
         if(cpfVar != '' &&
             emailVar != '' &&

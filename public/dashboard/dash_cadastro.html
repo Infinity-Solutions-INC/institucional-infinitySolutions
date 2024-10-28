@@ -6,12 +6,13 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/dash.css">
     <link rel="stylesheet" href="../css/dash_cadastro.css">
+    <link rel="stylesheet" href="../css/dash_prin-filt.css" />
     <script src="../js/sessao.js"></script> 
     <title>Dashboard Cadastros</title>
 </head>
 <body onload="listarFuncionarios(sessionStorage.FKCODIGO_UNIDADE), exibirDadosLogin()">
-    <div class="tudao">
-        <section className="dashboard">
+    
+        <section class="dashboard">
             <div class="menu">
                 <div class="logo">
                     <img src="../assets/logo.png" alt="logo infinity" >
@@ -21,7 +22,7 @@
                     <a href="./dashboard.html">PRINCIPAL</a>
                     <a href="./filtrada.html">FILTRADA</a>
                     <a href="#">RELATÓRIOS</a>
-                    <a href="#">CADASTRO</a>
+                    <a href="">CADASTRO</a>
                     <span class="help">
                         <a href="#">CONFIGURAÇÕES</a>
                         <a href="#">SUPORTE</a>
@@ -29,9 +30,8 @@
                     <a onclick="sair()">ENCERRAR SESSÃO</a>
                 </div>
             </div>
-        </section>
-    
-        <div class="container">
+
+            <div class="container">
             <div class="navdash">
                 <span class="titulo">
                     CADASTRAR <b>FUNCIONÁRIOS</b>
@@ -79,7 +79,9 @@
             </div>
 
         </div>
-    </div>
+        </section>
+    
+        
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
@@ -88,7 +90,7 @@
 <script>
 
     function excluir(){
-        let codigoVar = codigo_acesso.innerText;
+        let codigoVar = (codigo_acesso.innerText).trim();
 
         if(codigoVar != undefined
         ){
@@ -219,9 +221,9 @@
 
     function cadastrar() {
 
-        let nomeVar = nome_funcionario.value;
-        let cpfVar = cpf_funcionario.value;
-        let cargoVar = cargo_funcionario.value;
+        let nomeVar = (nome_funcionario.value).trim();
+        let cpfVar = (cpf_funcionario.value).trim();
+        let cargoVar = (cargo_funcionario.value).trim();
         let codigoAcessoVar = gerarCodigo();
 
         if(nomeVar != '' &&
