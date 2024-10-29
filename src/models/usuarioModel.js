@@ -3,7 +3,7 @@ var database = require("../database/config")
 function autenticar(email, senha) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
     var instrucaoSql = `
-        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_unidade FROM funcionario WHERE email_funcionario = '${email}' AND senha_funcionario = '${senha}';
+        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_instituicao FROM funcionario WHERE email_funcionario = '${email}' AND senha_funcionario = '${senha}';
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -12,7 +12,7 @@ function autenticar(email, senha) {
 function buscarUsuario(codigoAcesso, cpf) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", cpf, codigoAcesso)
     var instrucaoSql = `
-        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_unidade FROM funcionario WHERE codigo_funcionario = '${codigoAcesso}' AND cpf_funcionario = '${cpf}';
+        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_instituicao FROM funcionario WHERE codigo_funcionario = '${codigoAcesso}' AND cpf_funcionario = '${cpf}';
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -25,7 +25,7 @@ function cadastrar(nome, cpf, codigoAcesso, cargo) {
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucaoSql = `
-        INSERT INTO funcionario (codigo_funcionario, cpf_funcionario, cargo_funcionario, nome_funcionario, status_funcionario, fkcodigo_unidade) VALUES ('${codigoAcesso}', '${cpf}', '${cargo}', '${nome}', 'aguardando verificação', 1000);
+        INSERT INTO funcionario (codigo_funcionario, cpf_funcionario, cargo_funcionario, nome_funcionario, status_funcionario, fkcodigo_instituicao) VALUES ('${codigoAcesso}', '${cpf}', '${cargo}', '${nome}', 'aguardando verificação', 100);
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -47,13 +47,13 @@ function atualizarCadastro(codigoAcesso, email, senha) {
     return database.executar(instrucaoSql);
 }
 
-function buscarUsuariosUnidade(codigoUnidade){
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", codigoUnidade);
+function buscarUsuariosUnidade(codigoInstituicao){
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", codigoInstituicao);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucaoSql = `
-        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_unidade FROM funcionario WHERE fkcodigo_unidade = ${codigoUnidade} ORDER BY codigo_funcionario DESC;
+        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_instituicao FROM funcionario WHERE fkcodigo_instituicao = ${codigoInstituicao} ORDER BY codigo_funcionario DESC;
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -66,7 +66,7 @@ function buscarUsuariosCodigo(codigoFuncionario){
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucaoSql = `
-        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_unidade FROM funcionario WHERE codigo_funcionario = '${codigoFuncionario}';
+        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_instituicao FROM funcionario WHERE codigo_funcionario = '${codigoFuncionario}';
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);

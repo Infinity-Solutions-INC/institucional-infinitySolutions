@@ -10,7 +10,7 @@
     <script src="../js/sessao.js"></script> 
     <title>Dashboard Cadastros</title>
 </head>
-<body onload="listarFuncionarios(sessionStorage.FKCODIGO_UNIDADE), exibirDadosLogin()">
+<body onload="listarFuncionarios(sessionStorage.FKCODIGO_INSTITUICAO), exibirDadosLogin()">
     
         <section class="dashboard">
             <div class="menu">
@@ -107,7 +107,7 @@
         console.log("ESTOU NO THEN DO excluir()!");
         if (resposta.ok) {
             alert("Usuário Deletado com Sucesso!");
-            listarFuncionarios(sessionStorage.FKCODIGO_UNIDADE);
+            listarFuncionarios(sessionStorage.FKCODIGO_INSTITUICAO);
             nome_funcionario.value = '';
             cpf_funcionario.value = '';
             cargo_funcionario.value = '';
@@ -134,7 +134,7 @@
         codigo_acesso.innerHTML = codigo;
     }
 
-    function listarFuncionarios(codigoUnidade){
+    function listarFuncionarios(codigoInstituicao){
         document.getElementById("lista_users").innerHTML = '';
         fetch("/usuarios/buscarUsuariosUnidade", {
         method: "POST",
@@ -142,7 +142,7 @@
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            codigoUnidadeServer: codigoUnidade
+            codigoUnidadeServer: codigoInstituicao
         })
     })
     .then(function (resposta) {

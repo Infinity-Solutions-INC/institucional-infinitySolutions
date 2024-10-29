@@ -27,7 +27,7 @@ function autenticar(req, res) {
                             senha_funcionario: resultadoAutenticar[0].senha_funcionario,
                             email_funcionario: resultadoAutenticar[0].email_funcionario,
                             status_funcionario: resultadoAutenticar[0].status_funcionario,
-                            fkcodigo_unidade: resultadoAutenticar[0].fkcodigo_unidade
+                            fkcodigo_instituicao: resultadoAutenticar[0].fkcodigo_instituicao
                         });
 
                     } else if (resultadoAutenticar.length == 0) {
@@ -48,9 +48,9 @@ function autenticar(req, res) {
 }
 
     function buscarUsuariosUnidade(req, res){
-        var codigoUnidade = req.body.codigoUnidadeServer;
+        var codigoInstituicao = req.body.codigoInstituicaoServer;
   
-        usuarioModel.buscarUsuariosUnidade(codigoUnidade).then((resultado) => {
+        usuarioModel.buscarUsuariosUnidade(codigoInstituicao).then((resultado) => {
           if (resultado.length > 0) {
             res.status(200).json(resultado);
           } else {
