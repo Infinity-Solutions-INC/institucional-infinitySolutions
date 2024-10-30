@@ -55,7 +55,7 @@
                   </span>
                   <span class="right">
                     <p>8 TURMAS</p>
-                    <h3>90%</h3>
+                    <h3>61,54%</h3>
                   </span>
                 </div>
                 <div class="kpi-inf">
@@ -64,20 +64,18 @@
                     <h3>ONLINE (EAD)</h3>
                   </span>
                   <span class="right">
-                    <p>5 TURMAS</p>
-                    <h3>80%</h3>
+                    <p>6 TURMAS</p>
+                    <h3>46,15%</h3>
                   </span>
                 </div>
               </div>
             </div>
             <div class="descricao">
               <p>
-                Atualmente, você tem <b>1.600 alunos</b> matriculados no curso
-                de <b>medicina</b>, totalizando <b>13 turmas</b>, sendo
-                <b>4 matutinos</b>, <b>1 vespertino</b> e <b>8 noturnos</b>,
-                onde <b>8 são na modalidade online (EAD)</b> e
-                <b>5 na modalidade presencial</b>. Analise os dados de evasão
-                desse curso com os gráficos abaixo!
+                Atualmente, você tem <b>250 alunos</b> matriculados no curso de <b>Engenharia de Software</b>, totalizando <b>13 turmas</b>, sendo
+                <b>4 matutinos</b>, <b>1 vespertino</b> e <b>8 noturnos</b>, onde <b>6 são na modalidade online (EAD)</b> e
+                <b>7 na modalidade presencial</b>. Este é o <b>2º curso com maior índice de evasão</b>, representando cerca de
+                <b>12% de todos os alunos</b>. Analise os dados de evasão desse curso com os gráficos abaixo!
               </p>
             </div>
           </div>
@@ -86,11 +84,7 @@
               <h2>MODALIDADE</h2>
               <div class="grafico-ft">
                 <span class="chartInside">
-                  <canvas
-                    width="100"
-                    height="100"
-                    id="graficoModalidade"
-                  ></canvas>
+                  <canvas width="100" height="100" id="graficoModalidade"></canvas>
                 </span>
               </div>
             </div>
@@ -123,16 +117,14 @@
   }
 
   // Gráfico de Barras (Modalidade)
-  const ctxModalidade = document
-    .getElementById("graficoModalidade")
-    .getContext("2d");
+  const ctxModalidade = document.getElementById("graficoModalidade").getContext("2d");
   const graficoModalidade = new Chart(ctxModalidade, {
     type: "bar",
     data: {
       labels: ["Online", "Presencial"],
       datasets: [
         {
-          label: "Alunos",
+          label: "Turmas (%)",
           data: [60, 40],
           backgroundColor: ["#270091", "#3F00EC"],
         },
@@ -170,7 +162,8 @@
       labels: ["Matutino", "Vespertino", "Noturno"],
       datasets: [
         {
-          data: [20, 30, 50],
+          label: "Turmas (%)",
+          data: [30, 7, 63],
           backgroundColor: ["#270091", "#3F00EC", "#020272"],
           borderWidth: 0,
         },
@@ -188,24 +181,22 @@
   });
 
   // Gráfico de Linha (Mensalidade)
-const ctxMensalidade = document
-  .getElementById("graficoMensalidade")
-  .getContext("2d");
-const graficoMensalidade = new Chart(ctxMensalidade, {
-  type: "line",
-  data: {
-    labels: ["Vespertino", "Matutino", "Noturno"], 
-    datasets: [
-      {
-        label: "Valor Mensalidade (R$)",
-        data: [1200, 1500, 1100],
-        borderColor: "#020272",
-        backgroundColor: "rgba(2, 2, 114, 0.5)", 
-        fill: false,
-      },
-    ],
-  },
-  options: {
+  const ctxMensalidade = document.getElementById("graficoMensalidade").getContext("2d");
+  const graficoMensalidade = new Chart(ctxMensalidade, {
+    type: "line",
+    data: {
+      labels: ["Vespertino", "Matutino", "Noturno"], 
+      datasets: [
+        {
+          label: "Valor Mensalidade (R$)",
+          data: [1200, 1050, 2100],
+          borderColor: "#020272",
+          backgroundColor: "rgba(2, 2, 114, 0.5)", 
+          fill: false,
+        },
+      ],
+    },
+    options: {
       scales: {
         y: {
           beginAtZero: true,
@@ -225,6 +216,5 @@ const graficoMensalidade = new Chart(ctxMensalidade, {
         },
       },
     },
-});
-
+  });
 </script>

@@ -10,3 +10,5 @@ email varchar(50),
 senha varchar(20)
 );
 
+
+
