@@ -10,7 +10,7 @@
     <script src="../js/sessao.js"></script> 
     <title>Dashboard Cadastros</title>
 </head>
-<body onload="listarFuncionarios(sessionStorage.FKCODIGO_INSTITUICAO), exibirDadosLogin()">
+<body onload="listarFuncionarios(sessionStorage.FKCODIGO_INSTITUICAO), exibirDadosLogin(), listarCargos()">
     
         <section class="dashboard">
             <div class="menu">
@@ -55,7 +55,9 @@
                         <input type="text" name="" id="cpf_funcionario" class="inpt-cad-user">
 
                         <span class="label-cad-user">CARGO:</span>
-                        <input type="text" name="" id="cargo_funcionario" class="inpt-cad-user">
+                        <select name="" id="cargo_funcionario" class="inpt-cad-user">
+                            
+                        </select>
 
                         <div class="secao">
                             <span class="label-cad-user">CODIGO ACESSO:</span>
@@ -89,42 +91,42 @@
 
 <script>
 
-    function excluir(){
-        let codigoVar = (codigo_acesso.innerText).trim();
-
-        if(codigoVar != undefined
-        ){
-            fetch("/usuarios/buscarUsuariosCodigo", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            codigoFuncionarioServer: codigoVar
+    function listarCargos(){
+        cargo_funcionario.innerHTML = ``;
+        fetch("/cargo/listarCargos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+            })
         })
-    })
-    .then(function (resposta) {
-        console.log("ESTOU NO THEN DO excluir()!");
-        if (resposta.ok) {
-            alert("Usuário Deletado com Sucesso!");
-            listarFuncionarios(sessionStorage.FKCODIGO_INSTITUICAO);
-            nome_funcionario.value = '';
-            cpf_funcionario.value = '';
-            cargo_funcionario.value = '';
-            codigo_acesso.innerHTML = '';
-        } else {
-            console.log("Houve um erro ao tentar excluir funcionario!");
-            alert("Houve um erro ao tentar excluir funcionario!");
-            throw new Error("Erro na resposta do servidor");
-        }
-    })
-    .catch(function (erro) {
-        console.log(erro);
-    });
+        .then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!");
 
-    
-    }
-    return false;
+            if (resposta.ok) {
+                return resposta.json(); 
+            } else {
+                console.log("Houve um erro ao tentar listar os cargos!");
+                alert("Houve um erro ao tentar listar os cargos!");
+                throw new Error("Erro na resposta do servidor");
+            }
+        })
+        .then(function (dados) {
+            console.log(dados);
+
+            dados.forEach(item => {
+                
+            cargo_funcionario.innerHTML += `<option value="${item.codigo_cargo}">${item.nome_cargo}</option>`
+
+            });
+        })
+        .catch(function (erro) {
+            console.log(erro);
+        });
+
+        return false;
+        
 }
     
     function editarFuncionario(nome, cargo, codigo, cpf){
@@ -161,24 +163,24 @@
 
         dados.forEach(item => {
 
-            if(sessionStorage.STATUS_FUNCIONARIO == "master"){
-                if(item.status_funcionario == "master" ){
+            if(sessionStorage.CARGO_FUNCIONARIO == "Diretor(a)"){
+                if(item.nome_cargo == "Diretor(a)" || item.nome_cargo == "CEO"){
 
                     document.getElementById("lista_users").innerHTML += `
                             <div class="divisor">
                                 <span class="nome-user">${item.nome_funcionario}</span>
                                 <ion-icon name="create-outline" class="bloqueio"></ion-icon>
                             </div>
-                            <span class="cargo-user">${item.cargo_funcionario}</span>
+                            <span class="cargo-user">${item.nome_cargo}</span>
                             <hr>`;
                     }else if(item.status_funcionario == "ativo" || item.status_funcionario == "aguardando verificação"){
 
                         document.getElementById("lista_users").innerHTML += `
                             <div class="divisor">
                                 <span class="nome-user">${item.nome_funcionario}</span>
-                                <ion-icon name="create-outline" onclick="editarFuncionario('${item.nome_funcionario}', '${item.cargo_funcionario}', '${item.codigo_funcionario}', '${item.cpf_funcionario}')"></ion-icon>
+                                <ion-icon name="create-outline" onclick="editarFuncionario('${item.nome_funcionario}', '${item.nome_cargo}', '${item.codigo_funcionario}', '${item.cpf_funcionario}')"></ion-icon>
                             </div>
-                            <span class="cargo-user">${item.cargo_funcionario}</span>
+                            <span class="cargo-user">${item.nome_cargo}</span>
                             <hr>`;
 
                     }
@@ -188,7 +190,7 @@
                                 <span class="nome-user">${item.nome_funcionario}</span>
                                 <ion-icon name="create-outline" class="bloqueio"></ion-icon>
                             </div>
-                            <span class="cargo-user">${item.cargo_funcionario}</span>
+                            <span class="cargo-user">${item.nome_cargo}</span>
                             <hr>`;
             }
 

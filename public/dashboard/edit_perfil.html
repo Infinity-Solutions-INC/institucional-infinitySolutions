@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../css/dash_edit-perfil.css">
 </head>
 
-<body>
+<body onload="atribuirUsuario()">
     <div class="screen">
         <div class="menu">
             <div class="logo">
@@ -41,23 +41,21 @@
                 <section class="left-container">
                     <article class="container-content bxshadow-container">
                         <p>NOME:</p>
-                        <input type="text" name="username" placeholder="JOAO SILVA OLIVEIRA" id="inpt_username">
+                        <input type="text" name="username" id="inpt_username">
 
                         <p>CPF:</p>
-                        <input type="text" name="cpf" placeholder="XXX.XXX.XXX-XX" id="inpt_cpf">
+                        <input type="text" name="cpf" id="inpt_cpf">
 
                         <p>CARGO:</p>
-                        <input type="text" name="cargo" placeholder="COORDENADOR ACADÊMICO" id="inpt_cargo">
+                        <input type="text" name="cargo" id="inpt_cargo">
 
                         <p>EMAIL:</p>
-                        <input type="email" name="email" placeholder="joao.silva@email.com" id="inpt_email">
+                        <input type="email" name="email" id="inpt_email">
 
-                        <p>TELEFONE:</p>
-                        <input type="tel" name="telefone" placeholder="(11) 94002-8922" id="inpt_fone">
-
+                        
                         <div id="btn-area">
                             <input type="button" value="SALVAR" class="save-btn button blue-border">
-                            <input type="button" value="DESFAZER" id="btn-undo" class="button grey-border">
+                            <input type="button" value="DESFAZER" id="btn-undo" class="button grey-border"  onclick="atribuirUsuario()">
                         </div>
 
                     </article>
@@ -82,3 +80,65 @@
 </body>
 
 </html>
+<script>
+
+
+     function atribuirUsuario(){
+        inpt_username.value = sessionStorage.NOME_FUNCIONARIO;
+        inpt_cpf.value = sessionStorage.CPF_FUNCIONARIO;
+        inpt_cargo.value = sessionStorage.CARGO_FUNCIONARIO;
+        inpt_email.value = sessionStorage.EMAIL_FUNCIONARIO;
+     }
+
+     function atualizarDado(){
+        console.log(sessionStorage);
+
+        let cpfVar = (inpt_cpf.value).trim();
+        let nomeVar = (inpt_username.value).trim();
+        let emailVar = (inpt_email.value).trim();
+        let cargoVar = (inpt_cargo.value).trim;
+        let codigoVar = sessionStorage.CODIGO_FUNCIONARIO;
+
+        if(cpfVar != '' &&
+            nomeVar != '' &&
+            emailVar != '' &&
+            cargoVar != '' &&
+            codigoVar != ''
+        ){
+            fetch("/usuarios/atualizarUsuarios", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                cpfServer: cpfVar,
+                nomeServer: nomeVar,
+                emailServer: emailVar,
+                cargoServer: cargoVar,
+                codigoServer: codigoVar
+            }),
+            })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Alteração realizada com sucesso!");
+
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                    alert("Houve um erro ao tentar realizar o cadastro!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+        }else{
+            alert("Dados inválidos");
+        }
+
+        return false;
+     }
+</script>
