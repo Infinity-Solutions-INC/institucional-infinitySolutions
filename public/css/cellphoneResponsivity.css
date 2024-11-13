@@ -91,4 +91,37 @@
         margin-right: 0;
     }
     
+    .div-secao.forms {
+        width: 100vh;
+    }
+
+    .label-form {
+        width: 70%;
+    }
+
+    .div-secao.paineis {
+        display: none;
+    }
+
+    #slogan-cad {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .form-valid {
+        width: 80%;
+    }
+
+    .form-valid input {
+        width: 60%;
+    }
+
+    .btn-verify {
+        width: 60%;
+    }
+
+    .container-ajuda {
+        width: 25%;
+    }
+
 }
