@@ -8,10 +8,21 @@
     <link rel="stylesheet" href="../css/dash_prin-filt.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/sessao.js"></script>
+    <link rel="icon" href="../assets/logo.png">
     <title>Dashboard Principal</title>
   </head>
   <body>
     <section class="dashboard">
+      <div class="modal1 modal">
+        <div class="contentmodal" id="modal_erro">
+          <span class="close-modal" onclick="sumirModal()" style="cursor: pointer;">
+            X
+          </span>
+          <span>
+            CONTEÚDO CRUD
+          </span>
+        </div>
+      </div>
       <div class="menu">
         <div class="logo">
           <img src="../assets/logo.png" alt="logo infinity" />
@@ -67,7 +78,7 @@
             </div>
           </div>
           <div class="ranking">
-            <h2>MAIOR EVASÃO</h2>
+            <h2 onclick="cadastroCurso()" style="cursor: pointer;">MAIOR EVASÃO</h2>
             <div class="tabela-ev" style="margin-top: -5px">
               <div class="dados-curso">
                 <span class="tb-curso">
@@ -164,6 +175,22 @@
 </html>
 
 <script>
+
+  const modais = document.querySelectorAll(".modal");
+  modais.forEach((modal) => (modal.style.display = "none"));
+
+  function cadastroCurso() {
+    const modalSelecionado = document.querySelector(`.modal1`);
+    if (modalSelecionado) {
+      modalSelecionado.style.display = "block";
+    }
+  }
+
+  function sumirModal() {
+        const modais = document.querySelectorAll('.modal');
+        modais.forEach(modal => modal.style.display = 'none');
+    }
+
   function sair() {
     limparSessao();
   }

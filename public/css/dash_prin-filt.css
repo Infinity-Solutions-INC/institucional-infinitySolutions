@@ -283,3 +283,34 @@ body {
   font-weight: normal;
   margin-top: -10px;
 }
+
+.contentmodal {
+  background-color: #ffffff;
+  color: #000000;
+  margin: 6% auto;
+  padding: 20px;
+  width: 45%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5%;
+  text-align: justify;
+}
+
+.close-modal:hover {
+  color: red;
+  transition: all 0.3s;
+} 
+
+.modal1 {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: #0d1344c4;
+}
