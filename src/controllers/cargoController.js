@@ -1,6 +1,6 @@
 var cargoModel = require("../models/cargoModel");
 
-function listarCargos(res){
+function listarCargos(req, res){
 
     cargoModel.listarCargos().then((resultado) => {
       if (resultado.length > 0) {
@@ -10,7 +10,7 @@ function listarCargos(res){
       }
     }).catch(function (erro) {
       console.log(erro);
-      console.log("Houve um erro ao buscar os aquarios: ", erro.sqlMessage);
+      console.log("Houve um erro ao buscar os  cargos: ", erro.sqlMessage);
       res.status(500).json(erro.sqlMessage);
     });
 }
