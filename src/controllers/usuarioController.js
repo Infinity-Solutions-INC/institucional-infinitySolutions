@@ -189,17 +189,16 @@ function cadastrar(req, res) {
     }
 }
 
-function atualizarUsuario(req, res) {
+function atualizarUsuarios(req, res) {
     var nome = req.body.nomeServer;
     var cpf = req.body.cpfServer;
     var email = req.body.emailServer;
-    var senha = req.body.senhaServer;
-    var codigoAcesso = req.body.codigoAcessoServer;
+    var codigoAcesso = req.body.codigoServer;
 
     if (email == undefined) {
         res.status(400).send("Seu email está undefined!");
-    } else if (senha == undefined) {
-        res.status(400).send("Sua senha está indefinida!");
+    } else if (nome == undefined) {
+        res.status(400).send("Sua nome está indefinida!");
     } else if (cpf == undefined) {
         res.status(400).send("Seu cpf está indefinido!");
     } else if (codigoAcesso == undefined) {
@@ -216,7 +215,7 @@ function atualizarUsuario(req, res) {
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
                         
-                        usuarioModel.atualizarCadastro(codigoAcesso, email, senha)
+                        usuarioModel.atualizarUsuario(codigoAcesso, email, nome)
                         .then(
                             function (resultado) {
                                 res.json(resultado);
@@ -255,5 +254,5 @@ module.exports = {
     validarUsuario,
     buscarUsuariosUnidade,
     buscarUsuariosCodigo,
-    atualizarUsuario
+    atualizarUsuarios
 }

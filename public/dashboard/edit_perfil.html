@@ -45,17 +45,17 @@
                         <input type="text" name="username" id="inpt_username">
 
                         <p>CPF:</p>
-                        <input type="text" name="cpf" id="inpt_cpf">
+                        <input name="cpf" id="inpt_cpf" readonly>
 
                         <p>CARGO:</p>
-                        <input type="text" name="cargo" id="inpt_cargo">
+                        <input name="cargo" id="inpt_cargo" readonly>
 
                         <p>EMAIL:</p>
                         <input type="email" name="email" id="inpt_email">
 
                         
                         <div id="btn-area">
-                            <input type="button" value="SALVAR" class="save-btn button blue-border">
+                            <input type="button" value="SALVAR" class="save-btn button blue-border" onclick="atualizarDado()">
                             <input type="button" value="DESFAZER" id="btn-undo" class="button grey-border"  onclick="atribuirUsuario()">
                         </div>
 
@@ -97,13 +97,11 @@
         let cpfVar = (inpt_cpf.value).trim();
         let nomeVar = (inpt_username.value).trim();
         let emailVar = (inpt_email.value).trim();
-        let cargoVar = (inpt_cargo.value).trim;
         let codigoVar = sessionStorage.CODIGO_FUNCIONARIO;
 
         if(cpfVar != '' &&
             nomeVar != '' &&
             emailVar != '' &&
-            cargoVar != '' &&
             codigoVar != ''
         ){
             fetch("/usuarios/atualizarUsuarios", {
@@ -117,7 +115,6 @@
                 cpfServer: cpfVar,
                 nomeServer: nomeVar,
                 emailServer: emailVar,
-                cargoServer: cargoVar,
                 codigoServer: codigoVar
             }),
             })
