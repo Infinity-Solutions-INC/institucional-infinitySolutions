@@ -56,7 +56,7 @@
                         <input type="text" name="" id="cpf_funcionario" class="inpt-cad-user">
 
                         <span class="label-cad-user">CARGO:</span>
-                        <select name="" id="cargo_funcionario" class="inpt-cad-user">
+                        <select name="" id="cargo_funcionario" class="inpt-cad-user select">
                             
                         </select>
 
@@ -118,7 +118,7 @@
 
             dados.forEach(item => {
                 
-            cargo_funcionario.innerHTML += `<option value="${item.codigo_cargo}">${item.nome_cargo}</option>`
+                cargo_funcionario.innerHTML += `<option value="${item.codigo_cargo}">${item.nome_cargo}</option>`
 
             });
         })

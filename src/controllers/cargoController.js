@@ -1,6 +1,6 @@
 var cargoModel = require("../models/cargoModel");
 
-function listarCargos(res){
+function listarCargos(req, res){
 
     cargoModel.listarCargos().then((resultado) => {
       if (resultado.length > 0) {

@@ -49,15 +49,31 @@ function atualizarCadastro(codigoAcesso, email, senha) {
     return database.executar(instrucaoSql);
 }
 
+function atualizarUsuario(codigoAcesso, email, nome) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", email, nome, codigoAcesso);
+    
+    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
+    //  e na ordem de inserção dos dados.
+    var instrucaoSql = `
+        UPDATE funcionario
+        SET email_funcionario = '${email}', 
+            nome_funcionario = '${nome}'
+        WHERE codigo_funcionario = '${codigoAcesso}';`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function buscarUsuariosUnidade(codigoInstituicao){
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", codigoInstituicao);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucaoSql = `
-        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_instituicao FROM funcionario 
-        INNER JOIN cargo on  codigo_cargo = fkcodigo_cargo
-        WHERE fkcodigo_instituicao = ${codigoInstituicao} ORDER BY codigo_funcionario DESC;
+        SELECT funcionario.codigo_funcionario, funcionario.nome_funcionario, funcionario.cpf_funcionario, funcionario.email_funcionario, cargo.nome_cargo, funcionario.senha_funcionario, funcionario.status_funcionario, funcionario.fkcodigo_instituicao FROM funcionario 
+        INNER JOIN cargo on  codigo_cargo = funcionario.fkcodigo_cargo
+        WHERE fkcodigo_instituicao = ${codigoInstituicao} 
+        ORDER BY codigo_funcionario DESC;
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -98,5 +114,6 @@ module.exports = {
     atualizarCadastro,
     buscarUsuariosUnidade,
     buscarUsuariosCodigo,
-    excluirUsuario
+    excluirUsuario,
+    atualizarUsuario
 };
