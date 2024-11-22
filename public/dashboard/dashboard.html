@@ -8,19 +8,57 @@
     <link rel="stylesheet" href="../css/dash_prin-filt.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/sessao.js"></script>
-    <link rel="icon" href="../assets/logo.png">
+    <link rel="icon" href="../assets/logo.png" />
     <title>Dashboard Principal</title>
   </head>
   <body>
     <section class="dashboard">
       <div class="modal1 modal">
+        <div class="contentmodal" id="modal_curso">
+          <div class="content-usuario">
+            <div class="inf-modal">
+              <span class="titulo-modal">
+                <h1>CURSOS REGISTRADOS</h1>
+              </span>
+              <span class="input-user nome">
+                NOME DO CURSO: <br />
+                <input type="text" id="nome_curso" />
+              </span>
+              <span class="input-user ano">
+                ANO DE REGISTRO DO CURSO: <br />
+                <input type="number" id="ano_curso" />
+              </span>
+              <div class="botoes-modal">
+                <button onclick="registrarCurso()">REGISTRAR</button>
+                <button onclick="deletarCurso()">EXCLUIR</button>
+              </div>
+            </div>
+            <div class="cursos-modal">
+              <span
+                class="close-modal"
+                onclick="sumirModal()"
+                style="cursor: pointer"
+              >
+                X
+              </span>
+              <div class="lista-cursos">
+                <span> CURSOS REGISTRADOS </span>
+                <p id="nome-curso">MEDICINA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal2 modal">
         <div class="contentmodal" id="modal_erro">
-          <span class="close-modal" onclick="sumirModal()" style="cursor: pointer;">
+          <span
+            class="close-modal"
+            onclick="sumirModal()"
+            style="cursor: pointer"
+          >
             X
           </span>
-          <span>
-            CONTEÚDO CRUD
-          </span>
+          <span> CONTEÚDO CRUD </span>
         </div>
       </div>
       <div class="menu">
@@ -78,7 +116,9 @@
             </div>
           </div>
           <div class="ranking">
-            <h2 onclick="cadastroCurso()" style="cursor: pointer;">MAIOR EVASÃO</h2>
+            <h2 onclick="cadastroCurso()" style="cursor: pointer">
+              MAIOR EVASÃO
+            </h2>
             <div class="tabela-ev" style="margin-top: -5px">
               <div class="dados-curso">
                 <span class="tb-curso">
@@ -175,7 +215,6 @@
 </html>
 
 <script>
-
   const modais = document.querySelectorAll(".modal");
   modais.forEach((modal) => (modal.style.display = "none"));
 
@@ -187,9 +226,17 @@
   }
 
   function sumirModal() {
-        const modais = document.querySelectorAll('.modal');
-        modais.forEach(modal => modal.style.display = 'none');
-    }
+    const modais = document.querySelectorAll(".modal");
+    modais.forEach((modal) => (modal.style.display = "none"));
+  }
+
+  function registrarCurso() {
+    alert("Curso registrado com sucesso!");
+  }
+
+  function deletarCurso() {
+    alert("Curso deletado com sucesso!");
+  }
 
   function sair() {
     limparSessao();

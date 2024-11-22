@@ -152,11 +152,11 @@ body {
 }
 
 .chartInside {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 95%;
 }
 
 .inferior {
@@ -244,8 +244,8 @@ body {
 }
 
 .grafico-ft .chartInside {
-    width: 95%;
-    height: 90%;
+  width: 95%;
+  height: 90%;
 }
 
 .box-kpi-ft {
@@ -285,26 +285,25 @@ body {
 }
 
 .contentmodal {
-  background-color: #ffffff;
-  color: #000000;
-  margin: 6% auto;
+  background-color: #1c3a87;
+  color: #ffffff;
+  margin: 12% auto;
   padding: 20px;
   width: 45%;
-  height: 70%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5%;
   text-align: justify;
 }
 
 .close-modal:hover {
   color: red;
   transition: all 0.3s;
-} 
+}
 
 .modal1 {
-  display: none;
+  display: block;
   position: fixed;
   z-index: 10;
   left: 0;
@@ -313,4 +312,103 @@ body {
   height: 100%;
   overflow: auto;
   background-color: #0d1344c4;
+}
+
+.content-usuario {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  /* background-color: #00b5e3; */
+}
+
+.inf-modal {
+  display: flex;
+  flex-direction: column;
+  /* background-color: red; */
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+  gap: 10px;
+}
+
+.titulo-modal {
+  /* background-color: yellow; */
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  font-size: 21px;
+}
+
+.input-user.nome {
+  /* background-color: #141e65; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  font-size: 25px;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.input-user.ano {
+  /* background-color: bisque; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 25px;
+  gap: 3px;
+}
+
+.input-user input {
+  height: 50%;
+  border: solid 1px #00e5ff;
+  outline: none;
+  background-color: transparent;
+  color: #fff;
+  box-shadow: 1px 4px 5px #00e5ff;
+  border-radius: 5px;
+  font-size: 100%;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.botoes-modal {
+  display: flex;
+  width: 100%;
+  gap: 5px;
+  height: 60%;
+}
+
+.inf-modal button {
+  width: 100%;
+  height: 90%;
+  font-size: 20px;
+  border: 1px solid aqua;
+  outline: none;
+  background-color: transparent;
+  color: #fff;
+  margin: 2%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 3px;
+}
+
+.cursos-modal {
+  background-color: red;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.lista-cursos {
+  /* background-color: #00e5ff; */
+  border: #00e5ff 2px solid;
+  height: 90%;
+  width: 95%;
 }
