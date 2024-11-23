@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="../css/dash_prin-filt.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/sessao.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
     <link rel="icon" href="../assets/logo.png" />
     <title>Dashboard Principal</title>
   </head>
@@ -18,18 +26,18 @@
           <div class="content-usuario">
             <div class="inf-modal">
               <span class="titulo-modal">
-                <h1>CURSOS REGISTRADOS</h1>
+                <h1>REGISTRAR CURSO</h1>
               </span>
               <span class="input-user nome">
                 NOME DO CURSO: <br />
                 <input type="text" id="nome_curso" />
               </span>
               <span class="input-user ano">
-                ANO DE REGISTRO DO CURSO: <br />
+                ANO DO CURSO: <br />
                 <input type="number" id="ano_curso" />
               </span>
               <div class="botoes-modal">
-                <button onclick="registrarCurso()">REGISTRAR</button>
+                <button id="registrar_curso" onclick="registrarCurso()">REGISTRAR</button>
                 <button onclick="deletarCurso()">EXCLUIR</button>
               </div>
             </div>
@@ -41,15 +49,13 @@
               >
                 X
               </span>
-              <div class="lista-cursos">
-                <span> CURSOS REGISTRADOS </span>
-                <p id="nome-curso">MEDICINA</p>
-              </div>
+              <span id="titulo-lista"> CURSOS REGISTRADOS </span>
+              <div class="bloco lista-cursos" id="lista-cursos"></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="modal2 modal">
+      <!-- <div class="modal2 modal">
         <div class="contentmodal" id="modal_erro">
           <span
             class="close-modal"
@@ -60,7 +66,7 @@
           </span>
           <span> CONTEÚDO CRUD </span>
         </div>
-      </div>
+      </div> -->
       <div class="menu">
         <div class="logo">
           <img src="../assets/logo.png" alt="logo infinity" />
@@ -215,6 +221,8 @@
 </html>
 
 <script>
+  let cursoEmEdicao = null;
+
   const modais = document.querySelectorAll(".modal");
   modais.forEach((modal) => (modal.style.display = "none"));
 
@@ -226,16 +234,190 @@
   }
 
   function sumirModal() {
+    document.getElementById("nome_curso").value = "";
+    document.getElementById("ano_curso").value = "";
     const modais = document.querySelectorAll(".modal");
     modais.forEach((modal) => (modal.style.display = "none"));
   }
 
+  function buscarCursos() {
+    const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+    if (!idInstituicao) {
+      console.error("ID da instituição não definida");
+      return;
+    }
+
+    fetch(`/cursos/buscarCursosPorUnidade/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        /* funçãozinha pra listar os cursos no front */
+        listarCursos(data);
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  buscarCursos();
+
+  setInterval(buscarCursos, 5000);
+
+  function listarCursos(cursosListados) {
+    const listaCursos = document.getElementById("lista-cursos");
+    listaCursos.innerHTML = "";
+
+    cursosListados.forEach((item) => {
+      listaCursos.innerHTML += `
+           <div class="divisor-curso">
+               <span class="nome-curso">${item.nome_curso}</span>
+               <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
+           </div>
+           <hr id="linha-curso">`;
+    });
+  }
+
+  function editarCurso(idCurso, nome, ano) {
+    document.getElementById('registrar_curso').innerHTML = 'ATUALIZAR'
+    cursoEmEdicao = idCurso;
+    nome_curso.value = nome;
+    ano_curso.value = ano;
+    console.log(`curso em edição: ${cursoEmEdicao}, ${nome}, ${ano}`);
+  }
+
   function registrarCurso() {
-    alert("Curso registrado com sucesso!");
+    let cursoVar = nome_curso.value.trim().toLowerCase();
+    let anoVar = ano_curso.value.trim();
+    let idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+    if (!idInstituicao) {
+      alert("ID da instituição não encontrado!");
+      return;
+    }
+
+    if (cursoVar !== "" && anoVar !== "") {
+      if (cursoEmEdicao !== null) {
+        atualizarCurso(cursoEmEdicao, cursoVar, anoVar, idInstituicao);
+      } else {
+        // Se não for edição, faz o insert
+        fetch(`/cursos/cadastrarCurso`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nomeCursoServer: cursoVar,
+            anoCursoServer: anoVar,
+            idInstituicaoServer: idInstituicao,
+          }),
+        })
+          .then(function (resposta) {
+            if (resposta.ok) {
+              return resposta.json();
+            } else {
+              throw new Error("Houve um erro ao registrar o curso!");
+            }
+          })
+          .then(function (data) {
+            document.getElementById("nome_curso").value = "";
+            document.getElementById("ano_curso").value = "";
+            alert("Curso registrado com sucesso!");
+          })
+          .catch(function (erro) {
+            console.log(`#ERRO: ${erro.message}`);
+            alert(erro.message);
+          });
+      }
+    } else {
+      alert("Dados inválidos");
+    }
+
+    return false;
+  }
+
+  function atualizarCurso(idCurso, nomeCurso, anoCurso, idInstituicao) {
+    fetch(`/cursos/editarCurso/${idCurso}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomeCursoServer: nomeCurso,
+        anoCursoServer: anoCurso,
+        idInstituicaoServer: idInstituicao,
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao atualizar o curso!");
+        }
+      })
+      .then((data) => {
+        document.getElementById('registrar_curso').innerHTML = 'REGISTRAR'
+        document.getElementById("nome_curso").value = "";
+        document.getElementById("ano_curso").value = "";
+        alert("Curso atualizado com sucesso!");
+      })
+      .catch((erro) => {
+        console.log(`#ERRO: ${erro.message}`);
+        alert(erro.message);
+      });
   }
 
   function deletarCurso() {
-    alert("Curso deletado com sucesso!");
+    let idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+    if (!idInstituicao || !cursoEmEdicao) {
+      alert("ID da instituição ou ID do curso inválido.");
+      return;
+    }
+
+    fetch(`/cursos/deletarCurso`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idCursoServer: cursoEmEdicao,
+        idInstituicaoServer: idInstituicao,
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao deletar o curso!");
+        }
+      })
+      .then((data) => {
+        document.getElementById('registrar_curso').innerHTML = 'REGISTRAR'
+        document.getElementById("nome_curso").value = "";
+        document.getElementById("ano_curso").value = "";
+        alert("Curso deletado com sucesso!");
+      })
+      .catch((erro) => {
+        console.log(`#ERRO: ${erro.message}`);
+        alert(erro.message);
+      });
   }
 
   function sair() {
