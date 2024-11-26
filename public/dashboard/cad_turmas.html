@@ -95,7 +95,7 @@
             </div>
             <div class="lista-turmas">
                 <h2>LISTA DE TURMAS</h2>
-                <div class="content-turmas">
+                <div class="content-turmas" id="listaTurmas">
                     <p>oi</p>
                 </div>
             </div>
@@ -109,3 +109,62 @@
     </section>
 </body>
 </html>
+
+<script>
+  let turmaEmEdicao = null
+
+  function buscarTurmasPorUnidade(){
+    const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+    if (!idInstituicao) {
+      console.error("ID da instituição não definida");
+      return;
+    }
+
+    fetch(`/turmas/buscarTurmasPorUnidade/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        /* funçãozinha pra listar as turmas no front */
+        listarTurmas(data);
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  buscarTurmasPorUnidade();
+
+  function listarTurmas(turmasListadas) {
+    const listaTurmas = document.getElementById("listaTurmas");
+    listaTurmas.innerHTML = "";
+
+    turmasListadas.forEach((item) => {
+
+      listaTurmas.innerHTML += `
+         <div class="divisor-turma">
+            <span class="ano-turma">${item.ano_turma}</span>
+            <ion-icon name="create-outline" onclick="editarTurma('${item.codigo_turma}', '${item.ano_turma}', '${item.turno_turma}', '${item.modalidade_turma}', '${item.mensalidade_turma}')"></ion-icon>
+          </div>
+          <hr id="linha-curso">`;
+    })
+  }
+
+
+</script>
