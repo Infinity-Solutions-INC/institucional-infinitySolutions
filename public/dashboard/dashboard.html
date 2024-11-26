@@ -79,6 +79,7 @@
           <a href="./filtrada.html">FILTRADA</a>
           <a href="./relatorio_ia.html">RELATÓRIOS</a>
           <a href="./dash_cadastro.html">CADASTRO</a>
+          <a href="./cad_turmas.html">TURMAS</a>
           <span class="help">
             <a href="./edit_perfil.html">CONFIGURAÇÕES</a>
             <a href="#">SUPORTE</a>
@@ -221,6 +222,7 @@
   function sumirModal() {
     document.getElementById("nome_curso").value = "";
     document.getElementById("ano_curso").value = "";
+    document.getElementById('registrar_curso').innerHTML = 'REGISTRAR';
     cursoEmEdicao = null;
     const modais = document.querySelectorAll(".modal");
     modais.forEach((modal) => (modal.style.display = "none"));
@@ -253,8 +255,9 @@
           return;
         }
 
-        /* funçãozinha pra listar os cursos no front */
+        /* funçãozinha pra listar os cursos e alunos no front */
         listarCursos(data);
+        listarTurmas(data);
         console.log(data);
       })
       .catch(function (erro) {
@@ -273,7 +276,7 @@
 
     cursosListados.forEach((item) => {
 
-      if(item.ano_curso != null) {
+      // if(item.ano_curso != null) {
         listaCursos.innerHTML += `
              <div class="divisor-curso">
                  <span class="nome-curso">${item.nome_curso}</span>
@@ -284,13 +287,22 @@
         rankingCursos.innerHTML += `
             <p class="dados-curso">${item.nome_curso}</p>
         `;       
-      }
+      // }
 
     });
   }
 
+  function listarTurmas(cursosListados) {
+    cursosListados.forEach((item) => {
+
+      
+
+
+    })
+  }
+
   function editarCurso(idCurso, nome, ano) {
-    document.getElementById('registrar_curso').innerHTML = 'ATUALIZAR'
+    document.getElementById('registrar_curso').innerHTML = 'ATUALIZAR';
     cursoEmEdicao = idCurso;
     nome_curso.value = nome;
     ano_curso.value = ano;
@@ -369,7 +381,7 @@
         }
       })
       .then((data) => {
-        document.getElementById('registrar_curso').innerHTML = 'REGISTRAR'
+        document.getElementById('registrar_curso').innerHTML = 'REGISTRAR';
         document.getElementById("nome_curso").value = "";
         document.getElementById("ano_curso").value = "";
         cursoEmEdicao = null;

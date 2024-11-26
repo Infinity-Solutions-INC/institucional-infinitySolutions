@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../css/dash.css" />
+        <link rel="stylesheet" href="../css/cad_turmas.css" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="../js/sessao.js"></script>
+        <script
+          type="module"
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+          nomodule
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+        ></script>
+        <link rel="icon" href="../assets/logo.png" />
+        <title>Cadastrar Turmas</title>
+      </head>
+<body>
+    <section class="cad-turmas">
+        <div class="menu">
+            <div class="logo">
+              <img src="../assets/logo.png" alt="logo infinity" />
+              <h2 style="font-weight: lighter">
+                INFINITY <b style="font-weight: normal">SOLUTIONS</b>
+              </h2>
+            </div>
+            <div class="opcoes">
+              <a href="./dashboard.html">PRINCIPAL</a>
+              <a href="./filtrada.html">FILTRADA</a>
+              <a href="./relatorio_ia.html">RELATÓRIOS</a>
+              <a href="./dash_cadastro.html">CADASTRO</a>
+              <a href="./cad_turmas.html">TURMAS</a>
+              <span class="help">
+                <a href="./edit_perfil.html">CONFIGURAÇÕES</a>
+                <a href="#">SUPORTE</a>
+              </span>
+              <a onclick="sair()">ENCERRAR SESSÃO</a>
+            </div>
+          </div>
+          <div class="content">
+            <div class="navdash">
+              <span class="titulo"> CADASTRAR <b>TURMAS</b> </span>
+              <div class="navdash-menu">
+                <img src="../assets/tomas.png" alt="" class="img-navbar-menu" />
+                <span>Tomás Galleno</span>
+                <button class="btn-navbar-menu">
+                  <img src="../assets/downArrow.png" alt="" />
+                </button>
+              </div>
+            </div>
+          <div class="container">
+            <div class="form-cad-turmas">
+                <h2>CADASTRE UMA TURMA</h2>
+                <div class="content-forms">
+                    <span>
+                        CURSO: <br />
+                        <input type="text" id="nome_curso">
+                    </span>
+                    <span>
+                        ANO: <br />
+                        <select name="select-anos" id="anos-curso">
+                            <option value="0"> --- </option>
+                        </select>
+                    </span>
+                    <span>
+                        TURNO: <br />
+                        <select name="select-turno" id="anos-curso">
+                            <option value="0"> --- </option>
+                            <option value="0"> MATINAL </option>
+                            <option value="0"> VESPERTINO </option>
+                            <option value="0"> NOTURNO </option>
+                        </select>
+                    </span>
+                    <span>
+                        MODALIDADE: <br />
+                        <select name="select-anos" id="anos-curso">
+                            <option value="0"> --- </option>
+                            <option value="0"> PRESENCIAL </option>
+                            <option value="0"> ONLINE </option>
+                        </select>
+                    </span>
+                    <span>
+                        MENSALIDADE: <br />
+                        <input type="text" id="mensalidade-turma" placeholder="R$">
+                    </span>
+                    <div class="botoes-form">
+                        <button id="cadastrar_curso" onclick="cadastrarCurso()">CADASTRAR</button>
+                        <button onclick="deletarCurso()">DELETAR</button>
+                    </div>
+                </div>
+            </div>
+            <div class="lista-turmas">
+                <h2>LISTA DE TURMAS</h2>
+                <div class="content-turmas">
+                    <p>oi</p>
+                </div>
+            </div>
+            <div class="lista-cursos">
+                <h2>SELECIONE UM CURSO</h2>
+                <div class="content-cursos">
+                    <p>oi</p>
+                </div>
+            </div>
+          </div>
+    </section>
+</body>
+</html>
