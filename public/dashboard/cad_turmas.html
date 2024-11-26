@@ -96,13 +96,11 @@
             <div class="lista-turmas">
                 <h2>LISTA DE TURMAS</h2>
                 <div class="content-turmas" id="listaTurmas">
-                    <p>oi</p>
                 </div>
             </div>
             <div class="lista-cursos">
                 <h2>SELECIONE UM CURSO</h2>
-                <div class="content-cursos">
-                    <p>oi</p>
+                <div class="content-cursos" id="listaCursos">
                 </div>
             </div>
           </div>
@@ -112,16 +110,71 @@
 
 <script>
   let turmaEmEdicao = null
+  const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
 
-  function buscarTurmasPorUnidade(){
-    const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+  function buscarCursos() {
 
     if (!idInstituicao) {
       console.error("ID da instituição não definida");
       return;
     }
 
-    fetch(`/turmas/buscarTurmasPorUnidade/${idInstituicao}`, {
+    fetch(`/cursos/buscarCursosPorUnidade/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        /* funçãozinha pra listar os cursos e alunos no front */
+        listarCursos(data);
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  buscarCursos();
+
+
+  function listarCursos(cursosListados) {
+    const listaCursos = document.getElementById("listaCursos");
+    listaCursos.innerHTML = "";
+
+    cursosListados.forEach((item) => {
+        listaCursos.innerHTML += `
+             <div class="divisor-curso">
+                 <span class="nome-curso" onclick="buscarTurmasPorCurso('${idInstituicao}', '${item.codigo_curso}')">${item.nome_curso}</span>
+             </div>
+             <hr id="linha-curso">`;   
+             console.log(item)
+
+    });
+  }
+
+  function buscarTurmasPorCurso(idInstituicao, idCurso){
+
+    if (!idInstituicao) {
+      console.error("ID da instituição não definida");
+      return;
+    }
+
+    console.log(idInstituicao, idCurso)
+
+    fetch(`/turmas/buscarTurmasPorCurso/${idInstituicao}/${idCurso}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -149,7 +202,6 @@
       });
   }
 
-  buscarTurmasPorUnidade();
 
   function listarTurmas(turmasListadas) {
     const listaTurmas = document.getElementById("listaTurmas");

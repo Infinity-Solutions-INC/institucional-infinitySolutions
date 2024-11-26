@@ -1,11 +1,12 @@
 var turmasModel = require("../models/turmasModel");
 
 
-function buscarTurmasPorUnidade(req, res) {
+function buscarTurmasPorCurso(req, res) {
     var idUnidade = req.params.idUnidade;
+    var idCurso = req.params.idCurso;
   
     turmasModel
-      .buscarTurmasPorUnidade(idUnidade)
+      .buscarTurmasPorCurso(idUnidade, idCurso)
       .then(function (resultado) {
         if (resultado.length > 0) {
           res.status(200).json(resultado); /*resposta que o bd traz*/
@@ -23,5 +24,5 @@ function buscarTurmasPorUnidade(req, res) {
 
 
 module.exports = {
-    buscarTurmasPorUnidade
+    buscarTurmasPorCurso
 }

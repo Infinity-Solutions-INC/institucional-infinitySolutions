@@ -52,6 +52,7 @@
     padding: 25px;
     display: flex;
     border-radius: 20px 2px 20px 2px;
+    flex-direction: column;
 }
 
 .content-forms {

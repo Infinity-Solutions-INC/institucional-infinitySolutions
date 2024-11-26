@@ -3,8 +3,8 @@ var router = express.Router();
 
 var turmasController = require("../controllers/turmasController");
 
-router.get("/buscarTurmasPorUnidade/:idUnidade", function (req, res) {
-  turmasController.buscarTurmasPorUnidade(req, res);
+router.get("/buscarTurmasPorCurso/:idUnidade/:idCurso", function (req, res) {
+  turmasController.buscarTurmasPorCurso(req, res);
 });
 
 module.exports = router;
