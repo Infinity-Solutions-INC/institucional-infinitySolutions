@@ -55,18 +55,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="modal2 modal">
-        <div class="contentmodal" id="modal_erro">
-          <span
-            class="close-modal"
-            onclick="sumirModal()"
-            style="cursor: pointer"
-          >
-            X
-          </span>
-          <span> CONTEÚDO CRUD </span>
-        </div>
-      </div> -->
       <div class="menu">
         <div class="logo">
           <img src="../assets/logo.png" alt="logo infinity" />
@@ -138,35 +126,8 @@
                 </span>
                 <span class="tb-alunos">
                   <b>ALUNOS</b>
-                  <p>
-                    1400
-                    <span class="indicador" style="color: red"
-                      >&#9650;
-                      <!--  PRA CIMA -->
-                    </span>
-                  </p>
-                  <p>
-                    250
-                    <span class="indicador" style="color: grey"
-                      >&#9664;
-                      <!--  PRA ESQUERDA --></span
-                    >
-                  </p>
-                  <p>
-                    125
-                    <span class="indicador" style="color: green"
-                      >&#9660;
-                      <!--  PRA BAIXO -->
-                    </span>
-                  </p>
-                  <p>
-                    100
-                    <span class="indicador" style="color: grey"
-                      >&#9664;
-                      <!--  PRA ESQUERDA --></span
-                    >
-                  </p>
-                </span>
+                  <span id="bloco-alunos">
+                  </span>
               </div>
             </div>
           </div>
@@ -257,8 +218,37 @@
 
         /* funçãozinha pra listar os cursos e alunos no front */
         listarCursos(data);
-        listarTurmas(data);
         console.log(data);
+        
+        /* buscar alunos dos cursos*/
+
+        fetch(`/turmas/buscarAlunosPorCurso/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        /* funçãozinha pra listar os cursos e alunos no front */
+        console.log(data);
+        listarAlunos(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
@@ -290,6 +280,22 @@
       // }
 
     });
+  }
+
+
+
+  function listarAlunos(cursosListados) {
+    const listaAlunos = document.getElementById("bloco-alunos");
+
+    cursosListados.forEach((item) => {
+      listaAlunos.innerHTML += `
+          <p class="dados-evasao">${item.total_evasao}</p>
+      `;
+      console.log(item)
+
+    })
+
+
   }
 
 

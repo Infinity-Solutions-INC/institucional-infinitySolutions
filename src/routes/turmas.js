@@ -7,4 +7,8 @@ router.get("/buscarTurmasPorCurso/:idUnidade/:idCurso", function (req, res) {
   turmasController.buscarTurmasPorCurso(req, res);
 });
 
+router.get("/buscarAlunosPorCurso/:idUnidade", function (req, res) {
+  turmasController.buscarAlunosPorCurso(req, res);
+});
+
 module.exports = router;

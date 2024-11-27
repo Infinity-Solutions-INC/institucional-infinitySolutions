@@ -211,7 +211,7 @@
 
       listaTurmas.innerHTML += `
          <div class="divisor-turma">
-            <span class="ano-turma">${item.ano_turma}</span>
+            <span class="ano-turma">TURMA DE ${item.ano_turma} (${item.turno_turma} | ${item.modalidade_turma})</span>
             <ion-icon name="create-outline" onclick="editarTurma('${item.codigo_turma}', '${item.ano_turma}', '${item.turno_turma}', '${item.modalidade_turma}', '${item.mensalidade_turma}')"></ion-icon>
           </div>
           <hr id="linha-curso">`;
