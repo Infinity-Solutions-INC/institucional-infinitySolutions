@@ -7,7 +7,7 @@ router.get("/buscarCursosPorUnidade/:idUnidade", function (req, res) {
   cursosController.buscarCursosPorUnidade(req, res);
 });
 
-router.post("/cadastrarCurso", function (req, res) {
+router.put("/cadastrarCurso", function (req, res) {
   cursosController.cadastrarCurso(req, res);
 });
 

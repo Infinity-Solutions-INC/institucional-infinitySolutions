@@ -122,19 +122,18 @@
             </div>
           </div>
           <div class="ranking">
-            <h2 onclick="cadastroCurso()" style="cursor: pointer">
-              MAIOR EVASÃO
-            </h2>
+            <div class="cabecalho">
+              <h2>
+                LISTA DE CURSOS
+              </h2>
+              <ion-icon name="ellipsis-horizontal-outline" id="edit-cursos" onclick="cadastroCurso()"></ion-icon>
+            </div>
             <div class="tabela-ev" style="margin-top: -5px">
               <div class="dados-curso">
-                <span class="tb-curso">
+                <span class="tb-curso" id="tb-cursos">
                   <b>CURSO</b>
-                  <p>SISTEMAS DE INFORMAÇÃO</p>
-                  <p>ENGENHARIA DE SOFTWARE</p>
-                  <p>CIÊNCIA DA COMPUTAÇÃO</p>
-                  <p>ANÁLISE E DESENVOLVIMENTO DE SISTEMAS</p>
-                  <p>REDES DE COMPUTADORES</p>
-                  <p>ENGENHARIA DE COMPUTAÇÃO</p>
+                  <span id="bloco-cursos">
+                  </span>
                 </span>
                 <span class="tb-alunos">
                   <b>ALUNOS</b>
@@ -165,20 +164,6 @@
                       >&#9664;
                       <!--  PRA ESQUERDA --></span
                     >
-                  </p>
-                  <p>
-                    50
-                    <span class="indicador" style="color: grey"
-                      >&#9664;
-                      <!--  PRA ESQUERDA --></span
-                    >
-                  </p>
-                  <p>
-                    25
-                    <span class="indicador" style="color: green"
-                      >&#9660;
-                      <!--  PRA BAIXO -->
-                    </span>
                   </p>
                 </span>
               </div>
@@ -236,6 +221,7 @@
   function sumirModal() {
     document.getElementById("nome_curso").value = "";
     document.getElementById("ano_curso").value = "";
+    cursoEmEdicao = null;
     const modais = document.querySelectorAll(".modal");
     modais.forEach((modal) => (modal.style.display = "none"));
   }
@@ -278,19 +264,28 @@
 
   buscarCursos();
 
-  setInterval(buscarCursos, 5000);
 
   function listarCursos(cursosListados) {
     const listaCursos = document.getElementById("lista-cursos");
+    const rankingCursos = document.getElementById("bloco-cursos")
     listaCursos.innerHTML = "";
+    rankingCursos.innerHTML = "";
 
     cursosListados.forEach((item) => {
-      listaCursos.innerHTML += `
-           <div class="divisor-curso">
-               <span class="nome-curso">${item.nome_curso}</span>
-               <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
-           </div>
-           <hr id="linha-curso">`;
+
+      if(item.ano_curso != null) {
+        listaCursos.innerHTML += `
+             <div class="divisor-curso">
+                 <span class="nome-curso">${item.nome_curso}</span>
+                 <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
+             </div>
+             <hr id="linha-curso">`;
+
+        rankingCursos.innerHTML += `
+            <p class="dados-curso">${item.nome_curso}</p>
+        `;       
+      }
+
     });
   }
 
@@ -318,7 +313,7 @@
       } else {
         // Se não for edição, faz o insert
         fetch(`/cursos/cadastrarCurso`, {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -338,7 +333,9 @@
           .then(function (data) {
             document.getElementById("nome_curso").value = "";
             document.getElementById("ano_curso").value = "";
+            cursoEmEdicao = null;
             alert("Curso registrado com sucesso!");
+            buscarCursos();
           })
           .catch(function (erro) {
             console.log(`#ERRO: ${erro.message}`);
@@ -375,7 +372,9 @@
         document.getElementById('registrar_curso').innerHTML = 'REGISTRAR'
         document.getElementById("nome_curso").value = "";
         document.getElementById("ano_curso").value = "";
+        cursoEmEdicao = null;
         alert("Curso atualizado com sucesso!");
+        buscarCursos();
       })
       .catch((erro) => {
         console.log(`#ERRO: ${erro.message}`);
@@ -412,6 +411,8 @@
         document.getElementById('registrar_curso').innerHTML = 'REGISTRAR'
         document.getElementById("nome_curso").value = "";
         document.getElementById("ano_curso").value = "";
+        cursoEmEdicao = null;
+        buscarCursos();
         alert("Curso deletado com sucesso!");
       })
       .catch((erro) => {
