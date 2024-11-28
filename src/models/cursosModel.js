@@ -1,7 +1,7 @@
 var database = require("../database/config");
 
 function buscarCursosPorUnidade(idUnidade) {
-  var buscarCursos = `SELECT codigo_curso, nome_curso, ano_curso FROM curso WHERE fkcodigo_instituicao = ${idUnidade}`;
+  var buscarCursos = `SELECT codigo_curso, nome_curso, ano_curso FROM curso WHERE fkcodigo_instituicao = ${idUnidade} AND ano_curso IS NOT NULL`;
 
   console.log("Executando a instrução SQL: \n" + buscarCursos);
   return database.executar(buscarCursos);

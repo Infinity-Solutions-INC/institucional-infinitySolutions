@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../css/dash.css" />
+        <link rel="stylesheet" href="../css/cad_turmas.css" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="../js/sessao.js"></script>
+        <script
+          type="module"
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+          nomodule
+          src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+        ></script>
+        <link rel="icon" href="../assets/logo.png" />
+        <title>Cadastrar Turmas</title>
+      </head>
+<body>
+    <section class="cad-turmas">
+        <div class="menu">
+            <div class="logo">
+              <img src="../assets/logo.png" alt="logo infinity" />
+              <h2 style="font-weight: lighter">
+                INFINITY <b style="font-weight: normal">SOLUTIONS</b>
+              </h2>
+            </div>
+            <div class="opcoes">
+              <a href="./dashboard.html">PRINCIPAL</a>
+              <a href="./filtrada.html">FILTRADA</a>
+              <a href="./relatorio_ia.html">RELATÓRIOS</a>
+              <a href="./dash_cadastro.html">CADASTRO</a>
+              <a href="./cad_turmas.html">TURMAS</a>
+              <span class="help">
+                <a href="./edit_perfil.html">CONFIGURAÇÕES</a>
+                <a href="#">SUPORTE</a>
+              </span>
+              <a onclick="sair()">ENCERRAR SESSÃO</a>
+            </div>
+          </div>
+          <div class="content">
+            <div class="navdash">
+              <span class="titulo"> LISTA DE <b>TURMAS</b> </span>
+            </div>
+          <div class="container">
+            <div class="form-cad-turmas">
+                <h2>CADASTRE UMA TURMA</h2>
+                <div class="content-forms">
+                    <span>
+                        CURSO: <br />
+                        <input type="text" id="nome_curso" placeholder="---" readonly>
+                    </span>
+                    <span>
+                        ANO: <br />
+                        <select name="select-anos" id="anos_curso">
+                            <option value="#" disabled selected> --- </option>
+                        </select>
+                    </span>
+                    <span>
+                        TURNO: <br />
+                        <select name="select-turno" id="turno_turma">
+                            <option value="#" disabled selected> --- </option>
+                            <option value="Matinal"> MATINAL </option>
+                            <option value="Vespertino"> VESPERTINO </option>
+                            <option value="Noturno"> NOTURNO </option>
+                        </select>
+                    </span>
+                    <span>
+                        MODALIDADE: <br />
+                        <select name="select-anos" id="modalidade_turma">
+                            <option value="#" disabled selected> --- </option>
+                            <option value="Presencial"> PRESENCIAL </option>
+                            <option value="Online"> ONLINE </option>
+                        </select>
+                    </span>
+                    <span>
+                        MENSALIDADE: <br />
+                        <input type="text" id="mensalidade_turma" placeholder="R$">
+                    </span>
+                    <div class="botoes-form">
+                        <button id="cadastrar_turma" onclick="cadastrarTurma()">CADASTRAR</button>
+                        <button onclick="deletarTurmas()">DELETAR</button>
+                    </div>
+                </div>
+            </div>
+            <div class="lista-turmas">
+                <h2>LISTA DE TURMAS</h2>
+                <div class="content-turmas" id="listaTurmas">
+                </div>
+            </div>
+            <div class="lista-cursos">
+                <h2>SELECIONE UM CURSO</h2>
+                <div class="content-cursos" id="listaCursos">
+                </div>
+            </div>
+          </div>
+    </section>
+</body>
+</html>
+
+<script>
+  let turmasDoCurso = null;
+  let turmaEmEdicao = null;
+  const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+  function buscarCursos() {
+
+    if (!idInstituicao) {
+      console.error("ID da instituição não definida");
+      return;
+    }
+
+    fetch(`/cursos/buscarCursosPorUnidade/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        /* funçãozinha pra listar os cursos e alunos no front */
+        listarCursos(data);
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  buscarCursos();
+
+
+  function listarCursos(cursosListados) {
+    const listaCursos = document.getElementById("listaCursos");
+    listaCursos.innerHTML = "";
+    const listaTurmas = document.getElementById("listaTurmas");
+    listaTurmas.innerHTML = "";
+
+    cursosListados.forEach((item) => {
+        listaCursos.innerHTML += `
+             <div class="divisor-curso">
+                 <span class="nome-curso" onclick="buscarTurmasPorCurso('${idInstituicao}', '${item.codigo_curso}', '${item.ano_curso}', '${item.nome_curso}')">${item.nome_curso}</span>
+             </div>
+             <hr id="linha-curso">
+             `;   
+            //  console.log(item.ano_curso)
+
+    });
+  }
+
+  function buscarTurmasPorCurso(idInstituicao, idCurso, anoCurso, nomeCurso){
+
+    if (!idInstituicao) {
+      console.error("ID da instituição não definida");
+      return;
+    }
+    turmasDoCurso = idCurso;
+    document.getElementById("anos_curso").value = "#";
+    document.getElementById("turno_turma").value = "#";
+    document.getElementById("modalidade_turma").value = "#";
+    document.getElementById("mensalidade_turma").value = "";
+    selectAnos(idCurso, anoCurso, nomeCurso);
+
+    // console.log(idInstituicao, idCurso)
+
+    fetch(`/turmas/buscarTurmasPorCurso/${idInstituicao}/${idCurso}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        /* funçãozinha pra listar as turmas no front */
+        listarTurmas(data);
+        // console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+        const listaTurmas = document.getElementById("listaTurmas");
+        listaTurmas.innerHTML = "";
+      });
+  }
+
+
+  function selectAnos(idCurso, anoCurso, nomeCurso) {
+    const anoInicio = parseInt(anoCurso, 10);
+    const anoAtual = new Date().getFullYear();
+    const selectAnosTurma = document.getElementById("anos_curso");
+    const nomeDoCurso = document.getElementById("nome_curso");
+    nomeDoCurso.value = nomeCurso
+    selectAnosTurma.innerHTML = '<option value="#"> --- </option>';
+    
+    if (!selectAnosTurma) {
+      console.error('Elemento <select> com ID "anos-curso" não encontrado.');
+        return;
+    }
+
+    // Adicionar as opções de ano
+    for (let ano = anoInicio; ano <= anoAtual; ano++) {
+        const option = document.createElement("option");
+        option.value = ano; // O valor será equivalente ao ano
+        option.textContent = ano; // O front também será o ano
+        selectAnosTurma.appendChild(option); // add a opção ao select
+    }
+}
+
+
+  function listarTurmas(turmasListadas, anoCurso) {
+    const listaTurmas = document.getElementById("listaTurmas");
+    listaTurmas.innerHTML = "";
+
+    turmasListadas.forEach((item) => {
+
+      listaTurmas.innerHTML += `
+         <div class="divisor-turma">
+            <span class="ano-turma">TURMA DE ${item.ano_turma} (${item.turno_turma} | ${item.modalidade_turma})</span>
+            <ion-icon name="create-outline" onclick="editarTurma('${item.codigo_turma}', '${item.ano_turma}', '${item.turno_turma}', '${item.modalidade_turma}', '${item.mensalidade_turma}')" class="edit-turma"></ion-icon>
+          </div>
+          <hr id="linha-curso">`;
+    })
+  }
+
+  function cadastrarTurma() {
+    const nomeDoCurso = nome_curso.value;
+    const anoDaTurma = anos_curso.value;
+    const turnoDaTurma = turno_turma.value;
+    const modalidadeDaTurma = modalidade_turma.value;
+    const mensalidadeDaTurma = mensalidade_turma.value;
+
+    console.log(`CADASTRO CURSO DE ${nomeDoCurso} NO ANO DE ${anoDaTurma} NO TURNO ${turnoDaTurma}, MODALIDADE ${modalidadeDaTurma}, COM MENSALIDADE DE ${mensalidadeDaTurma}`)
+
+    if (nomeDoCurso !== "" && anoDaTurma !== "" && turnoDaTurma !== "" && modalidadeDaTurma !== "" && mensalidadeDaTurma !== "") {
+        if(turmaEmEdicao !== null) {
+          atualizarTurma(turmaEmEdicao, turnoDaTurma, modalidadeDaTurma, mensalidadeDaTurma);
+        } else {
+        fetch(`/turmas/registrarTurmaPorCurso/${idInstituicao}/${turmasDoCurso}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idCursoServer: turmasDoCurso,
+            nomeDoCursoServer: nomeDoCurso,
+            anoDaTurmaServer: anoDaTurma,
+            turnoDaTurmaServer: turnoDaTurma,
+            modalidadeDaTurmaServer: modalidadeDaTurma,
+            mensalidadeDaTurmaServer: mensalidadeDaTurma
+          }),
+        })
+          .then(function (resposta) {
+            if (resposta.ok) {
+              return resposta.json();
+            } else {
+              throw new Error("Houve um erro ao registrar a turma!");
+            }
+          })
+          .then(function (data) {
+            document.getElementById("nome_curso").value = "";
+            document.getElementById("anos_curso").value = "#";
+            document.getElementById("turno_turma").value = "#";
+            document.getElementById("modalidade_turma").value = "#";
+            document.getElementById("mensalidade_turma").value = "";
+            alert("Turma registrada com sucesso!");
+            buscarCursos();
+          })
+          .catch(function (erro) {
+            console.log(`#ERRO: ${erro.message}`);
+            alert(erro.message);
+          });
+        }
+    } else {
+      alert("Dados inválidos");
+    }
+
+    return false;
+  }
+
+  function editarTurma(idTurma, anoTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
+    document.getElementById("cadastrar_turma").innerHTML = "ATUALIZAR";
+    turmaEmEdicao = idTurma;
+    console.log("Turma em edição: " + turmaEmEdicao)
+    anos_curso.value = anoTurma;
+    var anosCursoSelect = document.getElementById("anos_curso");
+    anosCursoSelect.disabled = true;
+    turno_turma.value = turnoTurma;
+    modalidade_turma.value = modalidadeTurma;
+    mensalidade_turma.value = mensalidadeTurma;
+  }
+
+  function atualizarTurma(idTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
+    fetch(`/turmas/atualizarTurma/${idTurma}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idTurmaServer: idTurma,
+        turnoDaTurmaServer: turnoTurma,
+        modalidadeDaTurmaServer: modalidadeTurma,
+        mensalidadeDaTurmaServer: mensalidadeTurma
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao atualizar a turma!");
+        }
+      })
+      .then((data) => {
+        document.getElementById("cadastrar_turma").innerHTML = "REGISTRAR";
+        document.getElementById("anos_curso").value = "#";
+        document.getElementById("turno_turma").value = "#";
+        document.getElementById("modalidade_turma").value = "#";
+        document.getElementById("mensalidade_turma").value = "";
+        turmaEmEdicao = null;
+        alert("Turma atualizada com sucesso!");
+        buscarCursos();
+      })
+      .catch((erro) => {
+        console.log(`#ERRO: ${erro.message}`);
+        alert(erro.message);
+      });
+  }
+
+  function deletarTurmas() {
+
+    if(turmaEmEdicao == null) {
+      alert("Não há turmas para serem excluídas")
+      return;
+    }
+
+    fetch(`/turmas/deletarTurmas`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idTurmaServer: turmaEmEdicao
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao deletar a turma!");
+        }
+      })
+      .then((data) => {
+        document.getElementById("cadastrar_turma").innerHTML = "REGISTRAR";
+        document.getElementById("nome_curso").value = "";
+        document.getElementById("anos_curso").value = "#";
+        document.getElementById("turno_turma").value = "#";
+        document.getElementById("modalidade_turma").value = "#";
+        document.getElementById("mensalidade_turma").value = "";
+        turmaEmEdicao = null;
+        alert("Turma deletada com sucesso!");
+        buscarCursos();
+      })
+      .catch((erro) => {
+        console.log(`#ERRO: ${erro.message}`);
+        alert(erro.message);
+      });
+
+  }
+
+
+</script>
