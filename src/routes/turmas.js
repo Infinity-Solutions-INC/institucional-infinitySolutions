@@ -11,4 +11,16 @@ router.get("/buscarAlunosPorCurso/:idUnidade", function (req, res) {
   turmasController.buscarAlunosPorCurso(req, res);
 });
 
+router.put("/registrarTurmaPorCurso/:idUnidade/:idCurso", function (req, res) {
+  turmasController.registrarTurmaPorCurso(req, res);
+});
+
+router.put("/atualizarTurma/:idTurma", function (req, res) {
+  turmasController.atualizarTurma(req, res);
+});
+
+router.post("/deletarTurma", function (req, res) {
+  turmasController.deletarTurma(req, res);
+});
+
 module.exports = router;

@@ -37,7 +37,9 @@
                 <input type="number" id="ano_curso" />
               </span>
               <div class="botoes-modal">
-                <button id="registrar_curso" onclick="registrarCurso()">REGISTRAR</button>
+                <button id="registrar_curso" onclick="registrarCurso()">
+                  REGISTRAR
+                </button>
                 <button onclick="deletarCurso()">EXCLUIR</button>
               </div>
             </div>
@@ -112,22 +114,23 @@
           </div>
           <div class="ranking">
             <div class="cabecalho">
-              <h2>
-                LISTA DE CURSOS
-              </h2>
-              <ion-icon name="ellipsis-horizontal-outline" id="edit-cursos" onclick="cadastroCurso()"></ion-icon>
+              <h2>LISTA DE CURSOS</h2>
+              <ion-icon
+                name="ellipsis-horizontal-outline"
+                id="edit-cursos"
+                onclick="cadastroCurso()"
+              ></ion-icon>
             </div>
             <div class="tabela-ev" style="margin-top: -5px">
               <div class="dados-curso">
                 <span class="tb-curso" id="tb-cursos">
                   <b>CURSO</b>
-                  <span id="bloco-cursos">
-                  </span>
+                  <span id="bloco-cursos"> </span>
                 </span>
                 <span class="tb-alunos">
                   <b>ALUNOS</b>
-                  <span id="bloco-alunos">
-                  </span>
+                  <span id="bloco-alunos"> </span>
+                </span>
               </div>
             </div>
           </div>
@@ -183,7 +186,7 @@
   function sumirModal() {
     document.getElementById("nome_curso").value = "";
     document.getElementById("ano_curso").value = "";
-    document.getElementById('registrar_curso').innerHTML = 'REGISTRAR';
+    document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
     cursoEmEdicao = null;
     const modais = document.querySelectorAll(".modal");
     modais.forEach((modal) => (modal.style.display = "none"));
@@ -219,36 +222,35 @@
         /* funçãozinha pra listar os cursos e alunos no front */
         listarCursos(data);
         console.log(data);
-        
+
         /* buscar alunos dos cursos*/
 
         fetch(`/turmas/buscarAlunosPorCurso/${idInstituicao}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(function (resposta) {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          throw new Error("Houve um erro ao tentar trazer o resultado");
-        }
-      })
-      .then(function (data) {
-        if (data.length === 0) {
-          console.warn("Nenhum resultado encontrado");
-          return;
-        }
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then(function (resposta) {
+            if (resposta.ok) {
+              return resposta.json();
+            } else {
+              throw new Error("Houve um erro ao tentar trazer o resultado");
+            }
+          })
+          .then(function (data) {
+            if (data.length === 0) {
+              console.warn("Nenhum resultado encontrado");
+              return;
+            }
 
-        /* funçãozinha pra listar os cursos e alunos no front */
-        console.log(data);
-        listarAlunos(data);
-      })
-      .catch(function (erro) {
-        console.error(`#ERRO: ${erro}`);
-      });
-
+            /* funçãozinha pra listar os cursos e alunos no front */
+            console.log(data);
+            listarAlunos(data);
+          })
+          .catch(function (erro) {
+            console.error(`#ERRO: ${erro}`);
+          });
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
@@ -257,51 +259,43 @@
 
   buscarCursos();
 
-
   function listarCursos(cursosListados) {
     const listaCursos = document.getElementById("lista-cursos");
-    const rankingCursos = document.getElementById("bloco-cursos")
     listaCursos.innerHTML = "";
-    rankingCursos.innerHTML = "";
 
     cursosListados.forEach((item) => {
-
       // if(item.ano_curso != null) {
-        listaCursos.innerHTML += `
+      listaCursos.innerHTML += `
              <div class="divisor-curso">
                  <span class="nome-curso">${item.nome_curso}</span>
                  <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
              </div>
              <hr id="linha-curso">`;
-
-        rankingCursos.innerHTML += `
-            <p class="dados-curso">${item.nome_curso}</p>
-        `;       
       // }
-
     });
   }
 
-
-
   function listarAlunos(cursosListados) {
+    const rankingCursos = document.getElementById("bloco-cursos");
     const listaAlunos = document.getElementById("bloco-alunos");
 
     cursosListados.forEach((item) => {
+      /* aqui só vai listar os cursos que possuem turmas registradas */
+
+      rankingCursos.innerHTML += `
+            <p class="dados-curso">${item.nome_curso}</p>
+        `;
       listaAlunos.innerHTML += `
           <p class="dados-evasao">${item.total_evasao}</p>
+          
       `;
-      console.log(item)
 
-    })
-
-
+      console.log(item);
+    });
   }
 
-
-
   function editarCurso(idCurso, nome, ano) {
-    document.getElementById('registrar_curso').innerHTML = 'ATUALIZAR';
+    document.getElementById("registrar_curso").innerHTML = "ATUALIZAR";
     cursoEmEdicao = idCurso;
     nome_curso.value = nome;
     ano_curso.value = ano;
@@ -380,7 +374,7 @@
         }
       })
       .then((data) => {
-        document.getElementById('registrar_curso').innerHTML = 'REGISTRAR';
+        document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
         document.getElementById("nome_curso").value = "";
         document.getElementById("ano_curso").value = "";
         cursoEmEdicao = null;
@@ -419,7 +413,7 @@
         }
       })
       .then((data) => {
-        document.getElementById('registrar_curso').innerHTML = 'REGISTRAR'
+        document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
         document.getElementById("nome_curso").value = "";
         document.getElementById("ano_curso").value = "";
         cursoEmEdicao = null;

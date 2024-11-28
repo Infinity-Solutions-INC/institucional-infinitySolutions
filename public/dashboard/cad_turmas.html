@@ -58,38 +58,38 @@
                 <div class="content-forms">
                     <span>
                         CURSO: <br />
-                        <input type="text" id="nome_curso" placeholder="---">
+                        <input type="text" id="nome_curso" placeholder="---" readonly>
                     </span>
                     <span>
                         ANO: <br />
-                        <select name="select-anos" id="anos-curso">
-                            <option value="0"> --- </option>
+                        <select name="select-anos" id="anos_curso">
+                            <option value="#"> --- </option>
                         </select>
                     </span>
                     <span>
                         TURNO: <br />
-                        <select name="select-turno" id="anos-curso">
-                            <option value="0"> --- </option>
-                            <option value="0"> MATINAL </option>
-                            <option value="0"> VESPERTINO </option>
-                            <option value="0"> NOTURNO </option>
+                        <select name="select-turno" id="turno_turma">
+                            <option value="#"> --- </option>
+                            <option value="Matinal"> MATINAL </option>
+                            <option value="Vespertino"> VESPERTINO </option>
+                            <option value="Noturno"> NOTURNO </option>
                         </select>
                     </span>
                     <span>
                         MODALIDADE: <br />
-                        <select name="select-anos" id="anos-curso">
-                            <option value="0"> --- </option>
-                            <option value="0"> PRESENCIAL </option>
-                            <option value="0"> ONLINE </option>
+                        <select name="select-anos" id="modalidade_turma">
+                            <option value="#"> --- </option>
+                            <option value="Presencial"> PRESENCIAL </option>
+                            <option value="Online"> ONLINE </option>
                         </select>
                     </span>
                     <span>
                         MENSALIDADE: <br />
-                        <input type="text" id="mensalidade-turma" placeholder="R$">
+                        <input type="text" id="mensalidade_turma" placeholder="R$">
                     </span>
                     <div class="botoes-form">
-                        <button id="cadastrar_curso" onclick="cadastrarCurso()">CADASTRAR</button>
-                        <button onclick="deletarCurso()">DELETAR</button>
+                        <button id="cadastrar_turma" onclick="cadastrarTurma()">CADASTRAR</button>
+                        <button onclick="deletarTurmas()">DELETAR</button>
                     </div>
                 </div>
             </div>
@@ -109,7 +109,8 @@
 </html>
 
 <script>
-  let turmaEmEdicao = null
+  let turmasDoCurso = null;
+  let turmaEmEdicao = null;
   const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
 
   function buscarCursos() {
@@ -153,24 +154,32 @@
   function listarCursos(cursosListados) {
     const listaCursos = document.getElementById("listaCursos");
     listaCursos.innerHTML = "";
+    const listaTurmas = document.getElementById("listaTurmas");
+    listaTurmas.innerHTML = "";
 
     cursosListados.forEach((item) => {
         listaCursos.innerHTML += `
              <div class="divisor-curso">
-                 <span class="nome-curso" onclick="buscarTurmasPorCurso('${idInstituicao}', '${item.codigo_curso}')">${item.nome_curso}</span>
+                 <span class="nome-curso" onclick="buscarTurmasPorCurso('${idInstituicao}', '${item.codigo_curso}', '${item.ano_curso}', '${item.nome_curso}')">${item.nome_curso}</span>
              </div>
              <hr id="linha-curso">`;   
-             console.log(item)
+             console.log(item.ano_curso)
 
     });
   }
 
-  function buscarTurmasPorCurso(idInstituicao, idCurso){
+  function buscarTurmasPorCurso(idInstituicao, idCurso, anoCurso, nomeCurso){
 
     if (!idInstituicao) {
       console.error("ID da instituição não definida");
       return;
     }
+    turmasDoCurso = idCurso;
+    document.getElementById("anos_curso").value = "#";
+    document.getElementById("turno_turma").value = "#";
+    document.getElementById("modalidade_turma").value = "#";
+    document.getElementById("mensalidade_turma").value = "";
+    selectAnos(idCurso, anoCurso, nomeCurso);
 
     console.log(idInstituicao, idCurso)
 
@@ -199,11 +208,36 @@
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
+        const listaTurmas = document.getElementById("listaTurmas");
+        listaTurmas.innerHTML = "";
       });
   }
 
 
-  function listarTurmas(turmasListadas) {
+  function selectAnos(idCurso, anoCurso, nomeCurso) {
+    const anoInicio = parseInt(anoCurso, 10);
+    const anoAtual = new Date().getFullYear();
+    const selectAnosTurma = document.getElementById("anos_curso");
+    const nomeDoCurso = document.getElementById("nome_curso");
+    nomeDoCurso.value = nomeCurso
+    selectAnosTurma.innerHTML = '<option value="#"> --- </option>';
+    
+    if (!selectAnosTurma) {
+      console.error('Elemento <select> com ID "anos-curso" não encontrado.');
+        return;
+    }
+
+    // Adicionar as opções de ano
+    for (let ano = anoInicio; ano <= anoAtual; ano++) {
+        const option = document.createElement("option");
+        option.value = ano; // O valor será equivalente ao ano
+        option.textContent = ano; // O front também será o ano
+        selectAnosTurma.appendChild(option); // add a opção ao select
+    }
+}
+
+
+  function listarTurmas(turmasListadas, anoCurso) {
     const listaTurmas = document.getElementById("listaTurmas");
     listaTurmas.innerHTML = "";
 
@@ -212,10 +246,152 @@
       listaTurmas.innerHTML += `
          <div class="divisor-turma">
             <span class="ano-turma">TURMA DE ${item.ano_turma} (${item.turno_turma} | ${item.modalidade_turma})</span>
-            <ion-icon name="create-outline" onclick="editarTurma('${item.codigo_turma}', '${item.ano_turma}', '${item.turno_turma}', '${item.modalidade_turma}', '${item.mensalidade_turma}')"></ion-icon>
+            <ion-icon name="create-outline" onclick="editarTurma('${item.codigo_turma}', '${item.ano_turma}', '${item.turno_turma}', '${item.modalidade_turma}', '${item.mensalidade_turma}')" class="edit-turma"></ion-icon>
           </div>
           <hr id="linha-curso">`;
     })
+  }
+
+  function cadastrarTurma() {
+    const nomeDoCurso = nome_curso.value;
+    const anoDaTurma = anos_curso.value;
+    const turnoDaTurma = turno_turma.value;
+    const modalidadeDaTurma = modalidade_turma.value;
+    const mensalidadeDaTurma = mensalidade_turma.value;
+
+    console.log(`CADASTRO CURSO DE ${nomeDoCurso} NO ANO DE ${anoDaTurma} NO TURNO ${turnoDaTurma}, MODALIDADE ${modalidadeDaTurma}, COM MENSALIDADE DE ${mensalidadeDaTurma}`)
+
+    if (nomeDoCurso !== "" && anoDaTurma !== "" && turnoDaTurma !== "" && modalidadeDaTurma !== "" && mensalidadeDaTurma !== "") {
+        if(turmaEmEdicao !== null) {
+          atualizarTurma(turmaEmEdicao, anoDaTurma, turnoDaTurma, modalidadeDaTurma, mensalidadeDaTurma);
+        } else {
+        fetch(`/turmas/registrarTurmaPorCurso/${idInstituicao}/${turmasDoCurso}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idInstituicaoServer: idInstituicao,
+            idCursoServer: turmasDoCurso,
+            nomeDoCursoServer: nomeDoCurso,
+            anoDaTurmaServer: anoDaTurma,
+            turnoDaTurmaServer: turnoDaTurma,
+            modalidadeDaTurmaServer: modalidadeDaTurma,
+            mensalidadeDaTurmaServer: mensalidadeDaTurma
+          }),
+        })
+          .then(function (resposta) {
+            if (resposta.ok) {
+              return resposta.json();
+            } else {
+              throw new Error("Houve um erro ao registrar o curso!");
+            }
+          })
+          .then(function (data) {
+            document.getElementById("nome_curso").value = "";
+            document.getElementById("anos_curso").value = "#";
+            document.getElementById("turno_turma").value = "#";
+            document.getElementById("modalidade_turma").value = "#";
+            document.getElementById("mensalidade_turma").value = "";
+            buscarCursos();
+          })
+          .catch(function (erro) {
+            console.log(`#ERRO: ${erro.message}`);
+            alert(erro.message);
+          });
+        }
+    } else {
+      alert("Dados inválidos");
+    }
+
+    return false;
+  }
+
+  function editarTurma(idTurma, anoTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
+    document.getElementById("cadastrar_turma").innerHTML = "ATUALIZAR";
+    turmaEmEdicao = idTurma;
+    anos_curso.value = anoTurma;
+    var anosCursoSelect = document.getElementById("anos_curso");
+    anosCursoSelect.disabled = true;
+    turno_turma.value = turnoTurma;
+    modalidade_turma.value = modalidadeTurma;
+    mensalidade_turma.value = mensalidadeTurma;
+  }
+
+  function atualizarTurma(idTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
+    fetch(`/turmas/atualizarTurma/${idTurma}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idTurmaServer: idTurma,
+        turnoDaTurmaServer: turnoTurma,
+        modalidadeDaTurmaServer: modalidadeTurma,
+        mensalidadeDaTurmaServer: mensalidadeTurma
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao atualizar o curso!");
+        }
+      })
+      .then((data) => {
+        document.getElementById("cadastrar_turma").innerHTML = "REGISTRAR";
+        document.getElementById("anos_curso").value = "#";
+        document.getElementById("turno_turma").value = "#";
+        document.getElementById("modalidade_turma").value = "#";
+        document.getElementById("mensalidade_turma").value = "";
+        turmaEmEdicao = null;
+        buscarCursos();
+      })
+      .catch((erro) => {
+        console.log(`#ERRO: ${erro.message}`);
+        alert(erro.message);
+      });
+  }
+
+  function deletarTurmas() {
+
+    if(turmaEmEdicao == null) {
+      alert("Não há turmas para serem excluídas")
+      return;
+    }
+
+    fetch(`/turmas/deletarTurmas`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idTurmaServer: turmaEmEdicao
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao deletar a turma!");
+        }
+      })
+      .then((data) => {
+        document.getElementById("cadastrar_turma").innerHTML = "REGISTRAR";
+        document.getElementById("nome_curso").value = "";
+        document.getElementById("anos_curso").value = "#";
+        document.getElementById("turno_turma").value = "#";
+        document.getElementById("modalidade_turma").value = "#";
+        document.getElementById("mensalidade_turma").value = "";
+        turmaEmEdicao = null;
+        // alert("Turma deletada com sucesso!");
+        buscarCursos();
+      })
+      .catch((erro) => {
+        console.log(`#ERRO: ${erro.message}`);
+        alert(erro.message);
+      });
+
   }
 
 

@@ -53,6 +53,7 @@
     display: flex;
     border-radius: 20px 2px 20px 2px;
     flex-direction: column;
+    text-transform: uppercase;
 }
 
 .content-forms {
@@ -62,4 +63,30 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+.content-forms input, select {
+    display: flex;
+    width: 100%;
+}
+
+#nome_curso {
+    outline: none;
+    border: none;
+    cursor: default;
+    background-color: transparent;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+.edit-turma:hover {
+    cursor: pointer;
+    color: black;
+    transition: all 0.3s;
+}
+
+.nome-curso:hover {
+    cursor: pointer;
+    color: black;
+    transition: all 0.3s;
 }

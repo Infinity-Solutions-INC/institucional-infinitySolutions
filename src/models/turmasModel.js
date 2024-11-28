@@ -43,7 +43,66 @@ GROUP BY
   return database.executar(buscarTurmas);
 }
 
+function registrarTurmaPorCurso(idUnidade, idCurso, nomeCurso, anoTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
+  var registrarTurma = `UPDATE turma t
+INNER JOIN curso c ON t.fkcodigo_curso = c.codigo_curso
+JOIN (
+    SELECT t1.codigo_turma
+    FROM turma t1
+    INNER JOIN curso c1 ON t1.fkcodigo_curso = c1.codigo_curso
+    WHERE 
+        c1.nome_curso = '${nomeCurso}'
+        AND t1.ano_turma = '${anoTurma}'
+        AND c1.codigo_curso = '${idCurso}'
+        AND c1.fkcodigo_instituicao = '${idUnidade}'
+        AND t1.turno_turma IS NULL
+        AND t1.modalidade_turma IS NULL
+        AND t1.mensalidade_turma IS NULL
+    ORDER BY t1.ano_turma DESC
+    LIMIT 1
+) AS subquery ON t.codigo_turma = subquery.codigo_turma
+SET 
+    t.turno_turma = '${turnoTurma}', 
+    t.modalidade_turma = '${modalidadeTurma}', 
+    t.mensalidade_turma = '${mensalidadeTurma}';
+  
+  `;
+  console.log("Execurando a instrução SQL: \n" + registrarTurma);
+  return database.executar(registrarTurma);
+}
+
+function atualizarTurma(idTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
+  var atualizarTurma = `
+  UPDATE turma
+  SET
+  turno_turma = '${turnoTurma}',
+  modalidade_turma = '${modalidadeTurma}',
+  mensalidade_turma = '${mensalidadeTurma}'
+  WHERE
+  codigo_turma = '${idTurma}';
+  `;
+  console.log("Execurando a instrução SQL: \n" + atualizarTurma);
+  return database.executar(atualizarTurma);
+}
+
+function deletarTurma(idTurma) {
+  var deletarTurma = `
+  UPDATE turma
+  SET
+  turno_turma = null,
+  modalidade_turma = null,
+  mensalidade_turma = null
+  WHERE
+  codigo_turma = '${idTurma}'
+  `;
+  console.log("Execurando a instrução SQL: \n" + deletarTurma);
+  return database.executar(deletarTurma);
+}
+
 module.exports = {
   buscarTurmasPorCurso,
   buscarAlunosPorCurso,
+  registrarTurmaPorCurso,
+  atualizarTurma,
+  deletarTurma
 };
