@@ -81,7 +81,7 @@ function atualizarTurma(req, res) {
 
   if (idTurma == undefined) {
     res.status(400).send("O id da turma está undefined!");
-  } else if (anoDaTurma == undefined) {
+  } else if (turnoDaTurma == undefined) {
     res.status(400).send("O ano da turma está undefined!");
   } else {
     console.log("Dados válidos!");

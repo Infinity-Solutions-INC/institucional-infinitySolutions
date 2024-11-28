@@ -13,7 +13,6 @@
 }
 
 .form-cad-turmas {
-    /* background-color: yellow; */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -24,7 +23,6 @@
 }
 
 .lista-turmas {
-    /* background-color: aqua; */
     width: 70%;
     display: flex;
     flex-direction: column;
@@ -35,7 +33,6 @@
 }
 
 .lista-cursos {
-    /* background-color: brown;    */
     margin-right: 40px;
     width: 70%;
     display: flex;
@@ -46,29 +43,80 @@
 }
 
 .content-cursos, .content-turmas {
-    background-color: red;
+    background-color:#1c3a87;
     width: 80%;
     height: 100%;
     padding: 25px;
+    gap: 10px;
+    font-size: 20px;
     display: flex;
     border-radius: 20px 2px 20px 2px;
     flex-direction: column;
     text-transform: uppercase;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .content-forms {
-    background-color: red;
+    background-color: #1c3a87;
+    border-radius: 20px 2px 20px 2px;
     padding: 25px;
     width: 100%;
+    font-size: 24px;
     height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 30px;
 }
 
-.content-forms input, select {
+.content-forms input, .content-forms select {
+    height: 50%;
+    border: solid 1px #00e5ff;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #fff;
+    box-shadow: 1px 4px 5px #00e5ff;
+    border-radius: 5px;
+    font-size: 100%;
+    padding-left: 10px;
+    font-weight: bold;
+  }
+
+.divisor-curso:hover {
+    background-color: #00E5FF;
+    color: #1c3a87;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.content-forms input, .content-forms select {
     display: flex;
     width: 100%;
+    background-color: #1c3a87;
 }
+
+.botoes-form {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+    margin-top: 15px;
+  }
+  
+  .content-forms button {
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    border: 1px solid aqua;
+    outline: none;
+    background-color: transparent;
+    color: #fff;
+    margin: 2%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 3px;
+  }
 
 #nome_curso {
     outline: none;
@@ -79,14 +127,23 @@
     font-size: 20px;
 }
 
+#linha-curso{
+    width: 98%;
+    border: 1px solid #00E5FF;
+    margin: 0 auto;
+}
+
+ion-icon{
+  font-size: 1.5rem;
+  color: #00E5FF;
+}
+
 .edit-turma:hover {
     cursor: pointer;
-    color: black;
+    color: #fff;
     transition: all 0.3s;
 }
 
-.nome-curso:hover {
-    cursor: pointer;
-    color: black;
-    transition: all 0.3s;
-}
+ion-icon.ativo {
+    color: white;
+  }

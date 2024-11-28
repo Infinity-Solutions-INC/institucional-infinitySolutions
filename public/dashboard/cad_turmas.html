@@ -43,14 +43,7 @@
           </div>
           <div class="content">
             <div class="navdash">
-              <span class="titulo"> CADASTRAR <b>TURMAS</b> </span>
-              <div class="navdash-menu">
-                <img src="../assets/tomas.png" alt="" class="img-navbar-menu" />
-                <span>Tomás Galleno</span>
-                <button class="btn-navbar-menu">
-                  <img src="../assets/downArrow.png" alt="" />
-                </button>
-              </div>
+              <span class="titulo"> LISTA DE <b>TURMAS</b> </span>
             </div>
           <div class="container">
             <div class="form-cad-turmas">
@@ -63,13 +56,13 @@
                     <span>
                         ANO: <br />
                         <select name="select-anos" id="anos_curso">
-                            <option value="#"> --- </option>
+                            <option value="#" disabled selected> --- </option>
                         </select>
                     </span>
                     <span>
                         TURNO: <br />
                         <select name="select-turno" id="turno_turma">
-                            <option value="#"> --- </option>
+                            <option value="#" disabled selected> --- </option>
                             <option value="Matinal"> MATINAL </option>
                             <option value="Vespertino"> VESPERTINO </option>
                             <option value="Noturno"> NOTURNO </option>
@@ -78,7 +71,7 @@
                     <span>
                         MODALIDADE: <br />
                         <select name="select-anos" id="modalidade_turma">
-                            <option value="#"> --- </option>
+                            <option value="#" disabled selected> --- </option>
                             <option value="Presencial"> PRESENCIAL </option>
                             <option value="Online"> ONLINE </option>
                         </select>
@@ -162,8 +155,9 @@
              <div class="divisor-curso">
                  <span class="nome-curso" onclick="buscarTurmasPorCurso('${idInstituicao}', '${item.codigo_curso}', '${item.ano_curso}', '${item.nome_curso}')">${item.nome_curso}</span>
              </div>
-             <hr id="linha-curso">`;   
-             console.log(item.ano_curso)
+             <hr id="linha-curso">
+             `;   
+            //  console.log(item.ano_curso)
 
     });
   }
@@ -181,7 +175,7 @@
     document.getElementById("mensalidade_turma").value = "";
     selectAnos(idCurso, anoCurso, nomeCurso);
 
-    console.log(idInstituicao, idCurso)
+    // console.log(idInstituicao, idCurso)
 
     fetch(`/turmas/buscarTurmasPorCurso/${idInstituicao}/${idCurso}`, {
       method: "GET",
@@ -204,7 +198,7 @@
 
         /* funçãozinha pra listar as turmas no front */
         listarTurmas(data);
-        console.log(data);
+        // console.log(data);
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
@@ -263,7 +257,7 @@
 
     if (nomeDoCurso !== "" && anoDaTurma !== "" && turnoDaTurma !== "" && modalidadeDaTurma !== "" && mensalidadeDaTurma !== "") {
         if(turmaEmEdicao !== null) {
-          atualizarTurma(turmaEmEdicao, anoDaTurma, turnoDaTurma, modalidadeDaTurma, mensalidadeDaTurma);
+          atualizarTurma(turmaEmEdicao, turnoDaTurma, modalidadeDaTurma, mensalidadeDaTurma);
         } else {
         fetch(`/turmas/registrarTurmaPorCurso/${idInstituicao}/${turmasDoCurso}`, {
           method: "PUT",
@@ -284,7 +278,7 @@
             if (resposta.ok) {
               return resposta.json();
             } else {
-              throw new Error("Houve um erro ao registrar o curso!");
+              throw new Error("Houve um erro ao registrar a turma!");
             }
           })
           .then(function (data) {
@@ -293,6 +287,7 @@
             document.getElementById("turno_turma").value = "#";
             document.getElementById("modalidade_turma").value = "#";
             document.getElementById("mensalidade_turma").value = "";
+            alert("Turma registrada com sucesso!");
             buscarCursos();
           })
           .catch(function (erro) {
@@ -310,6 +305,7 @@
   function editarTurma(idTurma, anoTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
     document.getElementById("cadastrar_turma").innerHTML = "ATUALIZAR";
     turmaEmEdicao = idTurma;
+    console.log("Turma em edição: " + turmaEmEdicao)
     anos_curso.value = anoTurma;
     var anosCursoSelect = document.getElementById("anos_curso");
     anosCursoSelect.disabled = true;
@@ -335,7 +331,7 @@
         if (resposta.ok) {
           return resposta.json();
         } else {
-          throw new Error("Houve um erro ao atualizar o curso!");
+          throw new Error("Houve um erro ao atualizar a turma!");
         }
       })
       .then((data) => {
@@ -345,6 +341,7 @@
         document.getElementById("modalidade_turma").value = "#";
         document.getElementById("mensalidade_turma").value = "";
         turmaEmEdicao = null;
+        alert("Turma atualizada com sucesso!");
         buscarCursos();
       })
       .catch((erro) => {
@@ -384,7 +381,7 @@
         document.getElementById("modalidade_turma").value = "#";
         document.getElementById("mensalidade_turma").value = "";
         turmaEmEdicao = null;
-        // alert("Turma deletada com sucesso!");
+        alert("Turma deletada com sucesso!");
         buscarCursos();
       })
       .catch((erro) => {
