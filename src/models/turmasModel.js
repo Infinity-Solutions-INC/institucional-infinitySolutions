@@ -15,15 +15,29 @@ function buscarTurmasPorCurso(idUnidade, idCurso) {
 }
 
 function buscarAlunosPorCurso(idUnidade) {
-  var buscarTurmas = `    SELECT
+  var buscarTurmas = `
+      SELECT
     curso.nome_curso,
+    turma.ano_turma AS ano_atual,
     SUM(turma.qtd_ingressantes) AS total_ingressantes,
     SUM(turma.qtd_alunos_permanencia) AS total_permanentes,
-    SUM(turma.qtd_ingressantes - turma.qtd_alunos_permanencia) AS total_evasao
+    SUM(turma.qtd_ingressantes - turma.qtd_alunos_permanencia) AS total_evasao,
+    (
+        SELECT 
+            COALESCE(SUM(t_anterior.qtd_ingressantes - t_anterior.qtd_alunos_permanencia), 0)
+        FROM 
+            turma t_anterior
+        WHERE 
+            t_anterior.fkcodigo_curso = turma.fkcodigo_curso
+            AND t_anterior.ano_turma = turma.ano_turma - 1
+            AND t_anterior.turno_turma IS NOT NULL
+            AND t_anterior.modalidade_turma IS NOT NULL
+            AND t_anterior.mensalidade_turma IS NOT NULL
+    ) AS evasao_anterior
 FROM
-    turma turma
+    turma
 INNER JOIN
-    curso curso
+    curso
     ON turma.fkcodigo_curso = curso.codigo_curso
 WHERE
     curso.fkcodigo_instituicao = '${idUnidade}'
@@ -31,19 +45,29 @@ WHERE
     AND turma.modalidade_turma IS NOT NULL
     AND turma.mensalidade_turma IS NOT NULL
     AND turma.ano_turma = (
-        SELECT MAX(ano_turma)
-        FROM turma
-        WHERE modalidade_turma IS NOT NULL
+        SELECT MAX(t2.ano_turma)
+        FROM turma t2
+        WHERE t2.fkcodigo_curso = turma.fkcodigo_curso
+          AND t2.modalidade_turma IS NOT NULL
     )
 GROUP BY
-    curso.codigo_curso, curso.nome_curso;
+    curso.codigo_curso, curso.nome_curso, turma.ano_turma;
+
 `;
 
   console.log("Executando a instrução SQL: \n" + buscarTurmas);
   return database.executar(buscarTurmas);
 }
 
-function registrarTurmaPorCurso(idUnidade, idCurso, nomeCurso, anoTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
+function registrarTurmaPorCurso(
+  idUnidade,
+  idCurso,
+  nomeCurso,
+  anoTurma,
+  turnoTurma,
+  modalidadeTurma,
+  mensalidadeTurma
+) {
   var registrarTurma = `UPDATE turma t
 INNER JOIN curso c ON t.fkcodigo_curso = c.codigo_curso
 JOIN (
@@ -71,7 +95,12 @@ SET
   return database.executar(registrarTurma);
 }
 
-function atualizarTurma(idTurma, turnoTurma, modalidadeTurma, mensalidadeTurma) {
+function atualizarTurma(
+  idTurma,
+  turnoTurma,
+  modalidadeTurma,
+  mensalidadeTurma
+) {
   var atualizarTurma = `
   UPDATE turma
   SET
@@ -104,5 +133,5 @@ module.exports = {
   buscarAlunosPorCurso,
   registrarTurmaPorCurso,
   atualizarTurma,
-  deletarTurma
+  deletarTurma,
 };

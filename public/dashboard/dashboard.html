@@ -94,21 +94,23 @@
             <h2>KPIs</h2>
             <div class="box-kpi" style="margin-top: -15px">
               <span class="titulo-kpi"> CURSO COM MAIOR EVASÃO </span>
-              <span class="dado-kpi"> SISTEMAS DE INFORMAÇÃO </span>
-              <span class="legenda-kpi"> 70% DOS ALUNOS TOTAIS </span>
+              <span class="dado-kpi">
+                <p id="curso_maior_evasao"></p>
+              </span>
+              <span class="legenda-kpi"> X% DOS ALUNOS TOTAIS </span>
             </div>
             <div class="box-kpi">
-              <span class="titulo-kpi"> TURNO DO CURSO </span>
-              <span class="dado-kpi"> NOTURNO </span>
+              <span class="titulo-kpi"> TURNO COM MAIOR EVASÃO </span>
+              <span class="dado-kpi"> XXX </span>
               <span class="legenda-kpi">
-                60% DAS MATRICULAS SÃO NESSE TURNO
+                X% DAS MATRICULAS SÃO NESSE TURNO
               </span>
             </div>
             <div class="box-kpi">
-              <span class="titulo-kpi"> MODALIDADE DO CURSO </span>
-              <span class="dado-kpi"> ONLINE </span>
+              <span class="titulo-kpi"> MODALIDADE COM MAIOR EVASÃO </span>
+              <span class="dado-kpi"> XXX </span>
               <span class="legenda-kpi">
-                75% DAS MATRICULAS SÃO NESSE TURNO
+                X% DAS MATRICULAS SÃO NESSE TURNO
               </span>
             </div>
           </div>
@@ -275,24 +277,49 @@
     });
   }
 
+
   function listarAlunos(cursosListados) {
-    const rankingCursos = document.getElementById("bloco-cursos");
-    const listaAlunos = document.getElementById("bloco-alunos");
+  const rankingCursos = document.getElementById("bloco-cursos");
+  const listaAlunos = document.getElementById("bloco-alunos");
+  rankingCursos.innerHTML = "";
+  listaAlunos.innerHTML = "";
 
-    cursosListados.forEach((item) => {
-      /* aqui só vai listar os cursos que possuem turmas registradas */
+  // Ordena os cursos que possuem turmas pela maior evasão
+  cursosListados.sort((a, b) => parseInt(b.total_evasao) - parseInt(a.total_evasao));
 
-      rankingCursos.innerHTML += `
-            <p class="dados-curso">${item.nome_curso}</p>
-        `;
-      listaAlunos.innerHTML += `
-          <p class="dados-evasao">${item.total_evasao}</p>
-          
-      `;
+  document.getElementById("curso_maior_evasao").innerHTML = cursosListados[0].nome_curso;
 
-      console.log(item);
-    });
-  }
+
+  cursosListados.forEach((item) => {
+    const evasaoAtual = parseInt(item.total_evasao);
+    const evasaoAnterior = parseInt(item.evasao_anterior);
+    let simboloEvasao, corSimbolo;
+
+    if (evasaoAtual > evasaoAnterior) {
+      simboloEvasao = "&#9650;";
+      corSimbolo = "red";
+    } else if (evasaoAtual < evasaoAnterior) {
+      simboloEvasao = "&#9660";
+      corSimbolo = "green";
+    } else {
+      simboloEvasao = "=";
+      corSimbolo = "gray";
+    }
+
+
+    rankingCursos.innerHTML += `
+      <p class="dados-curso">${item.nome_curso}</p>
+    `;
+
+    listaAlunos.innerHTML += `
+      <p class="dados-evasao">${evasaoAtual}
+      <span style="color: ${corSimbolo};">${simboloEvasao}</span>  
+      </p>
+    `;
+  });
+}
+
+
 
   function editarCurso(idCurso, nome, ano) {
     document.getElementById("registrar_curso").innerHTML = "ATUALIZAR";
