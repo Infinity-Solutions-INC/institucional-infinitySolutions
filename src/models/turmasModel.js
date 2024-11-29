@@ -128,10 +128,45 @@ function deletarTurma(idTurma) {
   return database.executar(deletarTurma);
 }
 
+function deletarTODASTurmas(nomeCurso) {
+  var deletarTODASTurmas = `
+  UPDATE turma
+  JOIN curso ON turma.fkcodigo_curso = curso.codigo_curso
+  SET 
+    turma.modalidade_turma = NULL,
+    turma.mensalidade_turma = NULL,
+    turma.turno_turma = NULL
+  WHERE curso.nome_curso = '${nomeCurso}';
+  `;
+  console.log("Execurando a instrução SQL: \n" + deletarTODASTurmas);
+  return database.executar(deletarTODASTurmas);
+}
+
+function buscarDadosTurmas(idUnidade) {
+  var buscarDadosTurmas = `
+  SELECT
+    COUNT(CASE WHEN modalidade_turma = 'Online' THEN 1 END) AS total_online,
+    COUNT(CASE WHEN modalidade_turma = 'Presencial' THEN 1 END) AS total_presencial,
+    COUNT(CASE WHEN turno_turma = 'Matinal' THEN 1 END) AS total_matinal,
+    COUNT(CASE WHEN turno_turma = 'Vespertino' THEN 1 END) AS total_vespertino,
+    COUNT(CASE WHEN turno_turma = 'Noturno' THEN 1 END) AS total_noturno
+  FROM
+    turma 
+    JOIN curso ON turma.fkcodigo_curso = curso.codigo_curso
+    WHERE curso.fkcodigo_instituicao = '${idUnidade}';
+`;
+
+  console.log("Execurando a instrução SQL: \n" + buscarDadosTurmas);
+  return database.executar(buscarDadosTurmas);
+}
+
 module.exports = {
   buscarTurmasPorCurso,
   buscarAlunosPorCurso,
   registrarTurmaPorCurso,
   atualizarTurma,
   deletarTurma,
+  deletarTODASTurmas,
+  buscarDadosTurmas,
+  
 };

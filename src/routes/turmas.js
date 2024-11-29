@@ -23,4 +23,12 @@ router.post("/deletarTurma", function (req, res) {
   turmasController.deletarTurma(req, res);
 });
 
+router.post("/deletarTODASTurmas", function (req, res) {
+  turmasController.deletarTODASTurmas(req, res);
+});
+
+router.get("/buscarDadosTurmas/:idUnidade", function (req, res) {
+  turmasController.buscarDadosTurmas(req, res);
+});
+
 module.exports = router;

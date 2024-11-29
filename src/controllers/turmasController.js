@@ -48,7 +48,6 @@ function registrarTurmaPorCurso(req, res) {
   var modalidadeDaTurma = req.body.modalidadeDaTurmaServer;
   var mensalidadeDaTurma = req.body.mensalidadeDaTurmaServer;
 
-
   if (idUnidade == undefined) {
     res.status(400).send("O id da instituição está undefined!");
   } else if (idCurso == undefined) {
@@ -57,18 +56,26 @@ function registrarTurmaPorCurso(req, res) {
     console.log("Dados válidos!");
 
     turmasModel
-    .registrarTurmaPorCurso(idUnidade, idCurso, nomeDoCurso, anoDaTurma, turnoDaTurma, modalidadeDaTurma, mensalidadeDaTurma)
-    .then(function (resultado) {
-      res.json(resultado);
-    })
-    .catch(function (erro) {
-      console.log(erro);
-      console.log(
-        "\nHouve um erro ao cadastrar a turma! Erro: ",
-        erro.sqlMessage
-      );
-      res.status(500).json(erro.sqlMessage);
-    });
+      .registrarTurmaPorCurso(
+        idUnidade,
+        idCurso,
+        nomeDoCurso,
+        anoDaTurma,
+        turnoDaTurma,
+        modalidadeDaTurma,
+        mensalidadeDaTurma
+      )
+      .then(function (resultado) {
+        res.json(resultado);
+      })
+      .catch(function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao cadastrar a turma! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      });
   }
 }
 
@@ -78,7 +85,6 @@ function atualizarTurma(req, res) {
   var modalidadeDaTurma = req.body.modalidadeDaTurmaServer;
   var mensalidadeDaTurma = req.body.mensalidadeDaTurmaServer;
 
-
   if (idTurma == undefined) {
     res.status(400).send("O id da turma está undefined!");
   } else if (turnoDaTurma == undefined) {
@@ -87,18 +93,23 @@ function atualizarTurma(req, res) {
     console.log("Dados válidos!");
 
     turmasModel
-    .atualizarTurma(idTurma, turnoDaTurma, modalidadeDaTurma, mensalidadeDaTurma)
-    .then(function (resultado) {
-      res.json(resultado);
-    })
-    .catch(function (erro) {
-      console.log(erro);
-      console.log(
-        "\nHouve um erro ao cadastrar a turma! Erro: ",
-        erro.sqlMessage
-      );
-      res.status(500).json(erro.sqlMessage);
-    });
+      .atualizarTurma(
+        idTurma,
+        turnoDaTurma,
+        modalidadeDaTurma,
+        mensalidadeDaTurma
+      )
+      .then(function (resultado) {
+        res.json(resultado);
+      })
+      .catch(function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao cadastrar a turma! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      });
   }
 }
 
@@ -111,19 +122,62 @@ function deletarTurma(req, res) {
     console.log("Dados válidos!");
 
     turmasModel
-    .deletarTurma(idTurma)
+      .deletarTurma(idTurma)
+      .then(function (resultado) {
+        res.json(resultado);
+      })
+      .catch(function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao deletar a turma! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      });
+  }
+}
+
+function deletarTODASTurmas(req, res) {
+  var nomeCurso = req.body.nomeDoCursoServer;
+  
+  if (nomeCurso == undefined) {
+    res.status(400).send("O nome do curso está undefined!");
+  } else {
+    console.log("Dados válidos!");
+
+    turmasModel
+      .deletarTODASTurmas(nomeCurso)
+      .then(function (resultado) {
+        res.json(resultado);
+      })
+      .catch(function (erro) {
+        console.log(erro);
+        console.log(
+          "\nHouve um erro ao deletar todas as turmas! Erro: ",
+          erro.sqlMessage
+        );
+        res.status(500).json(erro.sqlMessage);
+      });
+  }
+}
+
+function buscarDadosTurmas(req, res) {
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarDadosTurmas(idUnidade)
     .then(function (resultado) {
-      res.json(resultado);
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
     })
     .catch(function (erro) {
       console.log(erro);
-      console.log(
-        "\nHouve um erro ao cadastrar a turma! Erro: ",
-        erro.sqlMessage
-      );
+      console.log("Houve um erro ao buscar dados das turmas.", erro.sqlMessage);
       res.status(500).json(erro.sqlMessage);
-    });
-  }
+    });  
 }
 
 module.exports = {
@@ -131,5 +185,7 @@ module.exports = {
   buscarAlunosPorCurso,
   registrarTurmaPorCurso,
   atualizarTurma,
-  deletarTurma
+  deletarTurma,
+  deletarTODASTurmas,
+  buscarDadosTurmas
 };

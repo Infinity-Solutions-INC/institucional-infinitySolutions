@@ -174,6 +174,7 @@
 
 <script>
   let cursoEmEdicao = null;
+  let nomeCurso = null;
 
   const modais = document.querySelectorAll(".modal");
   modais.forEach((modal) => (modal.style.display = "none"));
@@ -190,6 +191,7 @@
     document.getElementById("ano_curso").value = "";
     document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
     cursoEmEdicao = null;
+    nomeCurso = null;
     const modais = document.querySelectorAll(".modal");
     modais.forEach((modal) => (modal.style.display = "none"));
   }
@@ -249,6 +251,7 @@
             /* funçãozinha pra listar os cursos e alunos no front */
             console.log(data);
             listarAlunos(data);
+            buscarDadosTurmas(idInstituicao);
           })
           .catch(function (erro) {
             console.error(`#ERRO: ${erro}`);
@@ -319,11 +322,40 @@
   });
 }
 
+function buscarDadosTurmas(idInstituicao) {
+
+  fetch(`/turmas/buscarDadosTurmas/${idInstituicao}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then(function (resposta) {
+            if (resposta.ok) {
+              return resposta.json();
+            } else {
+              throw new Error("Houve um erro ao tentar trazer o resultado");
+            }
+          })
+          .then(function (data) {
+            if (data.length === 0) {
+              console.warn("Nenhum resultado encontrado");
+              return;
+            }
+
+            /* aqui mando os dados pra dash */
+            console.log(data);
+          })
+          .catch(function (erro) {
+            console.error(`#ERRO: ${erro}`);
+          });
+}
 
 
   function editarCurso(idCurso, nome, ano) {
     document.getElementById("registrar_curso").innerHTML = "ATUALIZAR";
     cursoEmEdicao = idCurso;
+    nomeCurso = nome;
     nome_curso.value = nome;
     ano_curso.value = ano;
     console.log(`curso em edição: ${cursoEmEdicao}, ${nome}, ${ano}`);
@@ -440,10 +472,42 @@
         }
       })
       .then((data) => {
+        deletarTurmas()
+      })
+      .catch((erro) => {
+        console.log(`#ERRO: ${erro.message}`);
+        alert(erro.message);
+      });
+  }
+
+  function deletarTurmas() {
+    if(nomeCurso == null) {
+      alert("Não há um curso definido para excluir turmas")
+      return;
+    }
+
+    fetch(`/turmas/deletarTODASTurmas`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomeDoCursoServer: nomeCurso
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao deletar as turmas desse curso!");
+        }
+      })
+      .then((data) => {
         document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
         document.getElementById("nome_curso").value = "";
         document.getElementById("ano_curso").value = "";
         cursoEmEdicao = null;
+        nomeCurso = null;
         buscarCursos();
         alert("Curso deletado com sucesso!");
       })

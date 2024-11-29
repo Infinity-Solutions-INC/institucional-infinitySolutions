@@ -139,7 +139,7 @@ body {
 }
 
 .tabela-ev p {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .tb-alunos {
@@ -148,7 +148,7 @@ body {
 
 .tb-alunos p {
   padding-top: 30px;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   margin-right: 0px;
 }
 
@@ -321,6 +321,7 @@ body {
 
 .contentmodal {
   background-color: #1c3a87;
+  box-shadow: 1px 3px 4px 2px #0c123e;
   color: #ffffff;
   margin: 12% auto;
   padding: 20px;

@@ -235,6 +235,8 @@
     const listaTurmas = document.getElementById("listaTurmas");
     listaTurmas.innerHTML = "";
 
+    turmasListadas.sort((a, b) => parseInt(a.ano_turma) - parseInt(b.ano_turma));
+
     turmasListadas.forEach((item) => {
 
       listaTurmas.innerHTML += `
@@ -357,7 +359,7 @@
       return;
     }
 
-    fetch(`/turmas/deletarTurmas`, {
+    fetch(`/turmas/deletarTurma`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
