@@ -149,12 +149,20 @@ function buscarDadosTurmas(idUnidade) {
     COUNT(CASE WHEN modalidade_turma = 'Presencial' THEN 1 END) AS total_presencial,
     COUNT(CASE WHEN turno_turma = 'Matinal' THEN 1 END) AS total_matinal,
     COUNT(CASE WHEN turno_turma = 'Vespertino' THEN 1 END) AS total_vespertino,
-    COUNT(CASE WHEN turno_turma = 'Noturno' THEN 1 END) AS total_noturno
+    COUNT(CASE WHEN turno_turma = 'Noturno' THEN 1 END) AS total_noturno,
+    
+    SUM(CASE WHEN modalidade_turma = 'Online' THEN qtd_alunos_permanencia ELSE 0 END) AS matriculas_online,
+    SUM(CASE WHEN modalidade_turma = 'Presencial' THEN qtd_alunos_permanencia ELSE 0 END) AS matriculas_presencial,
+    
+    SUM(CASE WHEN turno_turma = 'Matinal' THEN qtd_alunos_permanencia ELSE 0 END) AS matriculas_matinal,
+    SUM(CASE WHEN turno_turma = 'Vespertino' THEN qtd_alunos_permanencia ELSE 0 END) AS matriculas_vespertino,
+    SUM(CASE WHEN turno_turma = 'Noturno' THEN qtd_alunos_permanencia ELSE 0 END) AS matriculas_noturno
+
   FROM
     turma
-  JOIN 
+  JOIN
     curso ON turma.fkcodigo_curso = curso.codigo_curso
-  WHERE 
+  WHERE
     curso.fkcodigo_instituicao = '${idUnidade}';
 `;
 

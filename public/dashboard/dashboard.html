@@ -94,10 +94,7 @@
             <div class="box-kpi-grande" style="margin-top: 62px">
               <span>
                 <p class="titulo-kpi-grande">CURSO COM MAIOR EVASÃO:</p>
-                <b
-                  id="curso_maior_evasao"
-                  
-                ></b>
+                <b id="curso_maior_evasao"></b>
               </span>
               <hr id="linha-curso" />
               <span>
@@ -189,572 +186,799 @@
 </html>
 
 <script>
-  let cursoEmEdicao = null;
-  let nomeCurso = null;
+    let cursoEmEdicao = null;
+    let nomeCurso = null;
+    let graficoModalidade;
+    let graficoTurno;
 
-  const modais = document.querySelectorAll(".modal");
-  modais.forEach((modal) => (modal.style.display = "none"));
-
-  function cadastroCurso() {
-    const modalSelecionado = document.querySelector(`.modal1`);
-    if (modalSelecionado) {
-      modalSelecionado.style.display = "block";
-    }
-  }
-
-  function sumirModal() {
-    document.getElementById("nome_curso").value = "";
-    document.getElementById("ano_curso").value = "";
-    document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
-    cursoEmEdicao = null;
-    nomeCurso = null;
     const modais = document.querySelectorAll(".modal");
     modais.forEach((modal) => (modal.style.display = "none"));
-  }
 
-  function buscarCursos() {
-    const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
-
-    if (!idInstituicao) {
-      console.error("ID da instituição não definida");
-      return;
+    function cadastroCurso() {
+      const modalSelecionado = document.querySelector(`.modal1`);
+      if (modalSelecionado) {
+        modalSelecionado.style.display = "block";
+      }
     }
 
-    fetch(`/cursos/buscarCursosPorUnidade/${idInstituicao}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(function (resposta) {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          throw new Error("Houve um erro ao tentar trazer o resultado");
-        }
-      })
-      .then(function (data) {
-        if (data.length === 0) {
-          console.warn("Nenhum resultado encontrado");
-          return;
-        }
-
-        /* funçãozinha pra listar os cursos e alunos no front */
-        listarCursos(data);
-        console.log(data);
-
-        /* buscar alunos dos cursos*/
-
-        fetch(`/turmas/buscarAlunosPorCurso/${idInstituicao}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then(function (resposta) {
-            if (resposta.ok) {
-              return resposta.json();
-            } else {
-              throw new Error("Houve um erro ao tentar trazer o resultado");
-            }
-          })
-          .then(function (data) {
-            if (data.length === 0) {
-              console.warn("Nenhum resultado encontrado");
-              return;
-            }
-
-            /* funçãozinha pra listar os cursos e alunos no front */
-            console.log(data);
-            listarAlunos(data);
-            buscarDadosTurmas(idInstituicao);
-            KPIsInstituicao(idInstituicao);
-          })
-          .catch(function (erro) {
-            console.error(`#ERRO: ${erro}`);
-          });
-      })
-      .catch(function (erro) {
-        console.error(`#ERRO: ${erro}`);
-      });
-  }
-
-  buscarCursos();
-
-  function listarCursos(cursosListados) {
-    const listaCursos = document.getElementById("lista-cursos");
-    listaCursos.innerHTML = "";
-
-    cursosListados.forEach((item) => {
-      // if(item.ano_curso != null) {
-      listaCursos.innerHTML += `
-             <div class="divisor-curso">
-                 <span class="nome-curso">${item.nome_curso}</span>
-                 <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
-             </div>
-             <hr id="linha-curso">`;
-      // }
-    });
-  }
-
-  function listarAlunos(cursosListados) {
-    const rankingCursos = document.getElementById("bloco-cursos");
-    const listaAlunos = document.getElementById("bloco-alunos");
-    rankingCursos.innerHTML = "";
-    listaAlunos.innerHTML = "";
-
-    // Ordena os cursos que possuem turmas pela maior evasão
-    cursosListados.sort(
-      (a, b) => parseInt(b.total_evasao) - parseInt(a.total_evasao)
-    );
-
-    KPICurso(cursosListados[0].nome_curso);
-
-    cursosListados.forEach((item) => {
-      const evasaoAtual = parseInt(item.total_evasao);
-      const evasaoAnterior = parseInt(item.evasao_anterior);
-      let simboloEvasao, corSimbolo;
-
-      if (evasaoAtual > evasaoAnterior) {
-        simboloEvasao = "&#9650;";
-        corSimbolo = "red";
-      } else if (evasaoAtual < evasaoAnterior) {
-        simboloEvasao = "&#9660";
-        corSimbolo = "green";
-      } else {
-        simboloEvasao = "=";
-        corSimbolo = "gray";
-      }
-
-      rankingCursos.innerHTML += `
-      <p class="dados-curso">${item.nome_curso}</p>
-    `;
-
-      listaAlunos.innerHTML += `
-      <p class="dados-evasao">${evasaoAtual}
-      <span style="color: ${corSimbolo};">${simboloEvasao}</span>  
-      </p>
-    `;
-    });
-  }
-
-  function buscarDadosTurmas(idInstituicao) {
-    fetch(`/turmas/buscarDadosTurmas/${idInstituicao}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(function (resposta) {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          throw new Error("Houve um erro ao tentar trazer o resultado");
-        }
-      })
-      .then(function (data) {
-        if (data.length === 0) {
-          console.warn("Nenhum resultado encontrado");
-          return;
-        }
-
-        /* aqui mando os dados pra dash*/
-        console.log(data);
-      })
-      .catch(function (erro) {
-        console.error(`#ERRO: ${erro}`);
-      });
-  }
-
-  function KPICurso(nomeCurso) {
-    const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
-
-    fetch(`/turmas/buscarCursoMaiorEvasao/${idInstituicao}/${nomeCurso}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(function (resposta) {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          throw new Error("Houve um erro ao tentar trazer o resultado");
-        }
-      })
-      .then(function (data) {
-        if (data.length === 0) {
-          console.warn("Nenhum resultado encontrado");
-          return;
-        }
-
-        document.getElementById("curso_maior_evasao").innerHTML = nomeCurso;
-        document.getElementById("turno_maior_evasao").innerHTML = data[0].turno_maior_evasao;
-        document.getElementById("modalidade_maior_evasao").innerHTML = data[0].modalidade_maior_evasao;
-        /* aqui mando os dados pra dash*/
-        console.log(data);
-      })
-      .catch(function (erro) {
-        console.error(`#ERRO: ${erro}`);
-      });
-  }
-
-  function KPIsInstituicao(idInstituicao) {
-    fetch(`/turmas/buscarTurnoEvasao/${idInstituicao}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(function (resposta) {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          throw new Error("Houve um erro ao tentar trazer o resultado");
-        }
-      })
-      .then(function (data) {
-        if (data.length === 0) {
-          console.warn("Nenhum resultado encontrado");
-          return;
-        }
-
-        document.getElementById("turno_evasao").innerHTML = data[0].turno_maior_evasao;
-        document.getElementById("cursos_turno").innerHTML = `${data[0].total_turmas_no_turno} Turmas registradas`;
-        document.getElementById("alunos_turno").innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
-        console.log(data);
-      })
-      .catch(function (erro) {
-        console.error(`#ERRO: ${erro}`);
-      });
-
-    fetch(`/turmas/buscarModalidadeEvasao/${idInstituicao}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(function (resposta) {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          throw new Error("Houve um erro ao tentar trazer o resultado");
-        }
-      })
-      .then(function (data) {
-        if (data.length === 0) {
-          console.warn("Nenhum resultado encontrado");
-          return;
-        }
-
-        document.getElementById("modalidade_evasao").innerHTML = data[0].modalidade_maior_evasao;
-        document.getElementById("cursos_modalidade").innerHTML = `${data[0].total_turmas_na_modalidade} Turmas registradas`;
-        document.getElementById("alunos_modalidade").innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
-        /* aqui mando os dados pra dash*/
-        console.log(data);
-      })
-      .catch(function (erro) {
-        console.error(`#ERRO: ${erro}`);
-      });
-  }
-
-  function editarCurso(idCurso, nome, ano) {
-    document.getElementById("registrar_curso").innerHTML = "ATUALIZAR";
-    cursoEmEdicao = idCurso;
-    nomeCurso = nome;
-    nome_curso.value = nome;
-    ano_curso.value = ano;
-    console.log(`curso em edição: ${cursoEmEdicao}, ${nome}, ${ano}`);
-  }
-
-  function registrarCurso() {
-    let cursoVar = nome_curso.value.trim().toLowerCase();
-    let anoVar = ano_curso.value.trim();
-    let idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
-
-    if (!idInstituicao) {
-      alert("ID da instituição não encontrado!");
-      return;
+    function sumirModal() {
+      document.getElementById("nome_curso").value = "";
+      document.getElementById("ano_curso").value = "";
+      document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
+      cursoEmEdicao = null;
+      nomeCurso = null;
+      const modais = document.querySelectorAll(".modal");
+      modais.forEach((modal) => (modal.style.display = "none"));
     }
 
-    if (cursoVar !== "" && anoVar !== "") {
-      if (cursoEmEdicao !== null) {
-        atualizarCurso(cursoEmEdicao, cursoVar, anoVar, idInstituicao);
-      } else {
-        // Se não for edição, faz o insert
-        fetch(`/cursos/cadastrarCurso`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nomeCursoServer: cursoVar,
-            anoCursoServer: anoVar,
-            idInstituicaoServer: idInstituicao,
-          }),
-        })
-          .then(function (resposta) {
-            if (resposta.ok) {
-              return resposta.json();
-            } else {
-              throw new Error("Houve um erro ao registrar o curso!");
-            }
-          })
-          .then(function (data) {
-            document.getElementById("nome_curso").value = "";
-            document.getElementById("ano_curso").value = "";
-            cursoEmEdicao = null;
-            alert("Curso registrado com sucesso!");
-            buscarCursos();
-          })
-          .catch(function (erro) {
-            console.log(`#ERRO: ${erro.message}`);
-            alert(erro.message);
-          });
+    function buscarCursos() {
+      const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+      if (!idInstituicao) {
+        console.error("ID da instituição não definida");
+        return;
       }
+
+      fetch(`/cursos/buscarCursosPorUnidade/${idInstituicao}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            throw new Error("Houve um erro ao tentar trazer o resultado");
+          }
+        })
+        .then(function (data) {
+          if (data.length === 0) {
+            console.warn("Nenhum resultado encontrado");
+            return;
+          }
+
+          /* funçãozinha pra listar os cursos e alunos no front */
+          listarCursos(data);
+          console.log(data);
+
+          /* buscar alunos dos cursos*/
+          fetch(`/turmas/buscarAlunosPorCurso/${idInstituicao}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then(function (resposta) {
+              if (resposta.ok) {
+                return resposta.json();
+              } else {
+                throw new Error("Houve um erro ao tentar trazer o resultado");
+              }
+            })
+            .then(function (data) {
+              if (data.length === 0) {
+                console.warn("Nenhum resultado encontrado");
+                return;
+              }
+              console.log(data);
+              listarAlunos(data);
+              buscarDadosTurmas(idInstituicao);
+              KPIsInstituicao(idInstituicao);
+            })
+            .catch(function (erro) {
+              console.error(`#ERRO: ${erro}`);
+            });
+        })
+        .catch(function (erro) {
+          console.error(`#ERRO: ${erro}`);
+        });
+    }
+
+    buscarCursos();
+
+    function listarCursos(cursosListados) {
+      const listaCursos = document.getElementById("lista-cursos");
+      listaCursos.innerHTML = "";
+
+      cursosListados.forEach((item) => {
+        // if(item.ano_curso != null) {
+        listaCursos.innerHTML += `
+               <div class="divisor-curso">
+                   <span class="nome-curso">${item.nome_curso}</span>
+                   <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
+               </div>
+               <hr id="linha-curso">`;
+        // }
+      });
+    }
+
+    function listarAlunos(cursosListados) {
+      const rankingCursos = document.getElementById("bloco-cursos");
+      const listaAlunos = document.getElementById("bloco-alunos");
+      rankingCursos.innerHTML = "";
+      listaAlunos.innerHTML = "";
+
+      // Ordena os cursos que possuem turmas pela maior evasão
+      cursosListados.sort(
+        (a, b) => parseInt(b.total_evasao) - parseInt(a.total_evasao)
+      );
+
+      KPICurso(cursosListados[0].nome_curso);
+
+      cursosListados.forEach((item) => {
+        const evasaoAtual = parseInt(item.total_evasao);
+        const evasaoAnterior = parseInt(item.evasao_anterior);
+        let simboloEvasao, corSimbolo;
+
+        if (evasaoAnterior == 0) {
+          simboloEvasao = "*";
+          corSimbolo = "#00e5ff";
+        } else if (evasaoAtual > evasaoAnterior) {
+          simboloEvasao = "&#9650;";
+          corSimbolo = "#ff0000";
+        } else if (evasaoAtual < evasaoAnterior) {
+          simboloEvasao = "&#9660";
+          corSimbolo = "#008000";
+        } else {
+          simboloEvasao = "=";
+          corSimbolo = "#808080";
+        }
+
+        rankingCursos.innerHTML += `
+        <p class="dados-curso">${item.nome_curso}</p>
+      `;
+
+        listaAlunos.innerHTML += `
+        <p class="dados-evasao">${evasaoAtual}
+        <span style="color: ${corSimbolo};">${simboloEvasao}</span>
+        </p>
+      `;
+      });
+    }
+
+    function buscarDadosTurmas(idInstituicao) {
+      fetch(`/turmas/buscarDadosTurmas/${idInstituicao}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            throw new Error("Houve um erro ao tentar trazer o resultado");
+          }
+        })
+        .then(function (data) {
+          if (data.length === 0) {
+            console.warn("Nenhum resultado encontrado");
+            return;
+          }
+
+          /* aqui mando os dados pra dash*/
+          atualizarDashboards(data);
+          console.log(data);
+        })
+        .catch(function (erro) {
+          console.error(`#ERRO: ${erro}`);
+        });
+    }
+
+    function KPICurso(nomeCurso) {
+      const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+      fetch(`/turmas/buscarCursoMaiorEvasao/${idInstituicao}/${nomeCurso}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            throw new Error("Houve um erro ao tentar trazer o resultado");
+          }
+        })
+        .then(function (data) {
+          if (data.length === 0) {
+            console.warn("Nenhum resultado encontrado");
+            return;
+          }
+
+          document.getElementById("curso_maior_evasao").innerHTML = nomeCurso;
+          document.getElementById("turno_maior_evasao").innerHTML =
+            data[0].turno_maior_evasao;
+          document.getElementById("modalidade_maior_evasao").innerHTML =
+            data[0].modalidade_maior_evasao;
+          /* aqui mando os dados pra dash*/
+          console.log(data);
+        })
+        .catch(function (erro) {
+          console.error(`#ERRO: ${erro}`);
+        });
+    }
+
+    function KPIsInstituicao(idInstituicao) {
+      fetch(`/turmas/buscarTurnoEvasao/${idInstituicao}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            throw new Error("Houve um erro ao tentar trazer o resultado");
+          }
+        })
+        .then(function (data) {
+          if (data.length === 0) {
+            console.warn("Nenhum resultado encontrado");
+            return;
+          }
+
+          document.getElementById("turno_evasao").innerHTML =
+            data[0].turno_maior_evasao;
+          document.getElementById(
+            "cursos_turno"
+          ).innerHTML = `${data[0].total_turmas_no_turno} Turmas registradas`;
+          document.getElementById(
+            "alunos_turno"
+          ).innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
+          console.log(data);
+        })
+        .catch(function (erro) {
+          console.error(`#ERRO: ${erro}`);
+        });
+
+      fetch(`/turmas/buscarModalidadeEvasao/${idInstituicao}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            throw new Error("Houve um erro ao tentar trazer o resultado");
+          }
+        })
+        .then(function (data) {
+          if (data.length === 0) {
+            console.warn("Nenhum resultado encontrado");
+            return;
+          }
+
+          document.getElementById("modalidade_evasao").innerHTML =
+            data[0].modalidade_maior_evasao;
+          document.getElementById(
+            "cursos_modalidade"
+          ).innerHTML = `${data[0].total_turmas_na_modalidade} Turmas registradas`;
+          document.getElementById(
+            "alunos_modalidade"
+          ).innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
+          /* aqui mando os dados pra dash*/
+          console.log(data);
+        })
+        .catch(function (erro) {
+          console.error(`#ERRO: ${erro}`);
+        });
+    }
+
+
+    /* % DAS MATRICULAS CONVERTENDO E FUNCIONANDO */
+    // function processarDados(dados) {
+    //   if (!dados || dados.length === 0) {
+    //     console.error("Dados não encontrados ou vazios.");
+    //     return;
+    //   }
+
+    //   console.log("Dados recebidos:", dados);
+
+    //   const matriculasOnline = dados[0]?.matriculas_online
+    //     ? parseInt(dados[0].matriculas_online, 10)
+    //     : 0;
+    //   const matriculasPresencial = dados[0]?.matriculas_presencial
+    //     ? parseInt(dados[0].matriculas_presencial, 10)
+    //     : 0;
+    //   const matriculasMatinal = dados[0]?.matriculas_matinal
+    //     ? parseInt(dados[0].matriculas_matinal, 10)
+    //     : 0;
+    //   const matriculasVespertino = dados[0]?.matriculas_vespertino
+    //     ? parseInt(dados[0].matriculas_vespertino, 10)
+    //     : 0;
+    //   const matriculasNoturno = dados[0]?.matriculas_noturno
+    //     ? parseInt(dados[0].matriculas_noturno, 10)
+    //     : 0;
+
+    //   const totalOnline = dados[0]?.total_online || 0;
+    //   const totalPresencial = dados[0]?.total_presencial || 0;
+    //   const totalMatinal = dados[0]?.total_matinal || 0;
+    //   const totalVespertino = dados[0]?.total_vespertino || 0;
+    //   const totalNoturno = dados[0]?.total_noturno || 0;
+
+    //   const totalMatriculas =
+    //     matriculasOnline +
+    //     matriculasPresencial +
+    //     matriculasMatinal +
+    //     matriculasVespertino +
+    //     matriculasNoturno;
+
+    //   const porcentagemOnline = ((matriculasOnline / totalMatriculas) * 100).toFixed(2);
+    //   const porcentagemPresencial =
+    //    ((matriculasPresencial / totalMatriculas) * 100).toFixed(2);
+    //   const porcentagemMatinal = ((matriculasMatinal / totalMatriculas) * 100).toFixed(2);
+    //   const porcentagemVespertino =
+    //     ((matriculasVespertino / totalMatriculas) * 100).toFixed(2);
+    //   const porcentagemNoturno = ((matriculasNoturno / totalMatriculas) * 100).toFixed(2);
+
+
+    //   console.log("Dados convertidos:", {
+    //     matriculasOnline,
+    //     matriculasPresencial,
+    //     matriculasMatinal,
+    //     matriculasVespertino,
+    //     matriculasNoturno,
+    //     totalOnline,
+    //     totalPresencial,
+    //     totalMatinal,
+    //     totalVespertino,
+    //     totalNoturno,
+    //   });
+
+
+    //   return {
+    //     matriculasOnline,
+    //     matriculasPresencial,
+    //     matriculasMatinal,
+    //     matriculasVespertino,
+    //     matriculasNoturno,
+    //     totalOnline,
+    //     totalPresencial,
+    //     totalMatinal,
+    //     totalVespertino,
+    //     totalNoturno,
+    //   };
+    // }
+
+    /* CALCULANDO APENAS % DAS TURMAS */
+    function processarDados(data) {
+    if (Array.isArray(data) && data.length > 0) {
+      data = data[0]; // Extrai o primeiro elemento do array
     } else {
-      alert("Dados inválidos");
+      console.error("❌ Dados inválidos recebidos:", data);
+      return null;
     }
 
-    return false;
-  }
+    console.log("🔍 Dados recebidos para processamento:", data);
 
-  function atualizarCurso(idCurso, nomeCurso, anoCurso, idInstituicao) {
-    fetch(`/cursos/editarCurso/${idCurso}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+    const totalModalidade = data.total_online + data.total_presencial || 1; // Evitar divisão por zero
+    const porcentagemOnline = ((data.total_online / totalModalidade) * 100).toFixed(2);
+    const porcentagemPresencial = ((data.total_presencial / totalModalidade) * 100).toFixed(2);
+
+    const totalTurnos = data.total_matinal + data.total_vespertino + data.total_noturno || 1;
+    const porcentagemMatinal = ((data.total_matinal / totalTurnos) * 100).toFixed(2);
+    const porcentagemVespertino = ((data.total_vespertino / totalTurnos) * 100).toFixed(2);
+    const porcentagemNoturno = ((data.total_noturno / totalTurnos) * 100).toFixed(2);
+
+    console.log("📊 Resultados calculados:", {
+      totalModalidade,
+      totalTurnos,
+      porcentagensModalidade: [porcentagemOnline, porcentagemPresencial],
+      porcentagensTurnos: [porcentagemMatinal, porcentagemVespertino, porcentagemNoturno],
+    });
+
+    return {
+      totalModalidade,
+      totalTurnos,
+      dadosModalidade: {
+        brutos: [data.total_online, data.total_presencial],
+        porcentagens: [porcentagemOnline, porcentagemPresencial],
       },
-      body: JSON.stringify({
-        nomeCursoServer: nomeCurso,
-        anoCursoServer: anoCurso,
-        idInstituicaoServer: idInstituicao,
-      }),
-    })
-      .then((resposta) => {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          throw new Error("Houve um erro ao atualizar o curso!");
-        }
-      })
-      .then((data) => {
-        document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
-        document.getElementById("nome_curso").value = "";
-        document.getElementById("ano_curso").value = "";
-        cursoEmEdicao = null;
-        alert("Curso atualizado com sucesso!");
-        buscarCursos();
-      })
-      .catch((erro) => {
-        console.log(`#ERRO: ${erro.message}`);
-        alert(erro.message);
-      });
+      dadosTurnos: {
+        brutos: [data.total_matinal, data.total_vespertino, data.total_noturno],
+        porcentagens: [porcentagemMatinal, porcentagemVespertino, porcentagemNoturno],
+      },
+    };
   }
 
-  function deletarCurso() {
-    let idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+    function atualizarDashboards(data) {
+      console.log("🚀 Atualizando Dashboards com os dados:", data);
 
-    if (!idInstituicao || !cursoEmEdicao) {
-      alert("ID da instituição ou ID do curso inválido.");
-      return;
+      const dadosProcessados = processarDados(data);
+      if (!dadosProcessados) {
+        console.error("❌ Não foi possível processar os dados.");
+        return;
+      }
+
+      // Gráfico de Barras (Modalidade)
+      const ctxModalidade = document.getElementById("graficoModalidade");
+      if (!ctxModalidade) {
+        console.error("❌ Elemento 'graficoModalidade' não encontrado no DOM.");
+        return;
+      }
+
+      const ctxModalidadeCtx = ctxModalidade.getContext("2d");
+      if (!graficoModalidade) {
+        console.log("📊 Criando gráfico de barras (Modalidade)...");
+        graficoModalidade = new Chart(ctxModalidadeCtx, {
+          type: "bar",
+          data: {
+            labels: ["Online", "Presencial"],
+            datasets: [
+              {
+                label: "Matrículas (%)",
+                data: dadosProcessados.dadosModalidade.porcentagens,
+                backgroundColor: ["#270091", "#3F00EC"],
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                ticks: { display: false },
+                grid: { display: false },
+              },
+              x: {
+                ticks: { color: "#ffffff" },
+              },
+            },
+            plugins: {
+              legend: { display: false },
+            },
+          },
+        });
+      } else {
+        console.log("📊 Atualizando gráfico de barras (Modalidade)...");
+        graficoModalidade.data.datasets[0].data =
+          dadosProcessados.dadosModalidade.porcentagens;
+        graficoModalidade.update();
+      }
+
+      // Gráfico Donut (Turno)
+      const ctxTurno = document.getElementById("graficoTurno");
+      if (!ctxTurno) {
+        console.error("❌ Elemento 'graficoTurno' não encontrado no DOM.");
+        return;
+      }
+
+      const ctxTurnoCtx = ctxTurno.getContext("2d");
+      if (!graficoTurno) {
+        console.log("📊 Criando gráfico de donut (Turno)...");
+        graficoTurno = new Chart(ctxTurnoCtx, {
+          type: "doughnut",
+          data: {
+            labels: ["Matutino", "Vespertino", "Noturno"],
+            datasets: [
+              {
+                label: "Matrículas (%)",
+                data: dadosProcessados.dadosTurnos.porcentagens,
+                backgroundColor: ["#270091", "#3F00EC", "#020272"],
+                borderWidth: 0,
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: {
+                labels: { color: "#ffffff" },
+              },
+            },
+          },
+        });
+      } else {
+        console.log("📊 Atualizando gráfico de donut (Turno)...");
+        graficoTurno.data.datasets[0].data =
+          dadosProcessados.dadosTurnos.porcentagens;
+        graficoTurno.update();
+      }
+
+      console.log("✅ Dashboards atualizados com sucesso.");
     }
 
-    fetch(`/cursos/deletarCurso`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        idCursoServer: cursoEmEdicao,
-        idInstituicaoServer: idInstituicao,
-      }),
-    })
-      .then((resposta) => {
-        if (resposta.ok) {
-          return resposta.json();
-        } else {
-          throw new Error("Houve um erro ao deletar o curso!");
-        }
-      })
-      .then((data) => {
-        deletarTurmas();
-      })
-      .catch((erro) => {
-        console.log(`#ERRO: ${erro.message}`);
-        alert(erro.message);
-      });
-  }
 
-  function deletarTurmas() {
-    if (nomeCurso == null) {
-      alert("Não há um curso definido para excluir turmas");
-      return;
+    function editarCurso(idCurso, nome, ano) {
+      document.getElementById("registrar_curso").innerHTML = "ATUALIZAR";
+      cursoEmEdicao = idCurso;
+      nomeCurso = nome;
+      nome_curso.value = nome;
+      ano_curso.value = ano;
+      console.log(`curso em edição: ${cursoEmEdicao}, ${nome}, ${ano}`);
     }
 
-    fetch(`/turmas/deletarTODASTurmas`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nomeDoCursoServer: nomeCurso,
-      }),
-    })
-      .then((resposta) => {
-        if (resposta.ok) {
-          return resposta.json();
+    function registrarCurso() {
+      let cursoVar = nome_curso.value.trim().toLowerCase();
+      let anoVar = ano_curso.value.trim();
+      let idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+      if (!idInstituicao) {
+        alert("ID da instituição não encontrado!");
+        return;
+      }
+
+      if (cursoVar !== "" && anoVar !== "") {
+        if (cursoEmEdicao !== null) {
+          atualizarCurso(cursoEmEdicao, cursoVar, anoVar, idInstituicao);
         } else {
-          throw new Error("Houve um erro ao deletar as turmas desse curso!");
+          // Se não for edição, faz o insert
+          fetch(`/cursos/cadastrarCurso`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nomeCursoServer: cursoVar,
+              anoCursoServer: anoVar,
+              idInstituicaoServer: idInstituicao,
+            }),
+          })
+            .then(function (resposta) {
+              if (resposta.ok) {
+                return resposta.json();
+              } else {
+                throw new Error("Houve um erro ao registrar o curso!");
+              }
+            })
+            .then(function (data) {
+              document.getElementById("nome_curso").value = "";
+              document.getElementById("ano_curso").value = "";
+              cursoEmEdicao = null;
+              alert("Curso registrado com sucesso!");
+              buscarCursos();
+            })
+            .catch(function (erro) {
+              console.log(`#ERRO: ${erro.message}`);
+              alert(erro.message);
+            });
         }
-      })
-      .then((data) => {
-        document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
-        document.getElementById("nome_curso").value = "";
-        document.getElementById("ano_curso").value = "";
-        cursoEmEdicao = null;
-        nomeCurso = null;
-        buscarCursos();
-        alert("Curso deletado com sucesso!");
-      })
-      .catch((erro) => {
-        console.log(`#ERRO: ${erro.message}`);
-        alert(erro.message);
-      });
-  }
+      } else {
+        alert("Dados inválidos");
+      }
 
-  function sair() {
-    limparSessao();
-  }
+      return false;
+    }
 
-  // Gráfico de Barras (Modalidade)
-  const ctxModalidade = document
-    .getElementById("graficoModalidade")
-    .getContext("2d");
-  const graficoModalidade = new Chart(ctxModalidade, {
-    type: "bar",
-    data: {
-      labels: ["Online", "Presencial"],
-      datasets: [
-        {
-          label: "Matriculas (%)",
-          data: [75, 25],
-          backgroundColor: ["#270091", "#3F00EC"],
+    function atualizarCurso(idCurso, nomeCurso, anoCurso, idInstituicao) {
+      fetch(`/cursos/editarCurso/${idCurso}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
         },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          ticks: {
+        body: JSON.stringify({
+          nomeCursoServer: nomeCurso,
+          anoCursoServer: anoCurso,
+          idInstituicaoServer: idInstituicao,
+        }),
+      })
+        .then((resposta) => {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            throw new Error("Houve um erro ao atualizar o curso!");
+          }
+        })
+        .then((data) => {
+          document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
+          document.getElementById("nome_curso").value = "";
+          document.getElementById("ano_curso").value = "";
+          cursoEmEdicao = null;
+          alert("Curso atualizado com sucesso!");
+          buscarCursos();
+        })
+        .catch((erro) => {
+          console.log(`#ERRO: ${erro.message}`);
+          alert(erro.message);
+        });
+    }
+
+    function deletarCurso() {
+      let idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+      if (!idInstituicao || !cursoEmEdicao) {
+        alert("ID da instituição ou ID do curso inválido.");
+        return;
+      }
+
+      fetch(`/cursos/deletarCurso`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          idCursoServer: cursoEmEdicao,
+          idInstituicaoServer: idInstituicao,
+        }),
+      })
+        .then((resposta) => {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            throw new Error("Houve um erro ao deletar o curso!");
+          }
+        })
+        .then((data) => {
+          deletarTurmas();
+        })
+        .catch((erro) => {
+          console.log(`#ERRO: ${erro.message}`);
+          alert(erro.message);
+        });
+    }
+
+    function deletarTurmas() {
+      if (nomeCurso == null) {
+        alert("Não há um curso definido para excluir turmas");
+        return;
+      }
+
+      fetch(`/turmas/deletarTODASTurmas`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nomeDoCursoServer: nomeCurso,
+        }),
+      })
+        .then((resposta) => {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            throw new Error("Houve um erro ao deletar as turmas desse curso!");
+          }
+        })
+        .then((data) => {
+          document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
+          document.getElementById("nome_curso").value = "";
+          document.getElementById("ano_curso").value = "";
+          cursoEmEdicao = null;
+          nomeCurso = null;
+          buscarCursos();
+          alert("Curso deletado com sucesso!");
+        })
+        .catch((erro) => {
+          console.log(`#ERRO: ${erro.message}`);
+          alert(erro.message);
+        });
+    }
+
+    function sair() {
+      limparSessao();
+    }
+
+    // Gráfico de Barras (Modalidade)
+    // const ctxModalidade = document
+    //   .getElementById("graficoModalidade")
+    //   .getContext("2d");
+    // const graficoModalidade = new Chart(ctxModalidade, {
+    //   type: "bar",
+    //   data: {
+    //     labels: ["Online", "Presencial"],
+    //     datasets: [
+    //       {
+    //         label: "Matriculas (%)",
+    //         data: [75, 25],
+    //         backgroundColor: ["#270091", "#3F00EC"],
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     scales: {
+    //       y: {
+    //         ticks: {
+    //           display: false,
+    //         },
+    //         grid: {
+    //           display: false,
+    //         },
+    //       },
+    //       x: {
+    //         ticks: {
+    //           color: "#ffffff",
+    //         },
+    //       },
+    //     },
+    //     plugins: {
+    //       legend: {
+    //         display: false,
+    //       },
+    //     },
+    //   },
+    // });
+
+    // // Gráfico Donut (Turno)
+    // const ctxTurno = document.getElementById("graficoTurno").getContext("2d");
+    // const graficoTurno = new Chart(ctxTurno, {
+    //   type: "doughnut",
+    //   data: {
+    //     labels: ["Matutino", "Vespertino", "Noturno"],
+    //     datasets: [
+    //       {
+    //         label: "Matriculas (%)",
+    //         data: [10, 30, 60],
+    //         backgroundColor: ["#270091", "#3F00EC", "#020272"],
+    //         borderWidth: 0,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     plugins: {
+    //       legend: {
+    //         labels: {
+    //           color: "#ffffff",
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+
+    // Gráfico de Linha (Motivos)
+    const ctxMotivos = document.getElementById("graficoMotivos").getContext("2d");
+    const graficoMotivos = new Chart(ctxMotivos, {
+      type: "line",
+      data: {
+        labels: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho"],
+        datasets: [
+          {
+            label: "Financeiro",
+            data: [10, 15, 5, 8, 6, 9],
+            borderColor: "#020272",
+            backgroundColor: "#020272",
+            fill: false,
+          },
+          {
+            label: "Desmotivação",
+            data: [7, 9, 12, 5, 6, 10],
+            borderColor: "#270091",
+            backgroundColor: "#270091",
+            fill: false,
+          },
+          {
+            label: "Dificuldade",
+            data: [8, 6, 7, 13, 9, 11],
+            borderColor: "#3F00EC",
+            backgroundColor: "#3F00EC",
+            fill: false,
+          },
+          {
+            label: "Falta de Suporte",
+            data: [3, 5, 4, 6, 7, 8],
+            borderColor: "#06063B",
+            backgroundColor: "#06063B",
+            fill: false,
+          },
+          {
+            label: "Problemas Pessoais",
+            data: [5, 7, 6, 5, 4, 5],
+            borderColor: "#000000",
+            backgroundColor: "#000000",
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
             display: false,
           },
-          grid: {
-            display: false,
+          x: {
+            ticks: {
+              color: "#ffffff",
+            },
           },
         },
-        x: {
-          ticks: {
-            color: "#ffffff",
-          },
-        },
-      },
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
-    },
-  });
-
-  // Gráfico Donut (Turno)
-  const ctxTurno = document.getElementById("graficoTurno").getContext("2d");
-  const graficoTurno = new Chart(ctxTurno, {
-    type: "doughnut",
-    data: {
-      labels: ["Matutino", "Vespertino", "Noturno"],
-      datasets: [
-        {
-          label: "Matriculas (%)",
-          data: [10, 30, 60],
-          backgroundColor: ["#270091", "#3F00EC", "#020272"],
-          borderWidth: 0,
-        },
-      ],
-    },
-    options: {
-      plugins: {
-        legend: {
-          labels: {
-            color: "#ffffff",
+        plugins: {
+          legend: {
+            labels: {
+              color: "#fff",
+            },
           },
         },
       },
-    },
-  });
-
-  // Gráfico de Linha (Motivos)
-  const ctxMotivos = document.getElementById("graficoMotivos").getContext("2d");
-  const graficoMotivos = new Chart(ctxMotivos, {
-    type: "line",
-    data: {
-      labels: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho"],
-      datasets: [
-        {
-          label: "Financeiro",
-          data: [10, 15, 5, 8, 6, 9],
-          borderColor: "#020272",
-          backgroundColor: "#020272",
-          fill: false,
-        },
-        {
-          label: "Desmotivação",
-          data: [7, 9, 12, 5, 6, 10],
-          borderColor: "#270091",
-          backgroundColor: "#270091",
-          fill: false,
-        },
-        {
-          label: "Dificuldade",
-          data: [8, 6, 7, 13, 9, 11],
-          borderColor: "#3F00EC",
-          backgroundColor: "#3F00EC",
-          fill: false,
-        },
-        {
-          label: "Falta de Suporte",
-          data: [3, 5, 4, 6, 7, 8],
-          borderColor: "#06063B",
-          backgroundColor: "#06063B",
-          fill: false,
-        },
-        {
-          label: "Problemas Pessoais",
-          data: [5, 7, 6, 5, 4, 5],
-          borderColor: "#000000",
-          backgroundColor: "#000000",
-          fill: false,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          display: false,
-        },
-        x: {
-          ticks: {
-            color: "#ffffff",
-          },
-        },
-      },
-      plugins: {
-        legend: {
-          labels: {
-            color: "#fff",
-          },
-        },
-      },
-    },
-  });
+    });
 </script>

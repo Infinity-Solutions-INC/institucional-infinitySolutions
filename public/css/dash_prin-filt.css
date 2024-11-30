@@ -149,7 +149,8 @@ body {
   margin-left: 2px;
 }
 
-.tb-curso {
+.tb-curso p {
+  padding-top:27.4px;
   text-transform: uppercase;
 }
 
@@ -183,6 +184,7 @@ body {
   padding-bottom: 10px;
   margin-right: 0px;
 }
+
 
 .indicador {
   font-size: 22px;
