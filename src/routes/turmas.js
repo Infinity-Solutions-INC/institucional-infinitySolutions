@@ -31,4 +31,16 @@ router.get("/buscarDadosTurmas/:idUnidade", function (req, res) {
   turmasController.buscarDadosTurmas(req, res);
 });
 
+router.get("/buscarTurnoEvasao/:idUnidade", function (req, res) {
+  turmasController.buscarTurnoEvasao(req, res);
+});
+
+router.get("/buscarModalidadeEvasao/:idUnidade", function (req, res) {
+  turmasController.buscarModalidadeEvasao(req, res);
+});
+
+router.get("/buscarCursoMaiorEvasao/:idUnidade/:nomeCurso", function (req, res) {
+  turmasController.buscarCursoMaiorEvasao(req, res);
+});
+
 module.exports = router;

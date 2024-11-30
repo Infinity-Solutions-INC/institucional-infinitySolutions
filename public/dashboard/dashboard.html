@@ -91,26 +91,42 @@
 
         <div class="container">
           <div class="kpis">
-            <h2>KPIs</h2>
-            <div class="box-kpi" style="margin-top: -15px">
-              <span class="titulo-kpi"> CURSO COM MAIOR EVASÃO </span>
-              <span class="dado-kpi">
-                <p id="curso_maior_evasao"></p>
+            <div class="box-kpi-grande" style="margin-top: 62px">
+              <span>
+                <p class="titulo-kpi-grande">CURSO COM MAIOR EVASÃO:</p>
+                <b
+                  id="curso_maior_evasao"
+                  
+                ></b>
               </span>
-              <span class="legenda-kpi"> X% DOS ALUNOS TOTAIS </span>
+              <hr id="linha-curso" />
+              <span>
+                <p class="titulo-kpi-grande">
+                  TURNO COM MAIOR TAXA DE EVASÃO NESSE CURSO:
+                </p>
+                <b id="turno_maior_evasao" class="legenda-kpi-grande"></b>
+              </span>
+              <hr id="linha-curso" />
+              <span>
+                <p class="titulo-kpi-grande">
+                  MODALIDADE COM MAIOR TAXA DE EVASÃO:
+                </p>
+                <b id="modalidade_maior_evasao" class="legenda-kpi-grande"></b>
+              </span>
             </div>
             <div class="box-kpi">
               <span class="titulo-kpi"> TURNO COM MAIOR EVASÃO </span>
-              <span class="dado-kpi"> XXX </span>
+              <span class="dado-kpi" id="turno_evasao"></span>
               <span class="legenda-kpi">
-                X% DAS MATRICULAS SÃO NESSE TURNO
+                <p id="cursos_turno"></p>
+                <p id="alunos_turno"></p>
               </span>
-            </div>
-            <div class="box-kpi">
+              <hr id="linha-curso" style="margin: 10px 0px 10px 8px" />
               <span class="titulo-kpi"> MODALIDADE COM MAIOR EVASÃO </span>
-              <span class="dado-kpi"> XXX </span>
+              <span class="dado-kpi" id="modalidade_evasao"></span>
               <span class="legenda-kpi">
-                X% DAS MATRICULAS SÃO NESSE TURNO
+                <p id="cursos_modalidade"></p>
+                <p id="alunos_modalidade"></p>
               </span>
             </div>
           </div>
@@ -252,6 +268,7 @@
             console.log(data);
             listarAlunos(data);
             buscarDadosTurmas(idInstituicao);
+            KPIsInstituicao(idInstituicao);
           })
           .catch(function (erro) {
             console.error(`#ERRO: ${erro}`);
@@ -280,77 +297,166 @@
     });
   }
 
-
   function listarAlunos(cursosListados) {
-  const rankingCursos = document.getElementById("bloco-cursos");
-  const listaAlunos = document.getElementById("bloco-alunos");
-  rankingCursos.innerHTML = "";
-  listaAlunos.innerHTML = "";
+    const rankingCursos = document.getElementById("bloco-cursos");
+    const listaAlunos = document.getElementById("bloco-alunos");
+    rankingCursos.innerHTML = "";
+    listaAlunos.innerHTML = "";
 
-  // Ordena os cursos que possuem turmas pela maior evasão
-  cursosListados.sort((a, b) => parseInt(b.total_evasao) - parseInt(a.total_evasao));
+    // Ordena os cursos que possuem turmas pela maior evasão
+    cursosListados.sort(
+      (a, b) => parseInt(b.total_evasao) - parseInt(a.total_evasao)
+    );
 
-  document.getElementById("curso_maior_evasao").innerHTML = cursosListados[0].nome_curso;
+    KPICurso(cursosListados[0].nome_curso);
 
+    cursosListados.forEach((item) => {
+      const evasaoAtual = parseInt(item.total_evasao);
+      const evasaoAnterior = parseInt(item.evasao_anterior);
+      let simboloEvasao, corSimbolo;
 
-  cursosListados.forEach((item) => {
-    const evasaoAtual = parseInt(item.total_evasao);
-    const evasaoAnterior = parseInt(item.evasao_anterior);
-    let simboloEvasao, corSimbolo;
+      if (evasaoAtual > evasaoAnterior) {
+        simboloEvasao = "&#9650;";
+        corSimbolo = "red";
+      } else if (evasaoAtual < evasaoAnterior) {
+        simboloEvasao = "&#9660";
+        corSimbolo = "green";
+      } else {
+        simboloEvasao = "=";
+        corSimbolo = "gray";
+      }
 
-    if (evasaoAtual > evasaoAnterior) {
-      simboloEvasao = "&#9650;";
-      corSimbolo = "red";
-    } else if (evasaoAtual < evasaoAnterior) {
-      simboloEvasao = "&#9660";
-      corSimbolo = "green";
-    } else {
-      simboloEvasao = "=";
-      corSimbolo = "gray";
-    }
-
-
-    rankingCursos.innerHTML += `
+      rankingCursos.innerHTML += `
       <p class="dados-curso">${item.nome_curso}</p>
     `;
 
-    listaAlunos.innerHTML += `
+      listaAlunos.innerHTML += `
       <p class="dados-evasao">${evasaoAtual}
       <span style="color: ${corSimbolo};">${simboloEvasao}</span>  
       </p>
     `;
-  });
-}
+    });
+  }
 
-function buscarDadosTurmas(idInstituicao) {
+  function buscarDadosTurmas(idInstituicao) {
+    fetch(`/turmas/buscarDadosTurmas/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
 
-  fetch(`/turmas/buscarDadosTurmas/${idInstituicao}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then(function (resposta) {
-            if (resposta.ok) {
-              return resposta.json();
-            } else {
-              throw new Error("Houve um erro ao tentar trazer o resultado");
-            }
-          })
-          .then(function (data) {
-            if (data.length === 0) {
-              console.warn("Nenhum resultado encontrado");
-              return;
-            }
+        /* aqui mando os dados pra dash*/
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
 
-            /* aqui mando os dados pra dash */
-            console.log(data);
-          })
-          .catch(function (erro) {
-            console.error(`#ERRO: ${erro}`);
-          });
-}
+  function KPICurso(nomeCurso) {
+    const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
 
+    fetch(`/turmas/buscarCursoMaiorEvasao/${idInstituicao}/${nomeCurso}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        document.getElementById("curso_maior_evasao").innerHTML = nomeCurso;
+        document.getElementById("turno_maior_evasao").innerHTML = data[0].turno_maior_evasao;
+        document.getElementById("modalidade_maior_evasao").innerHTML = data[0].modalidade_maior_evasao;
+        /* aqui mando os dados pra dash*/
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  function KPIsInstituicao(idInstituicao) {
+    fetch(`/turmas/buscarTurnoEvasao/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        document.getElementById("turno_evasao").innerHTML = data[0].turno_maior_evasao;
+        document.getElementById("cursos_turno").innerHTML = `${data[0].total_turmas_no_turno} Turmas registradas`;
+        document.getElementById("alunos_turno").innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+
+    fetch(`/turmas/buscarModalidadeEvasao/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        document.getElementById("modalidade_evasao").innerHTML = data[0].modalidade_maior_evasao;
+        document.getElementById("cursos_modalidade").innerHTML = `${data[0].total_turmas_na_modalidade} Turmas registradas`;
+        document.getElementById("alunos_modalidade").innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
+        /* aqui mando os dados pra dash*/
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
 
   function editarCurso(idCurso, nome, ano) {
     document.getElementById("registrar_curso").innerHTML = "ATUALIZAR";
@@ -472,7 +578,7 @@ function buscarDadosTurmas(idInstituicao) {
         }
       })
       .then((data) => {
-        deletarTurmas()
+        deletarTurmas();
       })
       .catch((erro) => {
         console.log(`#ERRO: ${erro.message}`);
@@ -481,8 +587,8 @@ function buscarDadosTurmas(idInstituicao) {
   }
 
   function deletarTurmas() {
-    if(nomeCurso == null) {
-      alert("Não há um curso definido para excluir turmas")
+    if (nomeCurso == null) {
+      alert("Não há um curso definido para excluir turmas");
       return;
     }
 
@@ -492,7 +598,7 @@ function buscarDadosTurmas(idInstituicao) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        nomeDoCursoServer: nomeCurso
+        nomeDoCursoServer: nomeCurso,
       }),
     })
       .then((resposta) => {

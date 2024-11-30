@@ -180,6 +180,64 @@ function buscarDadosTurmas(req, res) {
     });  
 }
 
+function buscarTurnoEvasao(req, res) {
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarTurnoEvasao(idUnidade)
+    .then(function (resultado) {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      console.log("Houve um erro ao buscar o turno das turmas.", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });  
+}
+
+function buscarModalidadeEvasao(req, res) {
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarModalidadeEvasao(idUnidade)
+    .then(function (resultado) {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      console.log("Houve um erro ao buscar a modalidade das turmas.", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });  
+}
+
+function buscarCursoMaiorEvasao(req, res) {
+  var nomeCurso = req.params.nomeCurso;
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarCursoMaiorEvasao(nomeCurso, idUnidade)
+    .then(function (resultado) {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      console.log("Houve um erro ao buscar o curso de maior evasão.", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });  
+}
+
 module.exports = {
   buscarTurmasPorCurso,
   buscarAlunosPorCurso,
@@ -187,5 +245,8 @@ module.exports = {
   atualizarTurma,
   deletarTurma,
   deletarTODASTurmas,
-  buscarDadosTurmas
+  buscarDadosTurmas,
+  buscarTurnoEvasao,
+  buscarModalidadeEvasao,
+  buscarCursoMaiorEvasao
 };

@@ -26,36 +26,68 @@ body {
   margin: 2.5%;
 }
 
-.kpis .box-kpi {
+.kpis .box-kpi, .box-kpi-grande {
   display: flex;
   flex-direction: column;
   margin: 2.5%;
-  gap: 10px;
+  gap: 5px;
+}
+
+.box-kpi-grande {
+  width: 95%;
+  height: 36%;
+  display: flex;
+  padding: 15px;
+  font-size: 17px;
+  text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
+  background-color: #2f61e1;
+  border-radius: 3px 30px 3px 30px;
+  box-shadow: 1px 3px 4px 2px #0c123e;
 }
 
 .box-kpi {
   width: 95%;
-  height: 27%;
+  height: 48%;
   display: flex;
-  justify-content: center;
   text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
   background-color: #1c3a87;
   border-radius: 3px 30px 3px 30px;
   box-shadow: 1px 3px 4px 2px #0c123e;
 }
 
 .titulo-kpi {
-  font-size: 15px;
+  font-size: 18px;
+}
+
+.titulo-kpi-grande {
+  font-size: 16px;
 }
 
 .dado-kpi {
   font-size: 33px;
+  color: #00e5ff;
   text-shadow: 0 0 4px #fff;
+  font-weight: bold;
+}
+
+#curso_maior_evasao {
+  font-size: 30px; 
+  color: #00e5ff;
+  text-shadow: 0 0 4px #0c123e73;
   font-weight: bold;
 }
 
 .legenda-kpi {
   font-size: 15px;
+  text-shadow: 0 0 15px #fff;
+}
+
+.legenda-kpi-grande {
+  font-size: 18px;
   text-shadow: 0 0 15px #fff;
 }
 

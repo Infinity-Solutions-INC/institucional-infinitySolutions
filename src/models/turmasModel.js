@@ -151,13 +151,99 @@ function buscarDadosTurmas(idUnidade) {
     COUNT(CASE WHEN turno_turma = 'Vespertino' THEN 1 END) AS total_vespertino,
     COUNT(CASE WHEN turno_turma = 'Noturno' THEN 1 END) AS total_noturno
   FROM
-    turma 
-    JOIN curso ON turma.fkcodigo_curso = curso.codigo_curso
-    WHERE curso.fkcodigo_instituicao = '${idUnidade}';
+    turma
+  JOIN 
+    curso ON turma.fkcodigo_curso = curso.codigo_curso
+  WHERE 
+    curso.fkcodigo_instituicao = '${idUnidade}';
 `;
 
   console.log("Execurando a instrução SQL: \n" + buscarDadosTurmas);
   return database.executar(buscarDadosTurmas);
+}
+
+function buscarTurnoEvasao(idUnidade) {
+  var buscarTurnoEvasao = `
+  SELECT 
+    turno_turma AS turno_maior_evasao,
+    SUM(qtd_ingressantes - qtd_alunos_permanencia) AS total_evasao,
+    COUNT(*) AS total_turmas_no_turno,
+    SUM(qtd_alunos_permanencia) AS total_alunos_permanentes
+  FROM
+    turma
+  INNER JOIN 
+    curso ON turma.fkcodigo_curso = curso.codigo_curso
+  WHERE
+    curso.fkcodigo_instituicao = '${idUnidade}'
+  AND
+	turma.turno_turma IS NOT NULL
+  GROUP BY 
+    turno_turma
+  ORDER BY 
+    total_evasao DESC
+  LIMIT 1;
+  `;
+  console.log("Execurando a instrução SQL: \n" + buscarTurnoEvasao);
+  return database.executar(buscarTurnoEvasao);
+}
+
+function buscarModalidadeEvasao(idUnidade) {
+  var buscarModalidadeEvasao = `
+  SELECT 
+    modalidade_turma AS modalidade_maior_evasao,
+    SUM(qtd_ingressantes - qtd_alunos_permanencia) AS total_evasao,
+    COUNT(*) AS total_turmas_na_modalidade,
+    SUM(qtd_alunos_permanencia) AS total_alunos_permanentes
+  FROM
+    turma
+  INNER JOIN 
+    curso ON turma.fkcodigo_curso = curso.codigo_curso
+  WHERE
+    curso.fkcodigo_instituicao = '${idUnidade}'
+  AND
+	turma.modalidade_turma IS NOT NULL
+  GROUP BY 
+    modalidade_turma
+  ORDER BY 
+    total_evasao DESC
+  LIMIT 1;
+  `;
+  console.log("Execurando a instrução SQL: \n" + buscarModalidadeEvasao);
+  return database.executar(buscarModalidadeEvasao);
+}
+
+function buscarCursoMaiorEvasao(nomeCurso, idUnidade) {
+  var buscarCursoMaiorEvasao = `
+  SELECT 
+    turno_turma AS turno_maior_evasao,
+    modalidade_turma AS modalidade_maior_evasao,
+    SUM(qtd_ingressantes - qtd_alunos_permanencia) AS total_evasao,
+    COUNT(*) AS total_turmas,
+    SUM(qtd_alunos_permanencia) AS total_alunos_permanentes
+  FROM
+    turma
+  INNER JOIN 
+    curso ON turma.fkcodigo_curso = curso.codigo_curso
+  WHERE
+    curso.nome_curso = '${nomeCurso}'
+  AND
+  curso.fkcodigo_instituicao = '${idUnidade}'
+  AND
+  turma.modalidade_turma IS NOT NULL
+  AND 
+  turma.ano_turma = (
+    SELECT MAX(ano_turma)
+    FROM turma
+    WHERE modalidade_turma IS NOT NULL
+    )
+    GROUP BY 
+    turno_turma, modalidade_turma
+    ORDER BY 
+    total_evasao DESC
+    LIMIT 1;
+    `;
+    console.log("Execurando a instrução SQL: \n" + buscarCursoMaiorEvasao);
+    return database.executar(buscarCursoMaiorEvasao);
 }
 
 module.exports = {
@@ -168,5 +254,7 @@ module.exports = {
   deletarTurma,
   deletarTODASTurmas,
   buscarDadosTurmas,
-  
+  buscarTurnoEvasao,
+  buscarModalidadeEvasao,
+  buscarCursoMaiorEvasao
 };
