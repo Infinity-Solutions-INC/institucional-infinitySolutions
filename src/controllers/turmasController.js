@@ -318,6 +318,26 @@ function buscarDadosFiltrados(req, res) {
     });  
 }
 
+function buscarMensalidadesFiltrados(req, res) {
+  var nomeCurso = req.params.nomeCurso;
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarMensalidadesFiltrados(nomeCurso, idUnidade)
+    .then(function (resultado) {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      console.log("Houve um erro ao buscar o curso de maior evasão.", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });  
+}
+
 module.exports = {
   buscarTurmasPorCurso,
   buscarAlunosPorCurso,
@@ -332,5 +352,6 @@ module.exports = {
   buscarTurmasFiltradas,
   buscarRankingFiltrado,
   buscarKPIfiltrada,
-  buscarDadosFiltrados
+  buscarDadosFiltrados,
+  buscarMensalidadesFiltrados
 };

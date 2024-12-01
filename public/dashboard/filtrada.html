@@ -117,7 +117,13 @@
               </div>
             </div>
             <div class="box-inf" id="mensalidade">
-              <h2>MENSALIDADE <div class="selecao-mensalidade"><span onclick="voltar()"> < </span> <span onclick="avancar()"> > </span></div></h2>
+              <h2>
+                MENSALIDADE
+                <div class="selecao-mensalidade">
+                  <span onclick="alterarGrafico(-1)"> < </span>
+                  <span onclick="alterarGrafico(1)"> > </span>
+                </div>
+              </h2>
               <div class="grafico-ft">
                 <span class="chartInside">
                   <canvas id="graficoMensalidade"></canvas>
@@ -143,10 +149,12 @@
   let cursos = [];
   let graficoModalidade;
   let graficoTurno;
+  let graficoMensalidade;
+  let modoAtual = 0;
   let cursoAtual = null;
   const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
-  document.getElementById("dash_pesquisa").style.display = "none";
-  document.getElementById("dash_filtrada").style.display = "flex";
+  document.getElementById("dash_pesquisa").style.display = "flex";
+  document.getElementById("dash_filtrada").style.display = "none";
 
   function buscarCursos() {
     if (!idInstituicao) {
@@ -172,11 +180,10 @@
           console.warn("Nenhum resultado encontrado");
           return;
         }
-    
+
         // Salva o array completo de cursos e exibe eles
-        cursos = data; 
-        exibirCursos(cursos); 
-        console.log(data);
+        cursos = data;
+        exibirCursos(cursos);
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
@@ -213,16 +220,27 @@
 
   function listarCurso(nomeCurso) {
     document.getElementById("busca_curso").value = nomeCurso;
-    console.log("Curso selecionado:", nomeCurso);
+  }
+
+  function obterParametroCurso() {
+    const params = new URLSearchParams(window.location.search);
+    let curso = params.get("curso");
+
+    // caso não ache algum curso vindo da tela da dash principal, vai buscar o curso que o usuário digitou    
+    if (!curso) {
+      curso = busca_curso.value.trim()
+        ? busca_curso.value.trim().charAt(0).toUpperCase() +
+          busca_curso.value.trim().slice(1).toLowerCase()
+        : "";
+    }
+
+    return curso;
   }
 
   function selecionarCurso() {
-    cursoAtual = busca_curso.value.trim()
-      ? busca_curso.value.trim().charAt(0).toUpperCase() +
-        busca_curso.value.trim().slice(1).toLowerCase()
-      : "";
+    cursoAtual = obterParametroCurso();
 
-    if (cursoAtual == "") {
+    if (cursoAtual == "" || cursoAtual == null) {
       console.log("Nenhum curso foi selecionado");
       return false;
     }
@@ -275,8 +293,6 @@
           "qt_presencial"
         ).innerHTML = `${data[0].turmas_presencial} na modalidade presencial`;
 
-        console.log(data);
-
         // Depois os dados para a mensagem de indicação
         fetch(`/turmas/buscarRankingFiltrado/${idInstituicao}/${cursoAtual}`, {
           method: "GET",
@@ -302,7 +318,6 @@
             document.getElementById(
               "pc_matriculas"
             ).innerHTML = `${data[0].percentual_matriculas}% das matrículas totais`;
-            console.log(data);
 
             // E então os dados para as KPIs
             fetch(`/turmas/buscarKPIfiltrada/${idInstituicao}/${cursoAtual}`, {
@@ -356,7 +371,6 @@
                 document.getElementById(
                   "pc_matriculas_modalidade"
                 ).innerHTML = `${porcentagemModalidade}%`;
-                console.log(data);
 
                 receberDadosDash(cursoAtual);
               })
@@ -372,12 +386,17 @@
         console.error(`#ERRO: ${erro}`);
       });
   }
+  selecionarCurso();
 
   function limparFiltros() {
     document.getElementById("busca_curso").value = "";
     document.getElementById("dash_pesquisa").style.display = "flex";
     document.getElementById("dash_filtrada").style.display = "none";
     let cursoAtual = null;
+    modoAtual = 0;
+    const url = new URL(window.location);
+    url.searchParams.delete("curso");
+    window.history.replaceState({}, document.title, url.toString());
   }
 
   function receberDadosDash(nomeCurso) {
@@ -400,9 +419,35 @@
           console.warn("Nenhum resultado encontrado");
           return;
         }
-
         atualizarDashboards(data);
-        console.log(data);
+
+        fetch(
+          `/turmas/buscarMensalidadesFiltrados/${idInstituicao}/${nomeCurso}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+          .then(function (resposta) {
+            if (resposta.ok) {
+              return resposta.json();
+            } else {
+              throw new Error("Houve um erro ao tentar trazer o resultado");
+            }
+          })
+          .then(function (data) {
+            if (data.length === 0) {
+              console.warn("Nenhum resultado encontrado");
+              return;
+            }
+            organizarDados(data);
+            alterarGrafico(1);
+          })
+          .catch(function (erro) {
+            console.error(`#ERRO: ${erro}`);
+          });
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
@@ -417,8 +462,6 @@
       return null;
     }
 
-    console.log("Dados recebidos para processamento:", data);
-
     const matriculasOnline = parseInt(data.matriculas_online, 10);
     const matriculasPresencial = parseInt(data.matriculas_presencial, 10);
     const totalOnline = data.total_online;
@@ -432,8 +475,6 @@
     const totalNoturno = data.total_noturno;
 
     const totalMatriculas = matriculasOnline + matriculasPresencial;
-
-    console.log("Total matriculas:", totalMatriculas);
 
     const porcentagemOnline = (
       (matriculasOnline / totalMatriculas) *
@@ -495,64 +536,60 @@
     }
 
     const ctxModalidadeCtx = ctxModalidade.getContext("2d");
-    if (!graficoModalidade) {
-      console.log("Criando gráfico de barras (Modalidade)...");
-      graficoModalidade = new Chart(ctxModalidadeCtx, {
-        type: "bar",
-        data: {
-          labels: ["Online", "Presencial"],
-          datasets: [
-            {
-              label: `Alunos matriculados (%)`,
-              data: dadosProcessados.dadosModalidade.porcentagens,
-              backgroundColor: ["#270091", "#3F00EC"],
-            },
-          ],
-        },
-        options: {
-          scales: {
-            y: {
-              ticks: { display: false },
-              grid: { display: false },
-            },
-            x: {
-              ticks: { color: "#ffffff" },
-            },
+
+    if (graficoModalidade) {
+      graficoModalidade.destroy();
+    }
+
+    graficoModalidade = new Chart(ctxModalidadeCtx, {
+      type: "bar",
+      data: {
+        labels: ["Online", "Presencial"],
+        datasets: [
+          {
+            label: `Alunos matriculados (%)`,
+            data: dadosProcessados.dadosModalidade.porcentagens,
+            backgroundColor: ["#270091", "#3F00EC"],
           },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: function (tooltipItem) {
-                  const index = tooltipItem.dataIndex;
-                  const modalidades = ["Online", "Presencial"];
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            ticks: { display: false },
+            grid: { display: false },
+          },
+          x: {
+            ticks: { color: "#ffffff" },
+          },
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                const index = tooltipItem.dataIndex;
+                const modalidades = ["Online", "Presencial"];
 
-                  const matriculas =
-                    dadosProcessados.dadosModalidade.matriculas;
-                  const porcentagens =
-                    dadosProcessados.dadosModalidade.porcentagens;
-                  const turmas = dadosProcessados.dadosModalidade.turmas;
+                const matriculas = dadosProcessados.dadosModalidade.matriculas;
+                const porcentagens =
+                  dadosProcessados.dadosModalidade.porcentagens;
+                const turmas = dadosProcessados.dadosModalidade.turmas;
 
-                  const modalidadeAtual = modalidades[index];
-                  const matriculasAtuais = matriculas[index];
-                  const porcentagemAtual = porcentagens[index];
-                  const turmasAtuais = turmas[index];
+                const modalidadeAtual = modalidades[index];
+                const matriculasAtuais = matriculas[index];
+                const porcentagemAtual = porcentagens[index];
+                const turmasAtuais = turmas[index];
 
-                  return `Matriculas: ${matriculasAtuais} (${porcentagemAtual}%) | ${turmasAtuais} Turmas`;
-                },
+                return `Matriculas: ${matriculasAtuais} (${porcentagemAtual}%) | ${turmasAtuais} Turmas`;
               },
             },
           },
         },
-      });
-    } else {
-      console.log("Atualizando gráfico de barras (Modalidade)...");
-      graficoModalidade.data.datasets[0].data =
-        dadosProcessados.dadosModalidade.porcentagens;
-      graficoModalidade.update();
-    }
+      },
+    });
 
-    // Gráfico Donut (Turno)
+    // Gráfico de Donut (Turno)
     const ctxTurno = document.getElementById("graficoTurno");
     if (!ctxTurno) {
       console.error("Elemento 'graficoTurno' não encontrado no DOM.");
@@ -560,55 +597,51 @@
     }
 
     const ctxTurnoCtx = ctxTurno.getContext("2d");
-    if (!graficoTurno) {
-      console.log("📊 Criando gráfico de donut (Turno)...");
-      graficoTurno = new Chart(ctxTurnoCtx, {
-        type: "doughnut",
-        data: {
-          labels: ["Matutino", "Vespertino", "Noturno"],
-          datasets: [
-            {
-              label: "Matrículas (%)",
-              data: dadosProcessados.dadosTurnos.porcentagens,
-              backgroundColor: ["#270091", "#3F00EC", "#020272"],
-              borderWidth: 0,
-            },
-          ],
-        },
-        options: {
-          plugins: {
-            legend: {
-              labels: { color: "#ffffff" },
-            },
-            tooltip: {
-              callbacks: {
-                label: function (tooltipItem) {
-                  const index = tooltipItem.dataIndex;
-                  const turnos = ["Matutino", "Vespertino", "Noturno"];
 
-                  const matriculas = dadosProcessados.dadosTurnos.matriculas;
-                  const porcentagens =
-                    dadosProcessados.dadosTurnos.porcentagens;
-                  const turmas = dadosProcessados.dadosTurnos.turmas;
+    if (graficoTurno) {
+      graficoTurno.destroy();
+    }
 
-                  const turnoAtual = turnos[index];
-                  const matriculasAtuais = matriculas[index];
-                  const porcentagemAtual = porcentagens[index];
-                  const turmasAtuais = turmas[index];
+    graficoTurno = new Chart(ctxTurnoCtx, {
+      type: "doughnut",
+      data: {
+        labels: ["Matutino", "Vespertino", "Noturno"],
+        datasets: [
+          {
+            label: "Matrículas (%)",
+            data: dadosProcessados.dadosTurnos.porcentagens,
+            backgroundColor: ["#270091", "#3F00EC", "#020272"],
+            borderWidth: 0,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: { color: "#ffffff" },
+          },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                const index = tooltipItem.dataIndex;
+                const turnos = ["Matutino", "Vespertino", "Noturno"];
 
-                  return `Matriculas: ${matriculasAtuais} (${porcentagemAtual}%) | ${turmasAtuais} Turmas`;
-                },
+                const matriculas = dadosProcessados.dadosTurnos.matriculas;
+                const porcentagens = dadosProcessados.dadosTurnos.porcentagens;
+                const turmas = dadosProcessados.dadosTurnos.turmas;
+
+                const turnoAtual = turnos[index];
+                const matriculasAtuais = matriculas[index];
+                const porcentagemAtual = porcentagens[index];
+                const turmasAtuais = turmas[index];
+
+                return `Matriculas: ${matriculasAtuais} (${porcentagemAtual}%) | ${turmasAtuais} Turmas`;
               },
             },
           },
         },
-      });
-    } else {
-      console.log("Atualizando gráfico de donut (Turno)...");
-      graficoTurno.data.datasets[0].data =
-        dadosProcessados.dadosTurnos.porcentagens;
-      graficoTurno.update();
-    }
+      },
+    });
 
     console.log("Dashboards atualizados com sucesso.");
   }
@@ -617,124 +650,289 @@
     limparSessao();
   }
 
-  // // Gráfico de Barras (Modalidade)
-  // const ctxModalidade = document
-  //   .getElementById("graficoModalidade")
-  //   .getContext("2d");
-  // const graficoModalidade = new Chart(ctxModalidade, {
-  //   type: "bar",
-  //   data: {
-  //     labels: ["Online", "Presencial"],
-  //     datasets: [
-  //       {
-  //         label: "Turmas (%)",
-  //         data: [60, 40],
-  //         backgroundColor: ["#270091", "#3F00EC"],
-  //       },
-  //     ],
-  //   },
-  //   options: {
-  //     scales: {
-  //       y: {
-  //         ticks: {
-  //           display: false,
-  //         },
-  //         grid: {
-  //           display: false,
-  //         },
-  //       },
-  //       x: {
-  //         ticks: {
-  //           color: "#ffffff",
-  //         },
-  //       },
-  //     },
-  //     plugins: {
-  //       legend: {
-  //         display: false,
-  //       },
-  //     },
-  //   },
-  // });
+  let dadosGrafico = {
+    presencial: {
+      matutino: [],
+      vespertino: [],
+      noturno: [],
+    },
+    online: {
+      matutino: [],
+      vespertino: [],
+      noturno: [],
+    },
+  };
 
-  // // Gráfico Donut (Turno)
-  // const ctxTurno = document.getElementById("graficoTurno").getContext("2d");
-  // const graficoTurno = new Chart(ctxTurno, {
-  //   type: "doughnut",
-  //   data: {
-  //     labels: ["Matutino", "Vespertino", "Noturno"],
-  //     datasets: [
-  //       {
-  //         label: "Turmas (%)",
-  //         data: [30, 7, 63],
-  //         backgroundColor: ["#270091", "#3F00EC", "#020272"],
-  //         borderWidth: 0,
-  //       },
-  //     ],
-  //   },
-  //   options: {
-  //     plugins: {
-  //       legend: {
-  //         labels: {
-  //           color: "#ffffff",
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
+  // Função para organizar os dados de resposta no formato correto
+  function organizarDados(data) {
+    // Resetando os dados gráficos
+    dadosGrafico = {
+      presencial: {
+        matutino: [],
+        vespertino: [],
+        noturno: [],
+      },
+      online: {
+        matutino: [],
+        vespertino: [],
+        noturno: [],
+      },
+    };
 
-  // Gráfico de Linha (Mensalidade)
-  const ctxMensalidade = document
-    .getElementById("graficoMensalidade")
-    .getContext("2d");
-  const graficoMensalidade = new Chart(ctxMensalidade, {
-    type: "line",
-    data: {
-      labels: ["2017", "2018", "2019"], // Anos
-      datasets: [
+    // Organizando os dados recebidos
+    data.forEach((dado) => {
+      const { ano_turma, mensalidade_turma, modalidade_turma, turno_turma } =
+        dado;
+      anos.add(ano_turma);
+
+      if (modalidade_turma === "Presencial") {
+        if (turno_turma === "Matutino") {
+          dadosGrafico.presencial.matutino.push({
+            ano: ano_turma,
+            valor: mensalidade_turma,
+          });
+        } else if (turno_turma === "Vespertino") {
+          dadosGrafico.presencial.vespertino.push({
+            ano: ano_turma,
+            valor: mensalidade_turma,
+          });
+        } else if (turno_turma === "Noturno") {
+          dadosGrafico.presencial.noturno.push({
+            ano: ano_turma,
+            valor: mensalidade_turma,
+          });
+        }
+      } else if (modalidade_turma === "Online") {
+        if (turno_turma === "Matutino") {
+          dadosGrafico.online.matutino.push({
+            ano: ano_turma,
+            valor: mensalidade_turma,
+          });
+        } else if (turno_turma === "Vespertino") {
+          dadosGrafico.online.vespertino.push({
+            ano: ano_turma,
+            valor: mensalidade_turma,
+          });
+        } else if (turno_turma === "Noturno") {
+          dadosGrafico.online.noturno.push({
+            ano: ano_turma,
+            valor: mensalidade_turma,
+          });
+        }
+      }
+    });
+
+    console.log("Dados organizados:", dadosGrafico);
+  }
+
+  // Função para organizar os dados de resposta no formato correto, incluindo anos ausentes com valor 0
+  function organizarDados(data) {
+    // Resetando os dados gráficos
+    dadosGrafico = {
+      presencial: {
+        matutino: [],
+        vespertino: [],
+        noturno: [],
+      },
+      online: {
+        matutino: [],
+        vespertino: [],
+        noturno: [],
+      },
+    };
+
+    let anos = new Set();
+    data.forEach((dado) => {
+      anos.add(dado.ano_turma);
+    });
+    anos = Array.from(anos).sort();
+
+    // Se não tiver turma, recebe 0
+    anos.forEach((ano) => {
+      ["presencial", "online"].forEach((modalidade) => {
+        ["matutino", "vespertino", "noturno"].forEach((turno) => {
+          const dado = data.find(
+            (d) =>
+              d.ano_turma === ano &&
+              d.modalidade_turma.toLowerCase() === modalidade &&
+              d.turno_turma.toLowerCase() === turno
+          );
+
+          const valor = dado ? dado.mensalidade_turma : 0;
+
+          dadosGrafico[modalidade][turno].push({
+            ano: ano,
+            valor: valor,
+          });
+        });
+      });
+    });
+  }
+
+  // Gráfico das mensalidades dinâmico
+  function alterarGrafico(direcao) {
+    if (direcao === 1) {
+      modoAtual = (modoAtual + 1) % 3;
+    } else {
+      modoAtual = (modoAtual - 1 + 3) % 3;
+    }
+
+    let datasets = [];
+
+    // Gerar labels dinâmicos com todos os anos
+    let labels = Array.from(
+      new Set([
+        ...dadosGrafico.presencial.matutino.map((item) => item.ano),
+        ...dadosGrafico.presencial.vespertino.map((item) => item.ano),
+        ...dadosGrafico.presencial.noturno.map((item) => item.ano),
+        ...dadosGrafico.online.matutino.map((item) => item.ano),
+        ...dadosGrafico.online.vespertino.map((item) => item.ano),
+        ...dadosGrafico.online.noturno.map((item) => item.ano),
+      ])
+    ).sort();
+
+    if (modoAtual === 1) {
+      datasets = [
         {
-          label: "Mensalidade (R$)",
-          data: [1200, 1800, 1900], // Valor para 2017
-          borderColor: "#270091",
-          backgroundColor: "#270091",
-          fill: false,
-        },
-        {
-          label: "Mensalidade (R$)",
-          data: [1050, 2850, 8650], // Valor para 2018
+          label: "Matutino Online",
+          data: dadosGrafico.online.matutino.map((item) => item.valor),
           borderColor: "#3F00EC",
           backgroundColor: "#3F00EC",
           fill: false,
         },
         {
-          label: "Mensalidade (R$)",
-          data: [2100, 8569, 5739], // Valor para 2019
+          label: "Vespertino Online",
+          data: dadosGrafico.online.vespertino.map((item) => item.valor),
+          borderColor: "#4A00C3",
+          backgroundColor: "#4A00C3",
+          fill: false,
+        },
+        {
+          label: "Noturno Online",
+          data: dadosGrafico.online.noturno.map((item) => item.valor),
+          borderColor: "#5600B3",
+          backgroundColor: "#5600B3",
+          fill: false,
+        },
+      ];
+    } else if (modoAtual === 2) {
+      datasets = [
+        {
+          label: "Matutino Presencial",
+          data: dadosGrafico.presencial.matutino.map((item) => item.valor),
+          borderColor: "#270091",
+          backgroundColor: "#270091",
+          fill: false,
+        },
+        {
+          label: "Vespertino Presencial",
+          data: dadosGrafico.presencial.vespertino.map((item) => item.valor),
+          borderColor: "#3F00EC",
+          backgroundColor: "#3F00EC",
+          fill: false,
+        },
+        {
+          label: "Noturno Presencial",
+          data: dadosGrafico.presencial.noturno.map((item) => item.valor),
           borderColor: "#020272",
           backgroundColor: "#020272",
           fill: false,
         },
-      ],
-    },
+      ];
+    } else {
+      datasets = [
+        {
+          label: "Matutino Online",
+          data: dadosGrafico.online.matutino.map((item) => item.valor),
+          borderColor: "#3F00EC",
+          backgroundColor: "#3F00EC",
+          fill: false,
+        },
+        {
+          label: "Matutino Presencial",
+          data: dadosGrafico.presencial.matutino.map((item) => item.valor),
+          borderColor: "#270091",
+          backgroundColor: "#270091",
+          fill: false,
+        },
+        {
+          label: "Vespertino Online",
+          data: dadosGrafico.online.vespertino.map((item) => item.valor),
+          borderColor: "#4A00C3",
+          backgroundColor: "#4A00C3",
+          fill: false,
+        },
+        {
+          label: "Vespertino Presencial",
+          data: dadosGrafico.presencial.vespertino.map((item) => item.valor),
+          borderColor: "#3F00EC",
+          backgroundColor: "#3F00EC",
+          fill: false,
+        },
+        {
+          label: "Noturno Online",
+          data: dadosGrafico.online.noturno.map((item) => item.valor),
+          borderColor: "#5600B3",
+          backgroundColor: "#5600B3",
+          fill: false,
+        },
+        {
+          label: "Noturno Presencial",
+          data: dadosGrafico.presencial.noturno.map((item) => item.valor),
+          borderColor: "#020272",
+          backgroundColor: "#020272",
+          fill: false,
+        },
+      ];
+    }
 
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          display: false,
+    if (graficoMensalidade) {
+      graficoMensalidade.destroy();
+    }
+
+    graficoMensalidade = new Chart(ctxMensalidade, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: datasets,
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            display: true,
+            ticks: {
+              color: "#ffffff",
+            },
+            grid: { display: false },
+          },
+          x: {
+            ticks: {
+              color: "#ffffff",
+            },
+          },
         },
-        x: {
-          ticks: {
-            color: "#ffffff",
+        plugins: {
+          legend: {
+            labels: {
+              color: "#fff",
+            },
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const value = context.raw;
+                return `Mensalidade (R$): ${value}`;
+              },
+            },
           },
         },
       },
-      plugins: {
-        legend: {
-          labels: {
-            color: "#fff",
-          },
-        },
-      },
-    },
-  });
+    });
+  }
+
+  // Inicializar o gráfico de mensalidade
+  const ctxMensalidade = document
+    .getElementById("graficoMensalidade")
+    .getContext("2d");
 </script>

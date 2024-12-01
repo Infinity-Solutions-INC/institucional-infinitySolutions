@@ -62,4 +62,8 @@ router.get("/buscarDadosFiltrados/:idUnidade/:nomeCurso", function (req, res) {
   turmasController.buscarDadosFiltrados(req, res);
 });
 
+router.get("/buscarMensalidadesFiltrados/:idUnidade/:nomeCurso", function (req, res) {
+  turmasController.buscarMensalidadesFiltrados(req, res);
+});
+
 module.exports = router;

@@ -84,7 +84,7 @@
 
         <div class="container">
           <div class="kpis">
-            <div class="box-kpi-grande" style="margin-top: 62px">
+            <div class="box-kpi-grande" style="margin-top: 62px" onclick="verCurso(maiorEvCurso)">
               <span>
                 <p class="titulo-kpi-grande">CURSO COM MAIOR EVASÃO:</p>
                 <b id="curso_maior_evasao"></b>
@@ -183,6 +183,7 @@
   let nomeCurso = null;
   let graficoModalidade;
   let graficoTurno;
+  let maiorEvCurso;
 
   const modais = document.querySelectorAll(".modal");
   modais.forEach((modal) => (modal.style.display = "none"));
@@ -316,7 +317,7 @@
       }
 
       rankingCursos.innerHTML += `
-        <p class="dados-curso">${item.nome_curso}</p>
+        <p onclick="verCurso('${item.nome_curso}')" class="dados-curso">${item.nome_curso}</p>
       `;
 
       listaAlunos.innerHTML += `
@@ -325,6 +326,11 @@
         </p>
       `;
     });
+  }
+
+  function verCurso(nomeCurso) {
+    const nomeCursoEncoded = encodeURIComponent(nomeCurso);
+    window.location.href = `./filtrada.html?curso=${nomeCursoEncoded}`;
   }
 
   function buscarDadosTurmas(idInstituicao) {
@@ -378,6 +384,7 @@
         }
 
         document.getElementById("curso_maior_evasao").innerHTML = nomeCurso;
+        maiorEvCurso = nomeCurso;
         document.getElementById("turno_maior_evasao").innerHTML =
           data[0].turno_maior_evasao;
         document.getElementById("modalidade_maior_evasao").innerHTML =

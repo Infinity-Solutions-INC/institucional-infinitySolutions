@@ -27,7 +27,8 @@ body {
   margin: 2.5%;
 }
 
-.kpis .box-kpi, .box-kpi-grande {
+.kpis .box-kpi,
+.box-kpi-grande {
   display: flex;
   flex-direction: column;
   margin: 2.5%;
@@ -46,6 +47,32 @@ body {
   background-color: #2f61e1;
   border-radius: 3px 30px 3px 30px;
   box-shadow: 1px 3px 4px 2px #0c123e;
+}
+
+.box-kpi-grande:hover  {
+  background-color: #0c123eaa;
+  cursor: pointer;
+  color: #00e5ff;
+}
+
+.box-kpi-grande:hover .titulo-kpi-grande {
+  color: #00ffff;
+  text-shadow: 0 0 4px #fff;
+}
+
+.box-kpi-grande:hover #curso_maior_evasao {
+  color: #0000ff;
+  text-shadow: 0 0 4px #0000ff;
+}
+
+.box-kpi-grande:hover #turno_maior_evasao {
+  color: #2f61e1;
+  text-shadow: 0 0 4px #2f61e1;
+}
+
+.box-kpi-grande:hover #modalidade_maior_evasao {
+  color: #2f61e1;
+  text-shadow: 0 0 4px #2f61e1;
 }
 
 .box-kpi {
@@ -76,7 +103,7 @@ body {
 }
 
 #curso_maior_evasao {
-  font-size: 30px; 
+  font-size: 30px;
   color: #00e5ff;
   text-shadow: 0 0 4px #0c123e73;
   font-weight: bold;
@@ -150,8 +177,15 @@ body {
   margin-left: 2px;
 }
 
+#bloco-cursos p:hover {
+  color: #00ffff;
+  font-weight: bold;
+  cursor: pointer;
+  text-shadow: 0 0 12px #00b5e3;
+}
+
 .tb-curso p {
-  padding-top:27.4px;
+  padding-top: 27.4px;
   text-transform: uppercase;
 }
 
@@ -185,7 +219,6 @@ body {
   padding-bottom: 10px;
   margin-right: 0px;
 }
-
 
 .indicador {
   font-size: 22px;
@@ -328,7 +361,7 @@ body {
 
 .tela-pesq {
   background-color: #1c3a87ad;
-  border: solid #00E5FF 3px;
+  border: solid #00e5ff 3px;
   border-radius: 20px 2px 20px 2px;
   height: 100%;
   padding-top: 20px;
@@ -400,7 +433,6 @@ body {
   transition: all 0.3s;
   border-radius: 10rem;
 }
-
 
 #mensalidade {
   width: 40%;
@@ -616,18 +648,18 @@ body {
   padding-bottom: 10px;
 }
 
-ion-icon{
+ion-icon {
   font-size: 1.5rem;
-  color: #00E5FF;
+  color: #00e5ff;
 }
 
-ion-icon:not(.bloqueio):hover{
+ion-icon:not(.bloqueio):hover {
   cursor: pointer;
   color: #fff;
   transition: all 0.3s;
 }
 
-.divisor-curso{
+.divisor-curso {
   width: 100%;
   display: flex;
   text-transform: uppercase;
@@ -635,14 +667,12 @@ ion-icon:not(.bloqueio):hover{
   padding: 10px;
 }
 
-#linha-curso{
+#linha-curso {
   width: 95%;
-  border: 1px solid #00E5FF;
+  border: 1px solid #00e5ff;
   margin: 0 auto;
 }
 
 ion-icon.ativo {
   color: white;
 }
-
-

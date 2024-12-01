@@ -250,8 +250,8 @@ function buscarCursoMaiorEvasao(nomeCurso, idUnidade) {
     total_evasao DESC
     LIMIT 1;
     `;
-    console.log("Execurando a instrução SQL: \n" + buscarCursoMaiorEvasao);
-    return database.executar(buscarCursoMaiorEvasao);
+  console.log("Execurando a instrução SQL: \n" + buscarCursoMaiorEvasao);
+  return database.executar(buscarCursoMaiorEvasao);
 }
 
 function buscarTurmasFiltradas(nomeCurso, idUnidade) {
@@ -399,7 +399,7 @@ FROM
     maior_evasao_turno
 CROSS JOIN
     maior_evasao_modalidade;
-  `
+  `;
   console.log("Execurando a instrução SQL: \n" + buscarKPIfiltrada);
   return database.executar(buscarKPIfiltrada);
 }
@@ -431,6 +431,30 @@ function buscarDadosFiltrados(nomeCurso, idUnidade) {
   return database.executar(buscarDadosFiltrados);
 }
 
+function buscarMensalidadesFiltrados(nomeCurso, idUnidade) {
+  var buscarMensalidadesFiltrados = `
+  SELECT
+    turma.ano_turma,  
+    turma.turno_turma,
+    turma.modalidade_turma,
+    turma.mensalidade_turma 
+  FROM
+    turma
+  JOIN
+    curso ON turma.fkcodigo_curso = curso.codigo_curso
+  WHERE
+    curso.nome_curso = '${nomeCurso}'
+  AND
+    curso.fkcodigo_instituicao = '${idUnidade}'
+  AND 
+    turma.modalidade_turma IS NOT NULL
+  ORDER BY
+    turma.ano_turma;
+  `;
+  console.log("Execurando a instrução SQL: \n" + buscarMensalidadesFiltrados);
+  return database.executar(buscarMensalidadesFiltrados);
+}
+
 module.exports = {
   buscarTurmasPorCurso,
   buscarAlunosPorCurso,
@@ -445,5 +469,6 @@ module.exports = {
   buscarTurmasFiltradas,
   buscarRankingFiltrado,
   buscarKPIfiltrada,
-  buscarDadosFiltrados
+  buscarDadosFiltrados,
+  buscarMensalidadesFiltrados,
 };
