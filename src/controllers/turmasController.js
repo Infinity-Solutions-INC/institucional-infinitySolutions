@@ -238,6 +238,86 @@ function buscarCursoMaiorEvasao(req, res) {
     });  
 }
 
+function buscarTurmasFiltradas(req, res) {
+  var nomeCurso = req.params.nomeCurso;
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarTurmasFiltradas(nomeCurso, idUnidade)
+    .then(function (resultado) {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      console.log("Houve um erro ao buscar o curso de maior evasão.", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });  
+}
+
+function buscarRankingFiltrado(req, res) {
+  var nomeCurso = req.params.nomeCurso;
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarRankingFiltrado(nomeCurso, idUnidade)
+    .then(function (resultado) {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      console.log("Houve um erro ao buscar o curso de maior evasão.", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });  
+}
+
+function buscarKPIfiltrada(req, res) {
+  var nomeCurso = req.params.nomeCurso;
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarKPIfiltrada(nomeCurso, idUnidade)
+    .then(function (resultado) {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      console.log("Houve um erro ao buscar o curso de maior evasão.", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });  
+}
+
+function buscarDadosFiltrados(req, res) {
+  var nomeCurso = req.params.nomeCurso;
+  var idUnidade = req.params.idUnidade;
+
+  turmasModel
+    .buscarDadosFiltrados(nomeCurso, idUnidade)
+    .then(function (resultado) {
+      if (resultado.length > 0) {
+        res.status(200).json(resultado); /*resposta que o bd traz*/
+      } else {
+        res.status(204).send("Nenhum resultado encontrado!");
+      }
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      console.log("Houve um erro ao buscar o curso de maior evasão.", erro.sqlMessage);
+      res.status(500).json(erro.sqlMessage);
+    });  
+}
+
 module.exports = {
   buscarTurmasPorCurso,
   buscarAlunosPorCurso,
@@ -248,5 +328,9 @@ module.exports = {
   buscarDadosTurmas,
   buscarTurnoEvasao,
   buscarModalidadeEvasao,
-  buscarCursoMaiorEvasao
+  buscarCursoMaiorEvasao,
+  buscarTurmasFiltradas,
+  buscarRankingFiltrado,
+  buscarKPIfiltrada,
+  buscarDadosFiltrados
 };

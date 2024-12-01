@@ -252,6 +252,7 @@ body {
   width: 90%;
   height: 110%;
   padding: 2%;
+  text-transform: uppercase;
 }
 
 .descricao {
@@ -263,7 +264,7 @@ body {
   background-color: #1c3a87;
   border-radius: 3px 30px 3px 30px;
   box-shadow: 1px 3px 4px 2px #0c123e;
-  font-size: 17px;
+  font-size: 20px;
   text-align: center;
   padding: 20px;
 }
@@ -403,6 +404,22 @@ body {
 
 #mensalidade {
   width: 40%;
+}
+
+#mensalidade h2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selecao-mensalidade {
+  margin-right: 10px;
+}
+
+.selecao-mensalidade span:hover {
+  color: #00ffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .grafico-ft {

@@ -39,8 +39,27 @@ router.get("/buscarModalidadeEvasao/:idUnidade", function (req, res) {
   turmasController.buscarModalidadeEvasao(req, res);
 });
 
-router.get("/buscarCursoMaiorEvasao/:idUnidade/:nomeCurso", function (req, res) {
-  turmasController.buscarCursoMaiorEvasao(req, res);
+router.get(
+  "/buscarCursoMaiorEvasao/:idUnidade/:nomeCurso",
+  function (req, res) {
+    turmasController.buscarCursoMaiorEvasao(req, res);
+  }
+);
+
+router.get("/buscarTurmasFiltradas/:idUnidade/:nomeCurso", function (req, res) {
+  turmasController.buscarTurmasFiltradas(req, res);
+});
+
+router.get("/buscarRankingFiltrado/:idUnidade/:nomeCurso", function (req, res) {
+  turmasController.buscarRankingFiltrado(req, res);
+});
+
+router.get("/buscarKPIfiltrada/:idUnidade/:nomeCurso", function (req, res) {
+  turmasController.buscarKPIfiltrada(req, res);
+});
+
+router.get("/buscarDadosFiltrados/:idUnidade/:nomeCurso", function (req, res) {
+  turmasController.buscarDadosFiltrados(req, res);
 });
 
 module.exports = router;
