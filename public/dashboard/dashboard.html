@@ -240,7 +240,6 @@
 
         /* funçãozinha pra listar os cursos e alunos no front */
         listarCursos(data);
-        console.log(data);
 
         /* buscar alunos dos cursos*/
         fetch(`/turmas/buscarAlunosPorCurso/${idInstituicao}`, {
@@ -282,14 +281,12 @@
     listaCursos.innerHTML = "";
 
     cursosListados.forEach((item) => {
-      // if(item.ano_curso != null) {
       listaCursos.innerHTML += `
                <div class="divisor-curso">
                    <span class="nome-curso">${item.nome_curso}</span>
                    <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
                </div>
                <hr id="linha-curso">`;
-      // }
     });
   }
 
@@ -359,7 +356,6 @@
 
         /* aqui mando os dados pra dash*/
         atualizarDashboards(data);
-        console.log(data);
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
@@ -393,8 +389,6 @@
           data[0].turno_maior_evasao;
         document.getElementById("modalidade_maior_evasao").innerHTML =
           data[0].modalidade_maior_evasao;
-        /* aqui mando os dados pra dash*/
-        console.log(data);
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
@@ -462,88 +456,13 @@
         document.getElementById(
           "alunos_modalidade"
         ).innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
-        /* aqui mando os dados pra dash*/
-        console.log(data);
       })
       .catch(function (erro) {
         console.error(`#ERRO: ${erro}`);
       });
   }
 
-  /* % DAS MATRICULAS CONVERTENDO E FUNCIONANDO */
-  // function processarDados(dados) {
-  //   if (!dados || dados.length === 0) {
-  //     console.error("Dados não encontrados ou vazios.");
-  //     return;
-  //   }
-
-  //   console.log("Dados recebidos:", dados);
-
-  //   const matriculasOnline = dados[0]?.matriculas_online
-  //     ? parseInt(dados[0].matriculas_online, 10)
-  //     : 0;
-  //   const matriculasPresencial = dados[0]?.matriculas_presencial
-  //     ? parseInt(dados[0].matriculas_presencial, 10)
-  //     : 0;
-  //   const matriculasMatinal = dados[0]?.matriculas_matinal
-  //     ? parseInt(dados[0].matriculas_matinal, 10)
-  //     : 0;
-  //   const matriculasVespertino = dados[0]?.matriculas_vespertino
-  //     ? parseInt(dados[0].matriculas_vespertino, 10)
-  //     : 0;
-  //   const matriculasNoturno = dados[0]?.matriculas_noturno
-  //     ? parseInt(dados[0].matriculas_noturno, 10)
-  //     : 0;
-
-  //   const totalOnline = dados[0]?.total_online || 0;
-  //   const totalPresencial = dados[0]?.total_presencial || 0;
-  //   const totalMatinal = dados[0]?.total_matinal || 0;
-  //   const totalVespertino = dados[0]?.total_vespertino || 0;
-  //   const totalNoturno = dados[0]?.total_noturno || 0;
-
-  //   const totalMatriculas =
-  //     matriculasOnline +
-  //     matriculasPresencial +
-  //     matriculasMatinal +
-  //     matriculasVespertino +
-  //     matriculasNoturno;
-
-  //   const porcentagemOnline = ((matriculasOnline / totalMatriculas) * 100).toFixed(2);
-  //   const porcentagemPresencial =
-  //    ((matriculasPresencial / totalMatriculas) * 100).toFixed(2);
-  //   const porcentagemMatinal = ((matriculasMatinal / totalMatriculas) * 100).toFixed(2);
-  //   const porcentagemVespertino =
-  //     ((matriculasVespertino / totalMatriculas) * 100).toFixed(2);
-  //   const porcentagemNoturno = ((matriculasNoturno / totalMatriculas) * 100).toFixed(2);
-
-  //   console.log("Dados convertidos:", {
-  //     matriculasOnline,
-  //     matriculasPresencial,
-  //     matriculasMatinal,
-  //     matriculasVespertino,
-  //     matriculasNoturno,
-  //     totalOnline,
-  //     totalPresencial,
-  //     totalMatinal,
-  //     totalVespertino,
-  //     totalNoturno,
-  //   });
-
-  //   return {
-  //     matriculasOnline,
-  //     matriculasPresencial,
-  //     matriculasMatinal,
-  //     matriculasVespertino,
-  //     matriculasNoturno,
-  //     totalOnline,
-  //     totalPresencial,
-  //     totalMatinal,
-  //     totalVespertino,
-  //     totalNoturno,
-  //   };
-  // }
-
-  /* CALCULANDO APENAS % DAS TURMAS */
+  // Calculo e conversão dos dados pra dash
   function processarDados(data) {
     if (Array.isArray(data) && data.length > 0) {
       data = data[0];
@@ -592,38 +511,6 @@
       100
     ).toFixed(2);
 
-    // const totalModalidade = data.total_online + data.total_presencial || 1;
-    // const porcentagemOnline = (
-    //   (data.total_online / totalModalidade) *
-    //   100
-    // ).toFixed(2);
-    // const porcentagemPresencial = (
-    //   (data.total_presencial / totalModalidade) *
-    //   100
-    // ).toFixed(2);
-
-    // const totalTurnos =
-    //   data.total_matinal + data.total_vespertino + data.total_noturno || 1;
-    // const porcentagemMatinal = (
-    //   (data.total_matinal / totalTurnos) *
-    //   100
-    // ).toFixed(2);
-    // const porcentagemVespertino = (
-    //   (data.total_vespertino / totalTurnos) *
-    //   100
-    // ).toFixed(2);
-    // const porcentagemNoturno = (
-    //   (data.total_noturno / totalTurnos) *
-    //   100
-    // ).toFixed(2);
-
-    // console.log("📊 Resultados calculados:", {
-    //   totalModalidade,
-    //   totalTurnos,
-    //   porcentagensModalidade: [porcentagemOnline, porcentagemPresencial],
-    //   porcentagensTurnos: [porcentagemMatinal, porcentagemVespertino, porcentagemNoturno],
-    // });
-
     return {
       totalMatriculas,
       dadosModalidade: {
@@ -648,8 +535,6 @@
   }
 
   function atualizarDashboards(data) {
-    // console.log("🚀 Atualizando Dashboards com os dados:", data);
-
     const dadosProcessados = processarDados(data);
     if (!dadosProcessados) {
       console.error("Não foi possível processar os dados.");
@@ -706,7 +591,7 @@
                   const matriculasAtuais = matriculas[index];
                   const porcentagemAtual = porcentagens[index];
                   const turmasAtuais = turmas[index];
-                  
+
                   return `Matriculas: ${matriculasAtuais} (${porcentagemAtual}%) | ${turmasAtuais} Turmas`;
                 },
               },
