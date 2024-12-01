@@ -86,8 +86,9 @@
   }
 
 .divisor-curso:hover {
-    background-color: #00E5FF;
-    color: #1c3a87;
+    background-color: #2f61e1bb;
+    border-radius: 6px 2rem 2rem 6px;
+    color: #fff;
     cursor: pointer;
     transition: all 0.3s;
 }

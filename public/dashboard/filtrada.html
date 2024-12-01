@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/dash_prin-filt.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/sessao.js"></script>
-    <link rel="icon" href="../assets/logo.png">
+    <link rel="icon" href="../assets/logo.png" />
     <title>Dashboard Filtrada</title>
   </head>
   <body>
@@ -33,22 +33,39 @@
           <a onclick="sair()">ENCERRAR SESSÃO</a>
         </div>
       </div>
-      <div class="content">
-        <div class="navdash">
-          <span class="titulo"> DASHBOARD <b>FILTRADA</b> </span>
-          <div class="navdash-menu">
-            <img src="../assets/tomas.png" alt="" class="img-navbar-menu" />
-            <span>Tomás Galleno</span>
-            <button class="btn-navbar-menu">
-              <img src="../assets/downArrow.png" alt="" />
-            </button>
+      <div class="selecao-filtrada" id="dash_pesquisa">
+        <div class="content">
+          <div class="container-ft">
+            <span class="dados-pesquisa">
+              <div class="tela-pesq">
+                <h2>FILTRE DADOS DE UM CURSO:</h2>
+                <div class="pesquisa">
+                  <input
+                    type="text"
+                    id="busca_curso"
+                    onkeyup="filtrarCursos()"
+                  />
+                  <button onclick="selecionarCurso()">BUSCAR</button>
+                </div>
+                <div class="cursos-listados">
+                  <div id="resultados"></div>
+                </div>
+              </div>
+            </span>
           </div>
+        </div>
+      </div>
+      <div class="content" id="dash_filtrada">
+        <div class="navdash">
+          <span class="titulo">
+            <span class="voltar-pesquisa" onclick="limparFiltros()"> < </span>
+            DADOS SOBRE O CURSO DE <b id="nome_curso"></b>
+          </span>
         </div>
         <div class="container-ft">
           <div class="superior-filtrada">
             <div class="kpis-ft">
-              <h2>KPIs</h2>
-              <div class="box-kpi-ft" style="margin-top: -5px">
+              <div class="box-kpi-ft" style="margin-top: 50px">
                 <div class="kpi-sup">
                   <span class="left">
                     <p>Turno Do Curso</p>
@@ -73,10 +90,15 @@
             </div>
             <div class="descricao">
               <p>
-                Atualmente, você tem <b>250 alunos</b> matriculados no curso de <b>Engenharia de Software</b>, totalizando <b>13 turmas</b>, sendo
-                <b>4 matutinos</b>, <b>1 vespertino</b> e <b>8 noturnos</b>, onde <b>6 são na modalidade online (EAD)</b> e
-                <b>7 na modalidade presencial</b>. Este é o <b>2º curso com maior índice de evasão</b>, representando cerca de
-                <b>12% das matrículas totais</b>. Analise os dados de evasão desse curso com os gráficos abaixo!
+                Atualmente, você tem <b>250 alunos</b> matriculados no curso de
+                <b>Engenharia de Software</b>, totalizando <b>13 turmas</b>,
+                sendo <b>4 matutinos</b>, <b>1 vespertino</b> e
+                <b>8 noturnos</b>, onde
+                <b>6 são na modalidade online (EAD)</b> e
+                <b>7 na modalidade presencial</b>. Este é o
+                <b>2º curso com maior índice de evasão</b>, representando cerca
+                de <b>12% das matrículas totais</b>. Analise os dados de evasão
+                desse curso com os gráficos abaixo!
               </p>
             </div>
           </div>
@@ -85,7 +107,11 @@
               <h2>MODALIDADE</h2>
               <div class="grafico-ft">
                 <span class="chartInside">
-                  <canvas width="100" height="100" id="graficoModalidade"></canvas>
+                  <canvas
+                    width="100"
+                    height="100"
+                    id="graficoModalidade"
+                  ></canvas>
                 </span>
               </div>
             </div>
@@ -113,12 +139,112 @@
 </html>
 
 <script>
+  let cursos = [];
+  document.getElementById("dash_pesquisa").style.display = "flex";
+  document.getElementById("dash_filtrada").style.display = "none";
+  let cursoAtual = null;
+
+  function buscarCursos() {
+    const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+    if (!idInstituicao) {
+      console.error("ID da instituição não definida");
+      return;
+    }
+
+    fetch(`/cursos/buscarCursosPorUnidade/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        cursos = data; // Salva o array completo de cursos
+        exibirCursos(cursos); // Exibe todos os cursos inicialmente
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  buscarCursos();
+
+  function filtrarCursos() {
+    const input = document.getElementById("busca_curso").value.toLowerCase();
+    const cursosFiltrados = cursos.filter((curso) =>
+      curso.nome_curso.toLowerCase().includes(input)
+    );
+
+    exibirCursos(cursosFiltrados);
+  }
+
+  function exibirCursos(listaCursos) {
+    const divResultados = document.getElementById("resultados");
+    divResultados.innerHTML = "";
+
+    if (listaCursos.length === 0) {
+      divResultados.innerHTML = "<p>Nenhum curso encontrado.</p>";
+      return;
+    }
+
+    // Cria uma lista de cursos
+    listaCursos.forEach((curso) => {
+      divResultados.innerHTML += `
+      <p onclick="listarCurso('${curso.nome_curso}')">${curso.nome_curso}</p>
+      <hr id="linha-curso">`;
+    });
+  }
+
+  function listarCurso(nomeCurso) {
+    document.getElementById("busca_curso").value = nomeCurso;
+    console.log("Curso selecionado:", nomeCurso);
+  }
+
+  function selecionarCurso() {
+    const cursoSelecionado = busca_curso.value.trim()
+      ? busca_curso.value.trim().charAt(0).toUpperCase() +
+        busca_curso.value.trim().slice(1).toLowerCase()
+      : "";
+
+    if (cursoSelecionado == "") {
+      console.log("Nenhum curso foi selecionado");
+      return false;
+    }
+
+    cursoAtual = cursoSelecionado;
+    document.getElementById("dash_pesquisa").style.display = "none";
+    document.getElementById("dash_filtrada").style.display = "flex";
+    document.getElementById("nome_curso").innerHTML = cursoSelecionado
+  }
+
+  function limparFiltros() {
+    document.getElementById("busca_curso").value = "";
+    document.getElementById("dash_pesquisa").style.display = "flex";
+    document.getElementById("dash_filtrada").style.display = "none";
+    let cursoAtual = null;
+  }
+
   function sair() {
     limparSessao();
   }
 
   // Gráfico de Barras (Modalidade)
-  const ctxModalidade = document.getElementById("graficoModalidade").getContext("2d");
+  const ctxModalidade = document
+    .getElementById("graficoModalidade")
+    .getContext("2d");
   const graficoModalidade = new Chart(ctxModalidade, {
     type: "bar",
     data: {
@@ -182,21 +308,38 @@
   });
 
   // Gráfico de Linha (Mensalidade)
-  const ctxMensalidade = document.getElementById("graficoMensalidade").getContext("2d");
+  const ctxMensalidade = document
+    .getElementById("graficoMensalidade")
+    .getContext("2d");
   const graficoMensalidade = new Chart(ctxMensalidade, {
     type: "line",
     data: {
-      labels: ["Vespertino", "Matutino", "Noturno"], 
+      labels: ["2017", "2018", "2019"], // Anos
       datasets: [
         {
-          label: "Valor Mensalidade (R$)",
-          data: [1200, 1050, 2100],
+          label: "Mensalidade (R$)",
+          data: [1200, 1800, 1900], // Valor para 2017
+          borderColor: "#270091",
+          backgroundColor: "#270091",
+          fill: false,
+        },
+        {
+          label: "Mensalidade (R$)",          
+          data: [1050, 2850, 8650], // Valor para 2018
+          borderColor: "#3F00EC",
+          backgroundColor: "#3F00EC",
+          fill: false,
+        },
+        {
+          label: "Mensalidade (R$)",          
+          data: [2100, 8569, 5739], // Valor para 2019
           borderColor: "#020272",
-          backgroundColor: "rgba(2, 2, 114, 0.5)", 
+          backgroundColor: "#020272",
           fill: false,
         },
       ],
     },
+
     options: {
       scales: {
         y: {

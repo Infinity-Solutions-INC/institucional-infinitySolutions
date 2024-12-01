@@ -3,7 +3,8 @@ body {
 }
 
 .dashboard,
-.filtrada {
+.filtrada,
+.selecao-filtrada {
   display: flex;
 }
 
@@ -287,6 +288,19 @@ body {
   height: 100%;
 }
 
+.voltar-pesquisa {
+  color: #fff;
+  margin-right: 4px;
+  font-size: 30px;
+}
+
+.voltar-pesquisa:hover {
+  color: #00ffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
 .inferior-filtrada {
   justify-content: space-between;
   display: flex;
@@ -296,6 +310,96 @@ body {
   width: 90%;
   gap: 1.5%;
 }
+
+.dados-pesquisa {
+  width: 93%;
+  height: fit-content;
+  height: 40vw;
+  display: flex;
+  margin-top: 90px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dados-pesquisa h2 {
+  font-size: 48px;
+}
+
+.tela-pesq {
+  background-color: #1c3a87ad;
+  border: solid #00E5FF 3px;
+  border-radius: 20px 2px 20px 2px;
+  height: 100%;
+  padding-top: 20px;
+  width: 45%;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.pesquisa {
+  width: 95%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pesquisa input {
+  width: 75%;
+  height: 70%;
+  border-radius: 10rem;
+  padding-left: 12px;
+  font-size: 20px;
+  text-transform: uppercase;
+  border: none;
+  outline: none;
+}
+
+.pesquisa button {
+  width: 23%;
+  height: 85%;
+  border-radius: 20px 20px 2px 20px;
+  font-size: 20px;
+  outline: none;
+  border: 2px solid #00ffff;
+  color: #fff;
+  background-color: transparent;
+}
+
+.pesquisa button:hover {
+  background-color: #00b5e3;
+  border: none;
+  transition: all 0.3s;
+}
+
+.cursos-listados {
+  width: 97%;
+  height: 100%;
+  overflow-y: auto;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  font-size: 25px;
+}
+
+.cursos-listados p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  color: #00ffff;
+}
+
+.cursos-listados p:hover {
+  background-color: #2f61e1bb;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s;
+  border-radius: 10rem;
+}
+
 
 #mensalidade {
   width: 40%;
@@ -523,4 +627,5 @@ ion-icon:not(.bloqueio):hover{
 ion-icon.ativo {
   color: white;
 }
+
 
