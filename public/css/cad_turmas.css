@@ -44,6 +44,7 @@
 
 .content-cursos, .content-turmas {
     background-color:#1c3a87;
+    box-shadow: 1px 3px 4px 2px #0c123e;
     width: 80%;
     height: 100%;
     padding: 25px;
@@ -59,6 +60,7 @@
 
 .content-forms {
     background-color: #1c3a87;
+    box-shadow: 1px 3px 4px 2px #0c123e;
     border-radius: 20px 2px 20px 2px;
     padding: 25px;
     width: 100%;
@@ -84,8 +86,9 @@
   }
 
 .divisor-curso:hover {
-    background-color: #00E5FF;
-    color: #1c3a87;
+    background-color: #2f61e1bb;
+    border-radius: 6px 2rem 2rem 6px;
+    color: #fff;
     cursor: pointer;
     transition: all 0.3s;
 }

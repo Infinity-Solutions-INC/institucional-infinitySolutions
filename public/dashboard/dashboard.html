@@ -80,35 +80,43 @@
       <div class="content">
         <div class="navdash">
           <span class="titulo"> DASHBOARD <b>PRINCIPAL</b> </span>
-          <div class="navdash-menu">
-            <img src="../assets/tomas.png" alt="" class="img-navbar-menu" />
-            <span>Tomás Galleno</span>
-            <button class="btn-navbar-menu">
-              <img src="../assets/downArrow.png" alt="" />
-            </button>
-          </div>
         </div>
 
         <div class="container">
           <div class="kpis">
-            <h2>KPIs</h2>
-            <div class="box-kpi" style="margin-top: -15px">
-              <span class="titulo-kpi"> CURSO COM MAIOR EVASÃO </span>
-              <span class="dado-kpi"> SISTEMAS DE INFORMAÇÃO </span>
-              <span class="legenda-kpi"> 70% DOS ALUNOS TOTAIS </span>
-            </div>
-            <div class="box-kpi">
-              <span class="titulo-kpi"> TURNO DO CURSO </span>
-              <span class="dado-kpi"> NOTURNO </span>
-              <span class="legenda-kpi">
-                60% DAS MATRICULAS SÃO NESSE TURNO
+            <div class="box-kpi-grande" style="margin-top: 62px" onclick="verCurso(maiorEvCurso)">
+              <span>
+                <p class="titulo-kpi-grande">CURSO COM MAIOR EVASÃO:</p>
+                <b id="curso_maior_evasao"></b>
+              </span>
+              <hr id="linha-curso" />
+              <span>
+                <p class="titulo-kpi-grande">
+                  TURNO COM MAIOR TAXA DE EVASÃO NESSE CURSO:
+                </p>
+                <b id="turno_maior_evasao" class="legenda-kpi-grande"></b>
+              </span>
+              <hr id="linha-curso" />
+              <span>
+                <p class="titulo-kpi-grande">
+                  MODALIDADE COM MAIOR TAXA DE EVASÃO:
+                </p>
+                <b id="modalidade_maior_evasao" class="legenda-kpi-grande"></b>
               </span>
             </div>
             <div class="box-kpi">
-              <span class="titulo-kpi"> MODALIDADE DO CURSO </span>
-              <span class="dado-kpi"> ONLINE </span>
+              <span class="titulo-kpi"> TURNO COM MAIOR EVASÃO </span>
+              <span class="dado-kpi" id="turno_evasao"></span>
               <span class="legenda-kpi">
-                75% DAS MATRICULAS SÃO NESSE TURNO
+                <p id="cursos_turno"></p>
+                <p id="alunos_turno"></p>
+              </span>
+              <hr id="linha-curso" style="margin: 10px 0px 10px 8px" />
+              <span class="titulo-kpi"> MODALIDADE COM MAIOR EVASÃO </span>
+              <span class="dado-kpi" id="modalidade_evasao"></span>
+              <span class="legenda-kpi">
+                <p id="cursos_modalidade"></p>
+                <p id="alunos_modalidade"></p>
               </span>
             </div>
           </div>
@@ -172,6 +180,10 @@
 
 <script>
   let cursoEmEdicao = null;
+  let nomeCurso = null;
+  let graficoModalidade;
+  let graficoTurno;
+  let maiorEvCurso;
 
   const modais = document.querySelectorAll(".modal");
   modais.forEach((modal) => (modal.style.display = "none"));
@@ -188,6 +200,7 @@
     document.getElementById("ano_curso").value = "";
     document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
     cursoEmEdicao = null;
+    nomeCurso = null;
     const modais = document.querySelectorAll(".modal");
     modais.forEach((modal) => (modal.style.display = "none"));
   }
@@ -221,10 +234,8 @@
 
         /* funçãozinha pra listar os cursos e alunos no front */
         listarCursos(data);
-        console.log(data);
 
         /* buscar alunos dos cursos*/
-
         fetch(`/turmas/buscarAlunosPorCurso/${idInstituicao}`, {
           method: "GET",
           headers: {
@@ -243,10 +254,10 @@
               console.warn("Nenhum resultado encontrado");
               return;
             }
-
-            /* funçãozinha pra listar os cursos e alunos no front */
             console.log(data);
             listarAlunos(data);
+            buscarDadosTurmas(idInstituicao);
+            KPIsInstituicao(idInstituicao);
           })
           .catch(function (erro) {
             console.error(`#ERRO: ${erro}`);
@@ -264,39 +275,402 @@
     listaCursos.innerHTML = "";
 
     cursosListados.forEach((item) => {
-      // if(item.ano_curso != null) {
       listaCursos.innerHTML += `
-             <div class="divisor-curso">
-                 <span class="nome-curso">${item.nome_curso}</span>
-                 <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
-             </div>
-             <hr id="linha-curso">`;
-      // }
+               <div class="divisor-curso">
+                   <span class="nome-curso">${item.nome_curso}</span>
+                   <ion-icon name="create-outline" onclick="editarCurso('${item.codigo_curso}', '${item.nome_curso}', '${item.ano_curso}')"></ion-icon>
+               </div>
+               <hr id="linha-curso">`;
     });
   }
 
   function listarAlunos(cursosListados) {
     const rankingCursos = document.getElementById("bloco-cursos");
     const listaAlunos = document.getElementById("bloco-alunos");
+    rankingCursos.innerHTML = "";
+    listaAlunos.innerHTML = "";
+
+    // Ordena os cursos que possuem turmas pela maior evasão
+    cursosListados.sort(
+      (a, b) => parseInt(b.total_evasao) - parseInt(a.total_evasao)
+    );
+
+    KPICurso(cursosListados[0].nome_curso);
 
     cursosListados.forEach((item) => {
-      /* aqui só vai listar os cursos que possuem turmas registradas */
+      const evasaoAtual = parseInt(item.total_evasao);
+      const evasaoAnterior = parseInt(item.evasao_anterior);
+      let simboloEvasao, corSimbolo;
+
+      if (evasaoAnterior == 0) {
+        simboloEvasao = "*";
+        corSimbolo = "#00e5ff";
+      } else if (evasaoAtual > evasaoAnterior) {
+        simboloEvasao = "&#9650;";
+        corSimbolo = "#ff0000";
+      } else if (evasaoAtual < evasaoAnterior) {
+        simboloEvasao = "&#9660";
+        corSimbolo = "#008000";
+      } else {
+        simboloEvasao = "=";
+        corSimbolo = "#808080";
+      }
 
       rankingCursos.innerHTML += `
-            <p class="dados-curso">${item.nome_curso}</p>
-        `;
-      listaAlunos.innerHTML += `
-          <p class="dados-evasao">${item.total_evasao}</p>
-          
+        <p onclick="verCurso('${item.nome_curso}')" class="dados-curso">${item.nome_curso}</p>
       `;
 
-      console.log(item);
+      listaAlunos.innerHTML += `
+        <p class="dados-evasao">${evasaoAtual}
+        <span style="color: ${corSimbolo};">${simboloEvasao}</span>
+        </p>
+      `;
     });
+  }
+
+  function verCurso(nomeCurso) {
+    const nomeCursoEncoded = encodeURIComponent(nomeCurso);
+    window.location.href = `./filtrada.html?curso=${nomeCursoEncoded}`;
+  }
+
+  function buscarDadosTurmas(idInstituicao) {
+    fetch(`/turmas/buscarDadosTurmas/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        /* aqui mando os dados pra dash*/
+        atualizarDashboards(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  function KPICurso(nomeCurso) {
+    const idInstituicao = sessionStorage.FKCODIGO_INSTITUICAO;
+
+    fetch(`/turmas/buscarCursoMaiorEvasao/${idInstituicao}/${nomeCurso}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        document.getElementById("curso_maior_evasao").innerHTML = nomeCurso;
+        maiorEvCurso = nomeCurso;
+        document.getElementById("turno_maior_evasao").innerHTML =
+          data[0].turno_maior_evasao;
+        document.getElementById("modalidade_maior_evasao").innerHTML =
+          data[0].modalidade_maior_evasao;
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  function KPIsInstituicao(idInstituicao) {
+    fetch(`/turmas/buscarTurnoEvasao/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        document.getElementById("turno_evasao").innerHTML =
+          data[0].turno_maior_evasao;
+        document.getElementById(
+          "cursos_turno"
+        ).innerHTML = `${data[0].total_turmas_no_turno} Turmas registradas`;
+        document.getElementById(
+          "alunos_turno"
+        ).innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
+        console.log(data);
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+
+    fetch(`/turmas/buscarModalidadeEvasao/${idInstituicao}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao tentar trazer o resultado");
+        }
+      })
+      .then(function (data) {
+        if (data.length === 0) {
+          console.warn("Nenhum resultado encontrado");
+          return;
+        }
+
+        document.getElementById("modalidade_evasao").innerHTML =
+          data[0].modalidade_maior_evasao;
+        document.getElementById(
+          "cursos_modalidade"
+        ).innerHTML = `${data[0].total_turmas_na_modalidade} Turmas registradas`;
+        document.getElementById(
+          "alunos_modalidade"
+        ).innerHTML = `${data[0].total_alunos_permanentes} Alunos matriculados`;
+      })
+      .catch(function (erro) {
+        console.error(`#ERRO: ${erro}`);
+      });
+  }
+
+  // Calculo e conversão dos dados pra dash
+  function processarDados(data) {
+    if (Array.isArray(data) && data.length > 0) {
+      data = data[0];
+    } else {
+      console.error("Dados inválidos recebidos:", data);
+      return null;
+    }
+
+    console.log("Dados recebidos para processamento:", data);
+
+    const matriculasOnline = parseInt(data.matriculas_online, 10);
+    const matriculasPresencial = parseInt(data.matriculas_presencial, 10);
+    const totalOnline = data.total_online;
+    const totalPresencial = data.total_presencial;
+
+    const matriculasMatutino = parseInt(data.matriculas_matutino, 10);
+    const matriculasVespertino = parseInt(data.matriculas_vespertino, 10);
+    const matriculasNoturno = parseInt(data.matriculas_noturno, 10);
+    const totalMatutino = data.total_matutino;
+    const totalVespertino = data.total_vespertino;
+    const totalNoturno = data.total_noturno;
+
+    const totalMatriculas = matriculasOnline + matriculasPresencial;
+
+    console.log("Total matriculas:", totalMatriculas);
+
+    const porcentagemOnline = (
+      (matriculasOnline / totalMatriculas) *
+      100
+    ).toFixed(2);
+    const porcentagemPresencial = (
+      (matriculasPresencial / totalMatriculas) *
+      100
+    ).toFixed(2);
+
+    const porcentagemMatutino = (
+      (matriculasMatutino / totalMatriculas) *
+      100
+    ).toFixed(2);
+    const porcentagemVespertino = (
+      (matriculasVespertino / totalMatriculas) *
+      100
+    ).toFixed(2);
+    const porcentagemNoturno = (
+      (matriculasNoturno / totalMatriculas) *
+      100
+    ).toFixed(2);
+
+    return {
+      totalMatriculas,
+      dadosModalidade: {
+        porcentagens: [porcentagemOnline, porcentagemPresencial],
+        matriculas: [matriculasOnline, matriculasPresencial],
+        turmas: [totalOnline, totalPresencial],
+      },
+      dadosTurnos: {
+        porcentagens: [
+          porcentagemMatutino,
+          porcentagemVespertino,
+          porcentagemNoturno,
+        ],
+        matriculas: [
+          matriculasMatutino,
+          matriculasVespertino,
+          matriculasNoturno,
+        ],
+        turmas: [totalMatutino, totalVespertino, totalNoturno],
+      },
+    };
+  }
+
+  function atualizarDashboards(data) {
+    const dadosProcessados = processarDados(data);
+    if (!dadosProcessados) {
+      console.error("Não foi possível processar os dados.");
+      return;
+    }
+
+    // Gráfico de Barras (Modalidade)
+    const ctxModalidade = document.getElementById("graficoModalidade");
+    if (!ctxModalidade) {
+      console.error("Elemento 'graficoModalidade' não encontrado no DOM.");
+      return;
+    }
+
+    const ctxModalidadeCtx = ctxModalidade.getContext("2d");
+    if (!graficoModalidade) {
+      console.log("Criando gráfico de barras (Modalidade)...");
+      graficoModalidade = new Chart(ctxModalidadeCtx, {
+        type: "bar",
+        data: {
+          labels: ["Online", "Presencial"],
+          datasets: [
+            {
+              label: `Alunos matriculados (%)`,
+              data: dadosProcessados.dadosModalidade.porcentagens,
+              backgroundColor: ["#270091", "#3F00EC"],
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              ticks: { display: false },
+              grid: { display: false },
+            },
+            x: {
+              ticks: { color: "#ffffff" },
+            },
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  const index = tooltipItem.dataIndex;
+                  const modalidades = ["Online", "Presencial"];
+
+                  const matriculas =
+                    dadosProcessados.dadosModalidade.matriculas;
+                  const porcentagens =
+                    dadosProcessados.dadosModalidade.porcentagens;
+                  const turmas = dadosProcessados.dadosModalidade.turmas;
+
+                  const modalidadeAtual = modalidades[index];
+                  const matriculasAtuais = matriculas[index];
+                  const porcentagemAtual = porcentagens[index];
+                  const turmasAtuais = turmas[index];
+
+                  return `Matriculas: ${matriculasAtuais} (${porcentagemAtual}%) | ${turmasAtuais} Turmas`;
+                },
+              },
+            },
+          },
+        },
+      });
+    } else {
+      console.log("Atualizando gráfico de barras (Modalidade)...");
+      graficoModalidade.data.datasets[0].data =
+        dadosProcessados.dadosModalidade.porcentagens;
+      graficoModalidade.update();
+    }
+
+    // Gráfico Donut (Turno)
+    const ctxTurno = document.getElementById("graficoTurno");
+    if (!ctxTurno) {
+      console.error("Elemento 'graficoTurno' não encontrado no DOM.");
+      return;
+    }
+
+    const ctxTurnoCtx = ctxTurno.getContext("2d");
+    if (!graficoTurno) {
+      console.log("📊 Criando gráfico de donut (Turno)...");
+      graficoTurno = new Chart(ctxTurnoCtx, {
+        type: "doughnut",
+        data: {
+          labels: ["Matutino", "Vespertino", "Noturno"],
+          datasets: [
+            {
+              label: "Matrículas (%)",
+              data: dadosProcessados.dadosTurnos.porcentagens,
+              backgroundColor: ["#270091", "#3F00EC", "#020272"],
+              borderWidth: 0,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            legend: {
+              labels: { color: "#ffffff" },
+            },
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  const index = tooltipItem.dataIndex;
+                  const turnos = ["Matutino", "Vespertino", "Noturno"];
+
+                  const matriculas = dadosProcessados.dadosTurnos.matriculas;
+                  const porcentagens =
+                    dadosProcessados.dadosTurnos.porcentagens;
+                  const turmas = dadosProcessados.dadosTurnos.turmas;
+
+                  const turnoAtual = turnos[index];
+                  const matriculasAtuais = matriculas[index];
+                  const porcentagemAtual = porcentagens[index];
+                  const turmasAtuais = turmas[index];
+
+                  return `Matriculas: ${matriculasAtuais} (${porcentagemAtual}%) | ${turmasAtuais} Turmas`;
+                },
+              },
+            },
+          },
+        },
+      });
+    } else {
+      console.log("Atualizando gráfico de donut (Turno)...");
+      graficoTurno.data.datasets[0].data =
+        dadosProcessados.dadosTurnos.porcentagens;
+      graficoTurno.update();
+    }
+
+    console.log("Dashboards atualizados com sucesso.");
   }
 
   function editarCurso(idCurso, nome, ano) {
     document.getElementById("registrar_curso").innerHTML = "ATUALIZAR";
     cursoEmEdicao = idCurso;
+    nomeCurso = nome;
     nome_curso.value = nome;
     ano_curso.value = ano;
     console.log(`curso em edição: ${cursoEmEdicao}, ${nome}, ${ano}`);
@@ -413,10 +787,42 @@
         }
       })
       .then((data) => {
+        deletarTurmas();
+      })
+      .catch((erro) => {
+        console.log(`#ERRO: ${erro.message}`);
+        alert(erro.message);
+      });
+  }
+
+  function deletarTurmas() {
+    if (nomeCurso == null) {
+      alert("Não há um curso definido para excluir turmas");
+      return;
+    }
+
+    fetch(`/turmas/deletarTODASTurmas`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomeDoCursoServer: nomeCurso,
+      }),
+    })
+      .then((resposta) => {
+        if (resposta.ok) {
+          return resposta.json();
+        } else {
+          throw new Error("Houve um erro ao deletar as turmas desse curso!");
+        }
+      })
+      .then((data) => {
         document.getElementById("registrar_curso").innerHTML = "REGISTRAR";
         document.getElementById("nome_curso").value = "";
         document.getElementById("ano_curso").value = "";
         cursoEmEdicao = null;
+        nomeCurso = null;
         buscarCursos();
         alert("Curso deletado com sucesso!");
       })
@@ -431,70 +837,70 @@
   }
 
   // Gráfico de Barras (Modalidade)
-  const ctxModalidade = document
-    .getElementById("graficoModalidade")
-    .getContext("2d");
-  const graficoModalidade = new Chart(ctxModalidade, {
-    type: "bar",
-    data: {
-      labels: ["Online", "Presencial"],
-      datasets: [
-        {
-          label: "Matriculas (%)",
-          data: [75, 25],
-          backgroundColor: ["#270091", "#3F00EC"],
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          ticks: {
-            display: false,
-          },
-          grid: {
-            display: false,
-          },
-        },
-        x: {
-          ticks: {
-            color: "#ffffff",
-          },
-        },
-      },
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
-    },
-  });
+  // const ctxModalidade = document
+  //   .getElementById("graficoModalidade")
+  //   .getContext("2d");
+  // const graficoModalidade = new Chart(ctxModalidade, {
+  //   type: "bar",
+  //   data: {
+  //     labels: ["Online", "Presencial"],
+  //     datasets: [
+  //       {
+  //         label: "Matriculas (%)",
+  //         data: [75, 25],
+  //         backgroundColor: ["#270091", "#3F00EC"],
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     scales: {
+  //       y: {
+  //         ticks: {
+  //           display: false,
+  //         },
+  //         grid: {
+  //           display: false,
+  //         },
+  //       },
+  //       x: {
+  //         ticks: {
+  //           color: "#ffffff",
+  //         },
+  //       },
+  //     },
+  //     plugins: {
+  //       legend: {
+  //         display: false,
+  //       },
+  //     },
+  //   },
+  // });
 
-  // Gráfico Donut (Turno)
-  const ctxTurno = document.getElementById("graficoTurno").getContext("2d");
-  const graficoTurno = new Chart(ctxTurno, {
-    type: "doughnut",
-    data: {
-      labels: ["Matutino", "Vespertino", "Noturno"],
-      datasets: [
-        {
-          label: "Matriculas (%)",
-          data: [10, 30, 60],
-          backgroundColor: ["#270091", "#3F00EC", "#020272"],
-          borderWidth: 0,
-        },
-      ],
-    },
-    options: {
-      plugins: {
-        legend: {
-          labels: {
-            color: "#ffffff",
-          },
-        },
-      },
-    },
-  });
+  // // Gráfico Donut (Turno)
+  // const ctxTurno = document.getElementById("graficoTurno").getContext("2d");
+  // const graficoTurno = new Chart(ctxTurno, {
+  //   type: "doughnut",
+  //   data: {
+  //     labels: ["Matutino", "Vespertino", "Noturno"],
+  //     datasets: [
+  //       {
+  //         label: "Matriculas (%)",
+  //         data: [10, 30, 60],
+  //         backgroundColor: ["#270091", "#3F00EC", "#020272"],
+  //         borderWidth: 0,
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     plugins: {
+  //       legend: {
+  //         labels: {
+  //           color: "#ffffff",
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
 
   // Gráfico de Linha (Motivos)
   const ctxMotivos = document.getElementById("graficoMotivos").getContext("2d");

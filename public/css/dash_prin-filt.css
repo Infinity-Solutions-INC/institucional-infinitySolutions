@@ -3,7 +3,8 @@ body {
 }
 
 .dashboard,
-.filtrada {
+.filtrada,
+.selecao-filtrada {
   display: flex;
 }
 
@@ -14,6 +15,7 @@ body {
   flex-direction: column;
   gap: 10px;
   margin-left: 2.5%;
+  text-transform: uppercase;
 }
 
 .kpis h2 {
@@ -25,35 +27,95 @@ body {
   margin: 2.5%;
 }
 
-.kpis .box-kpi {
+.kpis .box-kpi,
+.box-kpi-grande {
   display: flex;
   flex-direction: column;
   margin: 2.5%;
+  gap: 5px;
+}
+
+.box-kpi-grande {
+  width: 95%;
+  height: 36%;
+  display: flex;
+  padding: 15px;
+  font-size: 17px;
+  text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
+  background-color: #2f61e1;
+  border-radius: 3px 30px 3px 30px;
+  box-shadow: 1px 3px 4px 2px #0c123e;
+}
+
+.box-kpi-grande:hover  {
+  background-color: #0c123eaa;
+  cursor: pointer;
+  color: #00e5ff;
+}
+
+.box-kpi-grande:hover .titulo-kpi-grande {
+  color: #00ffff;
+  text-shadow: 0 0 4px #fff;
+}
+
+.box-kpi-grande:hover #curso_maior_evasao {
+  color: #0000ff;
+  text-shadow: 0 0 4px #0000ff;
+}
+
+.box-kpi-grande:hover #turno_maior_evasao {
+  color: #2f61e1;
+  text-shadow: 0 0 4px #2f61e1;
+}
+
+.box-kpi-grande:hover #modalidade_maior_evasao {
+  color: #2f61e1;
+  text-shadow: 0 0 4px #2f61e1;
 }
 
 .box-kpi {
   width: 95%;
-  height: 27%;
+  height: 48%;
   display: flex;
-  justify-content: center;
   text-align: center;
+  justify-content: center;
+  text-transform: uppercase;
   background-color: #1c3a87;
   border-radius: 3px 30px 3px 30px;
   box-shadow: 1px 3px 4px 2px #0c123e;
 }
 
 .titulo-kpi {
-  font-size: 15px;
+  font-size: 18px;
+}
+
+.titulo-kpi-grande {
+  font-size: 16px;
 }
 
 .dado-kpi {
   font-size: 33px;
+  color: #00e5ff;
   text-shadow: 0 0 4px #fff;
+  font-weight: bold;
+}
+
+#curso_maior_evasao {
+  font-size: 30px;
+  color: #00e5ff;
+  text-shadow: 0 0 4px #0c123e73;
   font-weight: bold;
 }
 
 .legenda-kpi {
   font-size: 15px;
+  text-shadow: 0 0 15px #fff;
+}
+
+.legenda-kpi-grande {
+  font-size: 18px;
   text-shadow: 0 0 15px #fff;
 }
 
@@ -111,11 +173,19 @@ body {
 }
 
 .dados-curso p {
-  font-size: 16px;
   padding-top: 25px;
+  margin-left: 2px;
 }
 
-.tb-curso {
+#bloco-cursos p:hover {
+  color: #00ffff;
+  font-weight: bold;
+  cursor: pointer;
+  text-shadow: 0 0 12px #00b5e3;
+}
+
+.tb-curso p {
+  padding-top: 27.4px;
   text-transform: uppercase;
 }
 
@@ -136,13 +206,18 @@ body {
   overflow-x: hidden;
 }
 
+.tabela-ev p {
+  font-size: 20px;
+}
+
 .tb-alunos {
   text-align: end;
 }
 
 .tb-alunos p {
   padding-top: 30px;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
+  margin-right: 0px;
 }
 
 .indicador {
@@ -210,6 +285,7 @@ body {
   width: 90%;
   height: 110%;
   padding: 2%;
+  text-transform: uppercase;
 }
 
 .descricao {
@@ -221,7 +297,7 @@ body {
   background-color: #1c3a87;
   border-radius: 3px 30px 3px 30px;
   box-shadow: 1px 3px 4px 2px #0c123e;
-  font-size: 17px;
+  font-size: 20px;
   text-align: center;
   padding: 20px;
 }
@@ -246,6 +322,19 @@ body {
   height: 100%;
 }
 
+.voltar-pesquisa {
+  color: #fff;
+  margin-right: 4px;
+  font-size: 30px;
+}
+
+.voltar-pesquisa:hover {
+  color: #00ffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
 .inferior-filtrada {
   justify-content: space-between;
   display: flex;
@@ -256,8 +345,113 @@ body {
   gap: 1.5%;
 }
 
+.dados-pesquisa {
+  width: 93%;
+  height: fit-content;
+  height: 40vw;
+  display: flex;
+  margin-top: 90px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dados-pesquisa h2 {
+  font-size: 48px;
+}
+
+.tela-pesq {
+  background-color: #1c3a87ad;
+  border: solid #00e5ff 3px;
+  border-radius: 20px 2px 20px 2px;
+  height: 100%;
+  padding-top: 20px;
+  width: 45%;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}
+
+.pesquisa {
+  width: 95%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pesquisa input {
+  width: 75%;
+  height: 70%;
+  border-radius: 10rem;
+  padding-left: 12px;
+  font-size: 20px;
+  text-transform: uppercase;
+  border: none;
+  outline: none;
+}
+
+.pesquisa button {
+  width: 23%;
+  height: 85%;
+  border-radius: 20px 20px 2px 20px;
+  font-size: 20px;
+  outline: none;
+  border: 2px solid #00ffff;
+  color: #fff;
+  background-color: transparent;
+}
+
+.pesquisa button:hover {
+  background-color: #00b5e3;
+  border: none;
+  transition: all 0.3s;
+}
+
+.cursos-listados {
+  width: 97%;
+  height: 100%;
+  overflow-y: auto;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  font-size: 25px;
+}
+
+.cursos-listados p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  color: #00ffff;
+}
+
+.cursos-listados p:hover {
+  background-color: #2f61e1bb;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s;
+  border-radius: 10rem;
+}
+
 #mensalidade {
   width: 40%;
+}
+
+#mensalidade h2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selecao-mensalidade {
+  margin-right: 10px;
+}
+
+.selecao-mensalidade span:hover {
+  color: #00ffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .grafico-ft {
@@ -314,6 +508,7 @@ body {
 
 .contentmodal {
   background-color: #1c3a87;
+  box-shadow: 1px 3px 4px 2px #0c123e;
   color: #ffffff;
   margin: 12% auto;
   padding: 20px;
@@ -453,18 +648,18 @@ body {
   padding-bottom: 10px;
 }
 
-ion-icon{
+ion-icon {
   font-size: 1.5rem;
-  color: #00E5FF;
+  color: #00e5ff;
 }
 
-ion-icon:not(.bloqueio):hover{
+ion-icon:not(.bloqueio):hover {
   cursor: pointer;
   color: #fff;
   transition: all 0.3s;
 }
 
-.divisor-curso{
+.divisor-curso {
   width: 100%;
   display: flex;
   text-transform: uppercase;
@@ -472,13 +667,12 @@ ion-icon:not(.bloqueio):hover{
   padding: 10px;
 }
 
-#linha-curso{
+#linha-curso {
   width: 95%;
-  border: 1px solid #00E5FF;
+  border: 1px solid #00e5ff;
   margin: 0 auto;
 }
 
 ion-icon.ativo {
   color: white;
 }
-

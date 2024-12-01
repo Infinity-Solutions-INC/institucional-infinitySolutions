@@ -19,7 +19,8 @@ function cadastrarCurso(nomeCurso, anoCurso, idUnidade) {
     nome_curso = CONCAT(UPPER(SUBSTRING('${nomeCurso}', 1, 1)), LOWER(SUBSTRING('${nomeCurso}', 2))),
     ano_curso = '${anoCurso}'
     WHERE LOWER(nome_curso) = LOWER('${nomeCurso}') 
-    AND fkcodigo_instituicao = '${idUnidade}'`;
+    AND fkcodigo_instituicao = '${idUnidade}'
+    LIMIT 1`;
 
   console.log("Executando a instrução SQL: \n" + cadastroCurso);
   return database.executar(cadastroCurso);

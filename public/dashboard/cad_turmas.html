@@ -63,7 +63,7 @@
                         TURNO: <br />
                         <select name="select-turno" id="turno_turma">
                             <option value="#" disabled selected> --- </option>
-                            <option value="Matinal"> MATINAL </option>
+                            <option value="Matutino"> MATUTINO </option>
                             <option value="Vespertino"> VESPERTINO </option>
                             <option value="Noturno"> NOTURNO </option>
                         </select>
@@ -235,6 +235,8 @@
     const listaTurmas = document.getElementById("listaTurmas");
     listaTurmas.innerHTML = "";
 
+    turmasListadas.sort((a, b) => parseInt(a.ano_turma) - parseInt(b.ano_turma));
+
     turmasListadas.forEach((item) => {
 
       listaTurmas.innerHTML += `
@@ -357,7 +359,7 @@
       return;
     }
 
-    fetch(`/turmas/deletarTurmas`, {
+    fetch(`/turmas/deletarTurma`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
