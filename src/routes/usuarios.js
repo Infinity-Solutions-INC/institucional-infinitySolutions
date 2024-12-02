@@ -8,6 +8,10 @@ router.post("/cadastrar", function (req, res) {
     usuarioController.cadastrar(req, res);
 })
 
+router.post("/excluirUsuario", function (req, res) {
+    usuarioController.excluir(req, res);
+})
+
 router.post("/validarUsuario", function (req, res) {
     usuarioController.validarUsuario(req, res);
 })

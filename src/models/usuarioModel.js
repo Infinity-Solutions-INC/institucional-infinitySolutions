@@ -5,7 +5,7 @@ function autenticar(email, senha) {
     var instrucaoSql = `
         SELECT funcionario.codigo_funcionario, funcionario.nome_funcionario, funcionario.cpf_funcionario, funcionario.email_funcionario, cargo.nome_cargo, funcionario.senha_funcionario, funcionario.status_funcionario, funcionario.fkcodigo_instituicao FROM funcionario
         INNER JOIN cargo on codigo_cargo = fkcodigo_cargo
-        WHERE funcionario.email_funcionario = '${email}' AND funcionario.senha_funcionario = '${senha}';
+        WHERE funcionario.email_funcionario = '${email}' AND funcionario.senha_funcionario = '${senha}' and status_funcionario = 'ativo';
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -72,7 +72,7 @@ function buscarUsuariosUnidade(codigoInstituicao){
     var instrucaoSql = `
         SELECT funcionario.codigo_funcionario, funcionario.nome_funcionario, funcionario.cpf_funcionario, funcionario.email_funcionario, cargo.nome_cargo, funcionario.senha_funcionario, funcionario.status_funcionario, funcionario.fkcodigo_instituicao FROM funcionario 
         INNER JOIN cargo on  codigo_cargo = funcionario.fkcodigo_cargo
-        WHERE fkcodigo_instituicao = ${codigoInstituicao} 
+        WHERE fkcodigo_instituicao = ${codigoInstituicao} and status_funcionario in('ativo', 'aguardando verificacao')
         ORDER BY codigo_funcionario DESC;
     `;
 
@@ -86,7 +86,7 @@ function buscarUsuariosCodigo(codigoFuncionario){
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucaoSql = `
-        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, cargo_funcionario, senha_funcionario, status_funcionario, fkcodigo_instituicao FROM funcionario WHERE codigo_funcionario = '${codigoFuncionario}';
+        SELECT codigo_funcionario, nome_funcionario, cpf_funcionario, email_funcionario, senha_funcionario, status_funcionario, fkcodigo_instituicao FROM funcionario WHERE codigo_funcionario = '${codigoFuncionario}';
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);

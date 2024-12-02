@@ -71,7 +71,7 @@
                 <span class="titulo">CADASTRE-SE</span>
 
                 <label class="label-form">CPF:</label>
-                <input class="inpt-form" type="text" name="" id="cpf_input">
+                <input class="inpt-form" type="text" name="" id="cpf_input" maxlength="14" placeholder="000.000.000-00">
 
                 <label class="label-form">EMAIL:</label>
                 <input class="inpt-form" type="text" name="" id="email_input">
@@ -199,13 +199,75 @@
         painelLogin.classList.add('visible');
     });
 
+    function aplicarMascaraCPF(cpf) {
+            // Remove caracteres que não sejam números
+            cpf = cpf.replace(/\D/g, "");
+
+            // Adiciona os pontos e o hífen conforme o formato do CPF
+            cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+            cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+            return cpf;
+        }
+
+        // Adiciona o evento de entrada para aplicar a máscara em tempo real
+        const inputCPF = document.getElementById("cpf_input");
+        inputCPF.addEventListener("input", function () {
+            this.value = aplicarMascaraCPF(this.value);
+        });
+
+        function validacaoSenha(senha, confirmarSenha){
+        if(senha == confirmarSenha){
+            if(senha.length >= 8 &&
+                /\d/.test(senha) == true &&
+                /[A-Z]/.test(senha) == true &&
+                /[a-z]/.test(senha) == true &&
+                /[!@#$%^&*(),.?":{}|<>]/.test(senha) == true
+            ){
+                return true;
+            }else{
+                alert("Senhas não é forte!");
+                return false;
+            }
+        }else{
+            alert("Senhas não iguais!");
+            return false;
+        }
+    }
+
+    function validacaoEmail(email){
+        if(email != null &&
+            email != '' &&
+            email != undefined &&
+            email.indexOf("@") > -1 &&
+            email.indexOf(".com") > -1 
+        ){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     function salvarParaValidação() {
-        sessionStorage.setItem('cpf', cpf_input.value);
-        sessionStorage.setItem('email', email_input.value);
-        sessionStorage.setItem('senha', senha_input.value);
+        let senha = senha_input.value;
+        let confirmarsenha = confirmarSenha_input.value;
+        let cpf = cpf_input.value.replace(/\D/g, "");
+        let email = email_input.value;
 
-        window.location = "verify_cad.html";
+        if(validacaoSenha(senha, confirmarsenha) == true &&
+        cpf != ''&&
+        validacaoEmail(email) == true){
+            
+            sessionStorage.setItem('cpf', cpf);
+            sessionStorage.setItem('email', email);
+            sessionStorage.setItem('senha', senha);
+
+            window.location = "verify_cad.html";
+        }else{
+            alert("Dados inválidos por favor verificar preenchimento!");
+        }
+        
     }
 
     function entrar() {
