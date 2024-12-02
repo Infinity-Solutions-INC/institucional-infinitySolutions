@@ -92,6 +92,32 @@
         inpt_email.value = sessionStorage.EMAIL_FUNCIONARIO;
      }
 
+     function validacaoNome(){
+        nome = (inpt_username.value).trim();
+
+        if(nome != undefined &&
+            nome != null &&
+            nome != ''
+        ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function validacaoEmail(email){
+        if(email != null &&
+            email != '' &&
+            email != undefined &&
+            email.indexOf("@") > -1 &&
+            email.indexOf(".com") > -1 
+        ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
      function atualizarDado(){
         console.log(sessionStorage);
 
@@ -101,8 +127,8 @@
         let codigoVar = sessionStorage.CODIGO_FUNCIONARIO;
 
         if(cpfVar != '' &&
-            nomeVar != '' &&
-            emailVar != '' &&
+            validacaoNome() == true &&
+            validacaoEmail(emailVar) == true &&
             codigoVar != ''
         ){
             fetch("/usuarios/atualizarUsuarios", {

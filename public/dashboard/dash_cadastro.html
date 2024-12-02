@@ -54,11 +54,11 @@
                         <input type="text" name="" id="nome_funcionario" class="inpt-cad-user">
 
                         <span class="label-cad-user">CPF:</span>
-                        <input type="text" name="" id="cpf_funcionario" class="inpt-cad-user">
+                        <input type="text" name="" id="cpf_funcionario" class="inpt-cad-user" maxlength="14" placeholder="000.000.000-00">
 
                         <span class="label-cad-user">CARGO:</span>
                         <select name="" id="cargo_funcionario" class="inpt-cad-user select">
-                            
+                            <option value="null">Selecione uma opção...</option>
                         </select>
 
                         <div class="secao">
@@ -94,7 +94,6 @@
 <script>
 
     function listarCargos(){
-        cargo_funcionario.innerHTML = ``;
         fetch("/cargo/listarCargos", {
             method: "POST",
             headers: {
@@ -134,7 +133,7 @@
     function editarFuncionario(nome, cargo, codigo, cpf){
         nome_funcionario.value = nome;
         cpf_funcionario.value = cpf;
-        cargo_funcionario.value = cargo;
+        cargo_funcionario.innerHTML = `<option value="">${cargo}</option>`;
         codigo_acesso.innerHTML = codigo;
     }
 
@@ -211,7 +210,36 @@
         limparSessao();
     }
 
-    
+    function validacaoNome(){
+        nome = (nome_funcionario.value).trim();
+
+        if(nome != undefined &&
+            nome != null &&
+            nome != ''
+        ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function aplicarMascaraCPF(cpf) {
+            // Remove caracteres que não sejam números
+            cpf = cpf.replace(/\D/g, "");
+
+            // Adiciona os pontos e o hífen conforme o formato do CPF
+            cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+            cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+            return cpf;
+        }
+
+    // Adiciona o evento de entrada para aplicar a máscara em tempo real
+    const inputCPF = document.getElementById("cpf_funcionario");
+        inputCPF.addEventListener("input", function () {
+            this.value = aplicarMascaraCPF(this.value);
+        });
 
     function gerarCodigo() {
         const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -223,14 +251,55 @@
         return codigo;
     }
 
+    function excluir() {
+
+        let codigoAcessoVar = codigo_acesso.innerText;
+
+        if(codigoAcessoVar != "" &&
+            codigoAcessoVar != undefined
+        ){
+            fetch("/usuarios/excluirUsuario", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                codigoAcessoServer: codigoAcessoVar
+            }),
+            })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Usuário excluido realizado com sucesso!");
+
+                } else {
+                    throw "Houve um erro ao tentar realizar a exclusão!";
+                    alert("Houve um erro ao tentar realizar a exclusão!");
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+        }else{
+            alert("Dados inválidos");
+        }
+        
+        return false;
+    }
+
     function cadastrar() {
 
         let nomeVar = (nome_funcionario.value).trim();
         let cpfVar = (cpf_funcionario.value).trim();
+        cpfVar = cpfVar.replace(/\D/g, "");
         let cargoVar = (cargo_funcionario.value).trim();
         let codigoAcessoVar = gerarCodigo();
 
-        if(nomeVar != '' &&
+        if(validacaoNome() == true &&
             cargoVar != '' &&
             cpfVar != '' 
         ){
@@ -268,7 +337,7 @@
         }else{
             alert("Dados inválidos");
         }
-        
+
         return false;
     }
 
