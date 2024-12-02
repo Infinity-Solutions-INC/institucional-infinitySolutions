@@ -15,12 +15,7 @@ function cadastrarCurso(nomeCurso, anoCurso, idUnidade) {
     idUnidade
   );
 
-  var cadastroCurso = `UPDATE curso SET 
-    nome_curso = CONCAT(UPPER(SUBSTRING('${nomeCurso}', 1, 1)), LOWER(SUBSTRING('${nomeCurso}', 2))),
-    ano_curso = '${anoCurso}'
-    WHERE LOWER(nome_curso) = LOWER('${nomeCurso}') 
-    AND fkcodigo_instituicao = '${idUnidade}'
-    LIMIT 1`;
+  var cadastroCurso = `UPDATE curso SET nome_curso = CONCAT(UPPER(SUBSTRING('${nomeCurso}', 1, 1)), LOWER(SUBSTRING('${nomeCurso}', 2))), ano_curso = '${anoCurso}' WHERE LOWER(nome_curso) = LOWER('${nomeCurso}')  AND fkcodigo_instituicao = '${idUnidade}' LIMIT 1`;
 
   console.log("Executando a instrução SQL: \n" + cadastroCurso);
   return database.executar(cadastroCurso);
@@ -35,11 +30,7 @@ function editarCurso(idCurso, nomeCurso, anoCurso, idUnidade) {
     idUnidade
   );
 
-  var editarCurso = `UPDATE curso SET 
-    nome_curso = CONCAT(UPPER(SUBSTRING('${nomeCurso}', 1, 1)), LOWER(SUBSTRING('${nomeCurso}', 2))),
-    ano_curso = '${anoCurso}' 
-    WHERE codigo_curso = '${idCurso}' 
-    AND fkcodigo_instituicao = '${idUnidade}'`;
+  var editarCurso = `UPDATE curso SET nome_curso = CONCAT(UPPER(SUBSTRING('${nomeCurso}', 1, 1)), LOWER(SUBSTRING('${nomeCurso}', 2))), ano_curso = '${anoCurso}' WHERE codigo_curso = '${idCurso}'  AND fkcodigo_instituicao = '${idUnidade}'`;
 
   console.log("Executando a instrução SQL: \n" + editarCurso);
   return database.executar(editarCurso);
