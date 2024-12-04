@@ -112,9 +112,9 @@
         dados.forEach(item => {
 
             lista_recomendacoes.innerHTML += `
-             <div class="recomendation-sent" onclick="atribuirRelatorio('${item.descricao_recomendacao_recebida}', '${item.data_formatada}', '${item.tempo_decorrido}')">
+             <div class="recomendation-sent" onclick="atribuirRelatorio('${item.descricao_recomendacao_recebida.replace(/['"`*<>\n]/g,"")}', '${item.data_formatada}', '${item.tempo_decorrido}')">
                                 <h3>RELATÓRIO ${item.data_formatada}</h3>
-                                <p>${item.descricao_recomendacao}...</p>
+                                <p>${item.descricao_recomendacao.replace(/['"`*<>\n]/g,"")}...</p>
                             </div>
             `;
 
@@ -159,7 +159,7 @@
             ultima_recomendacao.innerHTML = `
              <h3>RELATÓRIO ${item.data_formatada}</h3>
                             <span>Gerado á ${item.tempo_decorrido} minutos</span>
-                            <p>${item.descricao_recomendacao_recebida}</p>
+                            <p>${item.descricao_recomendacao_recebida.replace(/['"`*<>\n]/g,"")}</p>
             `;
 
 
