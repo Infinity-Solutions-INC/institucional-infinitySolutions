@@ -41,10 +41,10 @@
             <section class="upper-bar">
                 <h1 class="title">RELATÓRIO <span>DE CURSOS</span></h1>
                 
-                <div class="upper-profile-infos">
+                <!-- <div class="upper-profile-infos">
                     <span class="username" id="nome_user_menu"></span>
                     <i class="fa-solid fa-angle-down"></i>
-                </div>
+                </div> -->
             </section>
 
             <div class="page-content">
@@ -75,6 +75,10 @@
 
 </html>
 <script>
+    function sair() {
+        limparSessao();
+    }
+    
     function atribuirRelatorio(descricao, data, minutos){
         ultima_recomendacao.innerHTML = `
              <h3>RELATÓRIO ${data}</h3>
