@@ -9,11 +9,12 @@
 
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/dash.css">
-    <link rel="stylesheet" href="../css/dash_relatorio.css  ">
+    <link rel="stylesheet" href="../css/dash_relatorio.css">
+    <script src="../js/sessao.js"></script> 
     <link rel="icon" href="../assets/logo.png">
 </head>
 
-<body onload="listarRecomendacoes(sessionStorage.FKCODIGO_INSTITUICAO), ultimaRecomendacao(sessionStorage.FKCODIGO_INSTITUICAO)">
+<body onload="listarRecomendacoes(sessionStorage.FKCODIGO_INSTITUICAO), ultimaRecomendacao(sessionStorage.FKCODIGO_INSTITUICAO), exibirDadosLogin()">
     <div class="screen">
         <div class="menu">
             <div class="logo">
@@ -41,8 +42,7 @@
                 <h1 class="title">RELATÓRIO <span>DE CURSOS</span></h1>
                 
                 <div class="upper-profile-infos">
-                    <i class="fa-regular fa-circle-user"></i>
-                    <span class="username">Kaue Silva</span>
+                    <span class="username" id="nome_user_menu"></span>
                     <i class="fa-solid fa-angle-down"></i>
                 </div>
             </section>
@@ -75,6 +75,14 @@
 
 </html>
 <script>
+    function atribuirRelatorio(descricao, data, minutos){
+        ultima_recomendacao.innerHTML = `
+             <h3>RELATÓRIO ${data}</h3>
+                            <span>Gerado á ${minutos} minutos</span>
+                            <p>${descricao}</p>
+            `;
+    }
+
     function listarRecomendacoes(codigoInstituicao){
         lista_recomendacoes.innerHTML = '';
 
@@ -104,9 +112,9 @@
         dados.forEach(item => {
 
             lista_recomendacoes.innerHTML += `
-             <div class="recomendation-sent">
+             <div class="recomendation-sent" onclick="atribuirRelatorio('${item.descricao_recomendacao_recebida}', '${item.data_formatada}', '${item.tempo_decorrido}')">
                                 <h3>RELATÓRIO ${item.data_formatada}</h3>
-                                <p>${item.descricao_recomendacao_recebida}</p>
+                                <p>${item.descricao_recomendacao}...</p>
                             </div>
             `;
 

@@ -6,12 +6,14 @@ function listarRecomendacoes(codigoInstituicao){
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucaoSql = `
-        select DATE_FORMAT(dt_hr_recomendacao_recebida, '%d/%m/%Y') AS data_formatada, 
-        LEFT(descricao_recomendacao_recebida, 25) AS descricao_recomendacao_recebida
+        select DATE_FORMAT(dt_hr_recomendacao_recebida, '%d/%m/%Y') AS data_formatada,
+        TIMESTAMPDIFF(MINUTE, dt_hr_recomendacao_recebida, NOW()) as tempo_decorrido,
+        descricao_recomendacao_recebida,
+        LEFT(descricao_recomendacao_recebida, 25) AS descricao_recomendacao
         from recomendacao_recebida
         inner join instituicao on instituicao.codigo_instituicao = recomendacao_recebida.fkcodigo_instituicao
         where instituicao.codigo_instituicao = ${codigoInstituicao}
-        order by data_formatada DESC;
+        order by dt_hr_recomendacao_recebida DESC;
     `;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -26,8 +28,8 @@ function ultimaRecomendacao(codigoInstituicao){
         descricao_recomendacao_recebida
         from recomendacao_recebida
         inner join instituicao on instituicao.codigo_instituicao = recomendacao_recebida.fkcodigo_instituicao
-        where instituicao.codigo_instituicao = 100
-        order by data_formatada DESC limit 1;
+        where instituicao.codigo_instituicao = ${codigoInstituicao}
+        order by dt_hr_recomendacao_recebida DESC LIMIT 1;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

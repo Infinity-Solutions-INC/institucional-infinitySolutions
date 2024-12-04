@@ -136,6 +136,7 @@ body {
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  margin-left: 40%;
 }
 
 .fa-circle-user {
